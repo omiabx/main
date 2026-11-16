@@ -3,11 +3,8 @@ import numpy as np
 F="fonts/"; W,H=1280,720
 def font(n,s): return ImageFont.truetype(F+n,s)
 
-# plain background: dark navy with a soft red glow behind the text
-y=np.linspace(0,1,H)[:,None]; x=np.linspace(0,1,W)[None,:]
-bg=np.zeros((H,W,3)); bg[...,0]=14+8*y; bg[...,1]=16+6*y; bg[...,2]=34+14*(1-y)
-glow=np.exp(-(((x-.8)/.3)**2+((y-.5)/.5)**2)); bg[...,0]+=110*glow; bg[...,1]+=8*glow; bg[...,2]+=10*glow
-canvas=Image.fromarray(bg.clip(0,255).astype(np.uint8)).convert("RGBA")
+# plain background
+canvas=Image.new("RGBA",(W,H),(98,18,32,255))  # one solid colour, no gradient
 
 # Sandy with agent shades + earpiece
 s=Image.open("work/frames/sandy_smirk.png").convert("RGBA"); d=ImageDraw.Draw(s)
@@ -21,11 +18,17 @@ d.rounded_rectangle((728,735,762,760),radius=10,fill=(10,10,10,255))
 for (x0,y0) in ((520,700),(745,698)):
     d.polygon([(x0,y0+60),(x0+60,y0),(x0+95,y0),(x0+35,y0+60)],fill=(255,255,255,120))
     d.polygon([(x0+70,y0+70),(x0+110,y0+30),(x0+125,y0+30),(x0+85,y0+70)],fill=(255,255,255,90))
-s=s.crop((40,180,1300,1440)).resize((760,760),Image.LANCZOS)
-s=ImageEnhance.Color(s).enhance(1.3); s=ImageEnhance.Contrast(s).enhance(1.1)
-m=np.full((760,760),255,np.float32); fade=np.clip((np.arange(760)-560)/200,0,1); m*=(1-fade)[None,:]
-s.putalpha(Image.fromarray(m.astype(np.uint8)))
-canvas.alpha_composite(s,(-30,-20))
+# cut-out: helmet bubble + suit collar (no soft fade, so the background stays one flat colour)
+mask=Image.new("L",s.size,0); md=ImageDraw.Draw(mask)
+md.ellipse((650-598,745-598,650+598,745+598),fill=255)
+md.polygon([(345,1190),(1085,1190),(1110,1440),(320,1440)],fill=255)
+s=ImageEnhance.Color(s).enhance(1.3); s=ImageEnhance.Contrast(s).enhance(1.1); s.putalpha(mask)
+box=(30,130,1290,1440); s=s.crop(box); sc=720/(box[3]-box[1]); s=s.resize((int(s.size[0]*sc),720),Image.LANCZOS)
+al=s.split()[3]; ring=al.filter(ImageFilter.MaxFilter(15))
+stroke=Image.new("RGBA",s.size,(255,255,255,0)); stroke.putalpha(ring)
+shadow=Image.new("RGBA",s.size,(0,0,0,0)); shadow.putalpha(ring.point(lambda v:v*0.55).filter(ImageFilter.GaussianBlur(12)))
+X,Y=40,8
+canvas.alpha_composite(shadow,(X+10,Y+12)); canvas.alpha_composite(stroke,(X,Y)); canvas.alpha_composite(s,(X,Y))
 
 # stacked headline
 def word(txt,size,fill):
@@ -39,7 +42,5 @@ def place(t,cx,top,rot):
 place(word("SPY",300,(255,214,30)),985,70,-4)
 place(word("AGENT",205,(255,255,255)),985,395,-4)
 
-out=np.array(canvas.convert("RGB")).astype(np.float32)
-yy,xx=np.mgrid[0:H,0:W]; v=1-0.28*(((xx-W/2)/(W/1.4))**2+((yy-H/2)/(H/1.3))**2)
-im=Image.fromarray((out*v[...,None]).clip(0,255).astype(np.uint8))
+im=canvas.convert("RGB")  # no vignette
 im.save("/home/user/main/sandy_video/thumbnail_spy.png"); im.resize((320,180),Image.LANCZOS).save("work/thumb_spy_small.png")
