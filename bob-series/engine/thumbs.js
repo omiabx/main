@@ -75,3 +75,56 @@ export function thumbC() {
   S.post = () => { text('1 PIXEL', 470, 140, { size: 96 }); text('= 3 LIGHTS', 520, 270, { size: 90, color: Y }); };
   return S;
 }
+
+// D: framed portrait split in half: binary on the left, real face on the right. "BINARY -> PHOTO"
+import { renderToCanvas } from './pics.js';
+export function thumbD() {
+  const S = desertBase();
+  aim(S.cam, v3(0, 60, 200), v3(0, 20, -40));
+  // portrait render of Bob (front, slight surprise)
+  const ps = new THREE.Scene(); ps.background = new THREE.Color(0x9ed2f2);
+  ps.add(new THREE.HemisphereLight(0xffffff, 0xb08a6a, 1.5));
+  const dl = new THREE.DirectionalLight(0xfff2e0, 2.0); dl.position.set(-30, 50, 90); ps.add(dl);
+  const bob = character('bob', { mouth: 'open', brows: true }); pose(bob, 0, { blink: 0 }); ps.add(bob);
+  const pc = new THREE.PerspectiveCamera(26, 1, 1, 500); pc.position.set(0, 22.6, 51); pc.lookAt(0, 21.8, 0);
+  let portrait = null;
+  S.update = () => {};
+  S.post = () => {
+    if (!portrait) portrait = renderToCanvas(ps, pc, 816, 816);
+    const FS = 816, fx = W / 2 - FS / 2, fy = 222, N = 12, cs = FS / N;
+    // dim the background a little so the frame pops
+    g2.fillStyle = 'rgba(10,8,30,0.28)'; g2.fillRect(0, 0, W, H);
+    // wooden frame
+    const bw = 34; g2.fillStyle = '#14102a'; g2.fillRect(fx - bw - 8, fy - bw - 8, FS + 2 * bw + 16, FS + 2 * bw + 16);
+    g2.fillStyle = '#7a4e2c'; g2.fillRect(fx - bw, fy - bw, FS + 2 * bw, FS + 2 * bw);
+    g2.fillStyle = '#9a6a3e'; g2.fillRect(fx - bw, fy - bw, FS + 2 * bw, 10); g2.fillRect(fx - bw, fy - bw, 10, FS + 2 * bw);
+    g2.fillStyle = '#5c3820'; g2.fillRect(fx - bw, fy + FS + bw - 10, FS + 2 * bw, 10); g2.fillRect(fx + FS + bw - 10, fy - bw, 10, FS + 2 * bw);
+    // right half: real face
+    g2.drawImage(portrait, 0, 0, FS, FS, fx, fy, FS, FS);
+    // left half: binary, stepped seam
+    const px = portrait.getContext('2d').getImageData(0, 0, FS, FS).data;
+    const seam = [6, 6, 5, 6, 7, 6, 6, 5, 6, 7, 6, 6];
+    for (let j = 0; j < N; j++) for (let i = 0; i < seam[j]; i++) {
+      const sx = Math.floor((i + 0.5) * cs), sy = Math.floor((j + 0.5) * cs), k = (sy * FS + sx) * 4;
+      let r = px[k], gg = px[k + 1], b = px[k + 2]; const l = 0.3 * r + 0.59 * gg + 0.11 * b;
+      const x = fx + i * cs, y = fy + j * cs;
+      g2.fillStyle = `rgb(${Math.round(10 + r * 0.32)},${Math.round(12 + gg * 0.32)},${Math.round(26 + b * 0.3)})`; g2.fillRect(x, y, cs, cs);
+      const boost = (v) => Math.min(255, Math.round(v * 1.25 + 30));
+      g2.fillStyle = `rgb(${boost(r)},${boost(gg)},${boost(b)})`;
+      g2.font = `${Math.round(cs * 0.62)}px "PS2P"`; g2.textAlign = 'center'; g2.textBaseline = 'middle';
+      g2.fillText(l > 120 ? '1' : '0', x + cs / 2 + 2, y + cs / 2 + 3);
+    }
+    // seam glow
+    g2.save(); g2.strokeStyle = '#ffd23f'; g2.lineWidth = 6; g2.shadowColor = '#ffd23f'; g2.shadowBlur = 18; g2.beginPath();
+    for (let j = 0; j < N; j++) { const x = fx + seam[j] * cs, y = fy + j * cs; if (j === 0) g2.moveTo(x, y); else g2.lineTo(x, y); g2.lineTo(x, y + cs); }
+    g2.stroke(); g2.restore();
+    // title with drawn arrow
+    const ty = 108, size = 104;
+    text('BINARY', W / 2 - 430, ty, { size, color: G });
+    text('PHOTO', W / 2 + 460, ty, { size, color: Y });
+    g2.save(); g2.translate(W / 2 + 22, ty - 8); g2.scale(0.88, 0.88);
+    const arrow = (c, o) => { g2.fillStyle = c; g2.beginPath(); g2.moveTo(-90 - o, -18 - o); g2.lineTo(20, -18 - o); g2.lineTo(20, -52 - o * 1.6); g2.lineTo(96 + o * 1.8, 0); g2.lineTo(20, 52 + o * 1.6); g2.lineTo(20, 18 + o); g2.lineTo(-90 - o, 18 + o); g2.closePath(); g2.fill(); };
+    arrow('rgba(10,8,24,0.55)', 12); g2.translate(-4, -6); arrow('#14102a', 12); arrow('#ffffff', 0); g2.restore();
+  };
+  return S;
+}

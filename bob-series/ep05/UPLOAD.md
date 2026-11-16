@@ -8,10 +8,11 @@ Alternates for YouTube's title test:
 - Your Photos Aren't Pictures. They're Numbers.
 - How a Computer Turns Numbers Into a Picture
 
-## Thumbnails (Test & Compare: upload all three)
+## Thumbnails (Test & Compare: pick up to three)
 | File | Idea |
 |---|---|
-| `thumbnails/thumbnail_A_not-a-picture.jpg` | **Lead.** Bob's shocked face next to the same face as a grid of numbers. "NOT A PICTURE?" |
+| `thumbnails/thumbnail_D_binary-to-photo.jpg` | **Lead.** Framed portrait of Bob split down the middle: left half is 0s and 1s (tinted by the pixel colours), right half is his real face. "BINARY → PHOTO" |
+| `thumbnails/thumbnail_A_not-a-picture.jpg` | Bob's shocked face next to the same face as a grid of numbers. "NOT A PICTURE?" |
 | `thumbnails/thumbnail_B_photos-numbers.jpg` | Phone with Bob's photo, magnifier shows the numbers underneath. "PHOTOS = NUMBERS?" |
 | `thumbnails/thumbnail_C_3-lights.jpg` | One giant pixel split into red, green and blue. "1 PIXEL = 3 LIGHTS" |
 

@@ -17,7 +17,7 @@ export const FACE8 = [
 ];
 export const LIGHT = 0xf4e6c4, DARK = 0x2a2840;
 
-function renderToCanvas(scene, cam, w, h) {
+export function renderToCanvas(scene, cam, w, h) {
   const rt = new THREE.WebGLRenderTarget(w, h, { samples: 4 }); rt.texture.colorSpace = THREE.SRGBColorSpace;
   renderer.setRenderTarget(rt); renderer.render(scene, cam);
   const px = new Uint8Array(w * h * 4); renderer.readRenderTargetPixels(rt, 0, 0, w, h, px);
