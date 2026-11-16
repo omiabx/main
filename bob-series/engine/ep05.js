@@ -180,10 +180,10 @@ export const EPISODE = {
       S.cam.fov = 58; S.cam.updateProjectionMatrix();
       cm(S, t, tFair, tBut, v3(98, 40, 46), v3(-40, 14, 16), v3(95, 39, 43), v3(-40, 14, 16), smooth);
     }, overlay(t, g, S) {
-      const tb = c('03', 'bean');
+      const tb = c('03', 'size') + 0.2;
       if (t > tb - 0.2) { const [x, y] = headPos(S, S.O.bob, 36); const k = pop(t, tb - 0.2); text('BOB', x, y - 120, { size: 40, color: Y, scale: k }); g.fillStyle = Y; g.strokeStyle = '#14102a'; g.lineWidth = 6; if (k > 0.5) { g.beginPath(); g.moveTo(x - 16, y - 78); g.lineTo(x + 16, y - 78); g.lineTo(x, y - 52); g.closePath(); g.stroke(); g.fill(); } }
     } });
-    fx('whoosh', tFair - 0.1, 0.4); fx('pop', c('03', 'bean') - 0.2, 0.8);
+    fx('whoosh', tFair - 0.1, 0.4); fx('pop', c('03', 'size'), 0.8);
     add({ scene: 'canyon', t0: tBut, act(t, S) {
       canyonReset(S, t);
       const tl = c('03', 'lamps'); const idx = Math.floor((t - tl) * 4);
