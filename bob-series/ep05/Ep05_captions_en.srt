@@ -1,0 +1,491 @@
+1
+00:00:00,500 --> 00:00:02,280
+There are probably a few thousand
+
+2
+00:00:02,300 --> 00:00:03,720
+photos on your phone.
+
+3
+00:00:03,980 --> 00:00:05,100
+Most of them are screenshots
+
+4
+00:00:05,120 --> 00:00:06,400
+you forgot you took.
+
+5
+00:00:06,700 --> 00:00:08,160
+But your phone has never
+
+6
+00:00:08,180 --> 00:00:10,060
+stored a single picture.
+
+7
+00:00:10,280 --> 00:00:11,060
+Not one.
+
+8
+00:00:11,320 --> 00:00:13,100
+It only stores numbers.
+
+9
+00:00:13,580 --> 00:00:14,960
+Long lists of them.
+
+10
+00:00:15,160 --> 00:00:15,900
+Like this.
+
+11
+00:00:16,220 --> 00:00:17,260
+That's a picture.
+
+12
+00:00:17,300 --> 00:00:18,060
+I promise.
+
+13
+00:00:18,400 --> 00:00:20,080
+And in a couple of minutes, you're
+
+14
+00:00:20,100 --> 00:00:21,400
+going to read it yourself.
+
+15
+00:00:22,450 --> 00:00:25,210
+This is stop number five on Bob's trip.
+
+16
+00:00:25,490 --> 00:00:27,310
+There are four flags behind him already.
+
+17
+00:00:27,330 --> 00:00:29,430
+At the first one, he found out
+
+18
+00:00:29,450 --> 00:00:31,510
+what a computer really is.
+
+19
+00:00:31,610 --> 00:00:33,070
+At the second, why it only
+
+20
+00:00:33,090 --> 00:00:35,130
+understands ones and zeros.
+
+21
+00:00:35,490 --> 00:00:37,490
+Then he learned to count with them.
+
+22
+00:00:37,690 --> 00:00:39,330
+And last time, he stood at the
+
+23
+00:00:39,350 --> 00:00:41,150
+edge of this canyon and sent his
+
+24
+00:00:41,170 --> 00:00:43,070
+friend a message, one letter at
+
+25
+00:00:43,090 --> 00:00:45,650
+a time, with a row of eight lamps.
+
+26
+00:00:46,250 --> 00:00:48,630
+Today, his friend wants something harder.
+
+27
+00:00:48,890 --> 00:00:51,270
+He wants to see what Bob looks like.
+
+28
+00:00:51,610 --> 00:00:52,290
+Fair enough.
+
+29
+00:00:52,630 --> 00:00:53,910
+From over there, Bob is
+
+30
+00:00:53,930 --> 00:00:55,530
+about the size of a bean.
+
+31
+00:00:55,550 --> 00:00:58,290
+But the lamps can only send numbers.
+
+32
+00:00:58,670 --> 00:01:01,670
+So how do you turn a face into numbers?
+
+33
+00:01:02,370 --> 00:01:03,530
+Start with the screen you're
+
+34
+00:01:03,550 --> 00:01:04,910
+watching right now.
+
+35
+00:01:05,130 --> 00:01:07,190
+Get close to it, way closer than
+
+36
+00:01:07,210 --> 00:01:09,050
+your eyes can handle, and the picture
+
+37
+00:01:09,070 --> 00:01:11,570
+breaks apart into tiny squares.
+
+38
+00:01:11,970 --> 00:01:13,950
+Each square is called a pixel.
+
+39
+00:01:14,170 --> 00:01:16,770
+And a pixel can only do one job.
+
+40
+00:01:16,930 --> 00:01:18,410
+It shows one color.
+
+41
+00:01:18,690 --> 00:01:20,930
+That's all a picture on a screen is.
+
+42
+00:01:21,030 --> 00:01:23,570
+A grid of colored squares, packed so
+
+43
+00:01:23,590 --> 00:01:25,990
+tight that your eyes blend them together.
+
+44
+00:01:26,586 --> 00:01:28,986
+So let's start as easy as it gets.
+
+45
+00:01:29,146 --> 00:01:31,806
+Just two colors, light and dark.
+
+46
+00:01:32,046 --> 00:01:33,826
+A light square is a one.
+
+47
+00:01:33,946 --> 00:01:35,766
+A dark square is a zero.
+
+48
+00:01:36,346 --> 00:01:38,846
+Bob already has eight lamps, so he can
+
+49
+00:01:38,866 --> 00:01:41,586
+send one row of eight squares at a time.
+
+50
+00:01:41,786 --> 00:01:43,446
+He flashes the first row, and
+
+51
+00:01:43,466 --> 00:01:45,166
+his friend paints it on the wall.
+
+52
+00:01:45,466 --> 00:01:46,486
+Then the next row.
+
+53
+00:01:46,726 --> 00:01:47,506
+Then the next.
+
+54
+00:01:47,866 --> 00:01:50,446
+If you want to beat him to it, pause now.
+
+55
+00:01:52,186 --> 00:01:53,286
+Those are the same numbers
+
+56
+00:01:53,306 --> 00:01:54,806
+from the start of the video.
+
+57
+00:01:54,826 --> 00:01:56,106
+You just read a picture.
+
+58
+00:01:56,266 --> 00:01:57,026
+It's Bob!
+
+59
+00:01:57,426 --> 00:01:58,286
+Sort of.
+
+60
+00:01:58,426 --> 00:02:00,126
+You can make out the hat, and
+
+61
+00:02:00,146 --> 00:02:01,686
+there's a smile under it.
+
+62
+00:02:02,206 --> 00:02:03,406
+There's one catch.
+
+63
+00:02:03,646 --> 00:02:04,866
+His friend has to know
+
+64
+00:02:04,886 --> 00:02:06,466
+where each row ends.
+
+65
+00:02:06,686 --> 00:02:07,966
+If he thinks the rows are only
+
+66
+00:02:07,986 --> 00:02:10,186
+four squares wide, the exact same
+
+67
+00:02:10,206 --> 00:02:11,786
+numbers come out like this.
+
+68
+00:02:12,166 --> 00:02:14,426
+So before any picture, a computer
+
+69
+00:02:14,446 --> 00:02:16,306
+sends two numbers first.
+
+70
+00:02:16,506 --> 00:02:18,566
+How wide it is, and how tall.
+
+71
+00:02:19,256 --> 00:02:22,096
+Still, two colors isn't much to work with.
+
+72
+00:02:22,176 --> 00:02:23,816
+So instead of one lamp per
+
+73
+00:02:23,836 --> 00:02:26,316
+square, Bob uses all eight.
+
+74
+00:02:26,456 --> 00:02:28,836
+And eight lamps can count from zero all
+
+75
+00:02:28,856 --> 00:02:31,616
+the way up to two hundred and fifty-five.
+
+76
+00:02:31,636 --> 00:02:32,913
+Zero means black.
+
+77
+00:02:32,933 --> 00:02:35,416
+Two hundred and fifty-five means white.
+
+78
+00:02:35,696 --> 00:02:36,736
+Every number in between
+
+79
+00:02:36,756 --> 00:02:38,276
+is a shade of gray.
+
+80
+00:02:38,900 --> 00:02:40,340
+Color surprised me the first
+
+81
+00:02:40,360 --> 00:02:41,920
+time I learned how it works.
+
+82
+00:02:42,220 --> 00:02:44,240
+Every pixel on your screen is really
+
+83
+00:02:44,260 --> 00:02:47,420
+three tiny lights, sitting side by side.
+
+84
+00:02:47,520 --> 00:02:50,240
+A red one, a green one, and a blue one.
+
+85
+00:02:50,440 --> 00:02:52,100
+There's no yellow light in there.
+
+86
+00:02:52,340 --> 00:02:54,660
+When red and green turn on together, your
+
+87
+00:02:54,680 --> 00:02:56,900
+eyes just decide they're seeing yellow.
+
+88
+00:02:57,200 --> 00:02:59,260
+Turn all three up and you get white.
+
+89
+00:02:59,560 --> 00:03:01,620
+Turn them all off and you get black.
+
+90
+00:03:02,320 --> 00:03:04,900
+So any color is just three numbers.
+
+91
+00:03:05,100 --> 00:03:06,880
+How much red, how much green,
+
+92
+00:03:06,900 --> 00:03:07,700
+and how much blue.
+
+93
+00:03:07,720 --> 00:03:10,930
+Bob's shirt, for example, is forty red,
+
+94
+00:03:10,950 --> 00:03:13,340
+a hundred green, and two hundred blue.
+
+95
+00:03:14,090 --> 00:03:16,250
+Now Bob can send the real thing.
+
+96
+00:03:16,470 --> 00:03:19,010
+A face sixteen squares wide and sixteen
+
+97
+00:03:19,030 --> 00:03:21,910
+tall, with three numbers for every square.
+
+98
+00:03:22,150 --> 00:03:22,883
+That's seven hundred and
+
+99
+00:03:22,903 --> 00:03:24,590
+sixty-eight numbers.
+
+100
+00:03:24,990 --> 00:03:26,130
+It takes a while.
+
+101
+00:03:30,940 --> 00:03:32,220
+And there he is.
+
+102
+00:03:32,480 --> 00:03:34,120
+Lucky for Bob, his face was
+
+103
+00:03:34,140 --> 00:03:35,660
+already made of squares.
+
+104
+00:03:36,560 --> 00:03:39,180
+Your phone does exactly the same thing.
+
+105
+00:03:39,280 --> 00:03:41,200
+It just uses a lot more squares.
+
+106
+00:03:41,640 --> 00:03:42,900
+A normal photo has about
+
+107
+00:03:42,920 --> 00:03:44,580
+twelve million pixels.
+
+108
+00:03:44,840 --> 00:03:45,980
+Three numbers each.
+
+109
+00:03:46,160 --> 00:03:48,260
+That's thirty-six million numbers,
+
+110
+00:03:48,280 --> 00:03:50,540
+for one picture of your lunch.
+
+111
+00:03:50,720 --> 00:03:52,480
+And your screen reads them and sets
+
+112
+00:03:52,500 --> 00:03:54,160
+every one of those tiny lights
+
+113
+00:03:54,180 --> 00:03:56,880
+again, about sixty times a second.
+
+114
+00:03:57,630 --> 00:03:59,730
+So that screenshot you forgot about?
+
+115
+00:03:59,770 --> 00:04:01,410
+It's a list of numbers, with a
+
+116
+00:04:01,430 --> 00:04:02,790
+width and a height at the front.
+
+117
+00:04:02,810 --> 00:04:05,690
+Your phone reads the list and turns on millions
+
+118
+00:04:05,710 --> 00:04:08,670
+of tiny red, green and blue lights.
+
+119
+00:04:08,750 --> 00:04:09,790
+That's a picture.
+
+120
+00:04:10,290 --> 00:04:12,710
+Bob plants flag number five.
+
+121
+00:04:12,730 --> 00:04:15,190
+The desert's almost behind him now.
+
+122
+00:04:15,210 --> 00:04:17,150
+And up ahead, somewhere in that
+
+123
+00:04:17,170 --> 00:04:19,450
+fog, something is smoking.
