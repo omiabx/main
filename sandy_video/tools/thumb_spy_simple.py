@@ -4,7 +4,10 @@ F="fonts/"; W,H=1280,720
 def font(n,s): return ImageFont.truetype(F+n,s)
 
 # plain background
-canvas=Image.new("RGBA",(W,H),(98,18,32,255))  # one solid colour, no gradient
+sea=Image.open("work/frames/sea_plate.png").convert("RGB")
+sea=sea.crop((0,362,1916,1440)).resize((W,H),Image.LANCZOS)   # 16:9 slice keeping the rock arch at the bottom
+sea=ImageEnhance.Color(sea).enhance(1.25)
+canvas=sea.convert("RGBA")  # the whole background is the sea
 
 # Sandy with agent shades + earpiece
 s=Image.open("work/frames/sandy_smirk.png").convert("RGBA"); d=ImageDraw.Draw(s)
