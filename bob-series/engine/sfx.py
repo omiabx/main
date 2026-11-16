@@ -143,11 +143,11 @@ def bed(kind, d):
         w = lp(rng.standard_normal(n), 500 if kind == 'canyon' else 380, 2)
         m = 0.55 + 0.45 * np.sin(2 * np.pi * np.arange(n) / SR * 0.13 + rng.uniform(0, 6)) * np.sin(2 * np.pi * np.arange(n) / SR * 0.047 + 1)
         x = w * m
-        g = 0.09 if kind == 'canyon' else 0.06
+        g = 0.02 if kind == 'canyon' else 0.015
     else:
         t = np.arange(n) / SR
         x = 0.4 * np.sin(2 * np.pi * 55 * t) + 0.2 * np.sin(2 * np.pi * 110.4 * t) + lp(rng.standard_normal(n), 300) * 0.6
-        g = 0.035
+        g = 0.009
     x = x / (np.std(x) + 1e-9) * g
     f = min(n // 2, int(SR * 0.35)); ramp = np.linspace(0, 1, f); x[:f] *= ramp; x[-f:] *= ramp[::-1]
     return x

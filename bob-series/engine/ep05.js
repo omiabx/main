@@ -468,7 +468,7 @@ export const EPISODE = {
       if (mk > 0) { const n = Math.min(768, Math.floor(mk * 768)); tag(`SENT: ${n} / 768`, 330, 90, { size: 30, scale: pop(t, tWhile + 0.3) }); }
     } });
     fx('pop', tTall11, 0.7); fx('pop', tThree11, 0.6); fx('pop', tSeven, 0.8);
-    fx('flicker', tWhile, 0.55, { dur: tM1 - tWhile }); fx('paintloop', tWhile + 0.2, 0.45, { dur: tM1 - tWhile - 0.2 });
+    fx('flicker', tWhile, 0.4, { dur: tM1 - tWhile }); fx('paintloop', tWhile + 0.2, 0.35, { dur: tM1 - tWhile - 0.2 });
 
     const t12 = tM1, tLucky = c('12', 'lucky'), tSq12 = c('12', 'squares');
     add({ scene: 'canyon', t0: t12, act(t, S) {
