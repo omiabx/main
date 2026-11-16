@@ -128,3 +128,36 @@ export function thumbD() {
   };
   return S;
 }
+
+// E: whole thumbnail split down the middle. Left = BINARY (face as tinted 0/1 grid), right = PHOTO (real render).
+import { renderer } from './core.js';
+export function thumbE() {
+  const S = desertBase();
+  const bob = character('bob', { mouth: 'open', brows: true }); bob.position.set(0, 4, 20); pose(bob, 0, { blink: 0 }); S.scene.add(bob);
+  aim(S.cam, v3(0, 26.6, 70), v3(0, 24.0, 20));
+  const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = H; const tx = tmp.getContext('2d', { willReadFrequently: true });
+  S.update = () => {};
+  S.post = () => {
+    tx.drawImage(renderer.domElement, 0, 0); const d = tx.getImageData(0, 0, W, H).data;
+    const cs = 40, cols = W / cs, rows = Math.ceil(H / cs);
+    const seamCol = (j) => 24 + [0, 0, -1, -1, 0, 1, 1, 0, 0, -1, 0, 1][j % 12];
+    for (let j = 0; j < rows; j++) for (let i = 0; i < seamCol(j); i++) {
+      const sx = Math.min(W - 1, Math.floor((i + 0.5) * cs)), sy = Math.min(H - 1, Math.floor((j + 0.5) * cs)), k = (sy * W + sx) * 4;
+      const r = d[k], gg = d[k + 1], b = d[k + 2]; const l = 0.3 * r + 0.59 * gg + 0.11 * b;
+      const x = i * cs, y = j * cs;
+      g2.fillStyle = `rgb(${Math.round(6 + r * 0.42)},${Math.round(8 + gg * 0.42)},${Math.round(20 + b * 0.4)})`; g2.fillRect(x, y, cs, cs);
+      const boost = (v) => Math.min(255, Math.round(v * 1.2 + 34));
+      g2.fillStyle = `rgb(${boost(r)},${boost(gg)},${boost(b)})`;
+      g2.font = `${Math.round(cs * 0.6)}px "PS2P"`; g2.textAlign = 'center'; g2.textBaseline = 'middle';
+      g2.fillText(l > 120 ? '1' : '0', x + cs / 2 + 2, y + cs / 2 + 3);
+    }
+    g2.save(); g2.strokeStyle = '#ffd23f'; g2.lineWidth = 8; g2.shadowColor = '#ffd23f'; g2.shadowBlur = 22; g2.beginPath();
+    for (let j = 0; j < rows; j++) { const x = seamCol(j) * cs, y = j * cs; if (j === 0) g2.moveTo(x, y); else g2.lineTo(x, y); g2.lineTo(x, y + cs); }
+    g2.stroke(); g2.restore();
+    const plate = (cx, w, col) => { const y0 = 34, h = 136; g2.fillStyle = '#0d0b1e'; g2.fillRect(cx - w / 2 - 8, y0 - 8, w + 16, h + 16); g2.fillStyle = '#1d1640'; g2.fillRect(cx - w / 2, y0, w, h); g2.strokeStyle = col; g2.lineWidth = 6; g2.strokeRect(cx - w / 2 + 6, y0 + 6, w - 12, h - 12); };
+    plate(W / 4, 720, G); plate(W * 3 / 4, 600, Y);
+    text('BINARY', W / 4, 106, { size: 100, color: G });
+    text('PHOTO', W * 3 / 4, 106, { size: 100, color: Y });
+  };
+  return S;
+}
