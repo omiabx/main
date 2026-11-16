@@ -1,0 +1,1 @@
+{ "name": "bob-series-engine", "private": true, "dependencies": { "three": "0.170.0", "@fontsource/press-start-2p": "^5.0.0" } }
