@@ -22,26 +22,26 @@ Your phone is full of photos, but it has never stored a single picture. It store
 Stop 5 of Bob's trip from bare sand to a working computer.
 
 0:00 Your photos are numbers
-0:15 Stop 5
-0:34 Sending a face?
-0:45 Pixels
-1:04 Pictures in ones and zeros
-1:33 Width and height
-1:47 Shades of gray
-2:03 Red, green and blue
-2:32 Sending Bob's face
-2:50 Your phone
-3:19 Next stop
+0:21 Stop 5
+0:45 Sending a face?
+1:01 Pixels
+1:26 Pictures in ones and zeros
+2:01 Width and height
+2:18 Shades of gray
+2:38 Red, green and blue
+3:13 Sending Bob's face
+3:36 Your phone
+4:09 Next stop
 
 Previous stop: How Binary Became Text
 ```
-Chapter times are from the preview cut. They'll be updated when the final voiceover is in.
+Chapter times match the final cut with the ElevenLabs voice (4:32).
 
 ## Tags
 how computers store images, pixels explained, what is a pixel, RGB explained, how images are stored, binary images, computer science for beginners, how computers work, bits and bytes, bitmap, color codes, computer science explained simply
 
 ## End screen
-The last ~13 seconds hold on the map with "NEXT STOP ???" over the Foundry. There's space at the right and bottom for a "next video" and "subscribe" element.
+The last ~13 seconds (from about 4:19) hold on the map with "NEXT STOP ???" over the Foundry. There's space at the right and bottom for a "next video" and "subscribe" element.
 
 ## Pinned comment idea
 "Did you spot Bob in the ones and zeros before the reveal? Be honest."
