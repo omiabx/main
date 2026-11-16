@@ -22,7 +22,7 @@ pip install faster-whisper scipy numpy
 ./build.sh ../ep05/voice ../ep05/build ../ep05/episode05.mp4
 ```
 
-`ep05/voice/` holds `01.mp3 … 15.mp3` from ElevenLabs. The build:
-1. transcribes each file with Whisper and matches the words to `script.json` (word-level timing);
+`ep05/voice/` holds the ElevenLabs takes `part1.mp3 … part4.mp3` (one file per section, `01.mp3 … 15.mp3`, also works). The build:
+1. transcribes each take with Whisper, matches the words to `script.json` and cuts the takes into scene sections (word-level timing);
 2. lays out the edit; every visual and sound cue is pinned to a spoken word, so it follows the real pacing;
 3. renders 1080p30 frames in parallel, mixes voice + SFX + ambience, normalises to −14 LUFS, and writes the MP4.

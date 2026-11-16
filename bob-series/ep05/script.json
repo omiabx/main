@@ -2,35 +2,121 @@
   "episode": 5,
   "title": "How Numbers Became Pictures",
   "chunks": [
-    {"id": "01", "scene": "Hook",
-     "text": "There are probably a few thousand photos on your phone. Most of them are screenshots you forgot you took.\nBut your phone has never stored a single picture. Not one. It only stores numbers. Long lists of them.\nLike this.\nThat's a picture. I promise. And in a couple of minutes, you're going to read it yourself."},
-    {"id": "02", "scene": "Map recap",
-     "text": "This is stop number five on Bob's trip. There are four flags behind him already.\nAt the first one, he found out what a computer really is. At the second, why it only understands ones and zeros. Then he learned to count with them.\nAnd last time, he stood at the edge of this canyon and sent his friend a message, one letter at a time, with a row of eight lamps."},
-    {"id": "03", "scene": "The problem",
-     "text": "Today, his friend wants something harder. He wants to see what Bob looks like.\nFair enough. From over there, Bob is about the size of a bean.\nBut the lamps can only send numbers. So how do you turn a face into numbers?"},
-    {"id": "04", "scene": "Pixels",
-     "text": "Start with the screen you're watching right now. Get close to it, way closer than your eyes can handle, and the picture breaks apart into tiny squares.\nEach square is called a pixel. And a pixel can only do one job. It shows one color.\nThat's all a picture on a screen is. A grid of colored squares, packed so tight that your eyes blend them together."},
-    {"id": "05", "scene": "Ones and zeros",
-     "text": "So let's start as easy as it gets. Just two colors, light and dark.\nA light square is a one. A dark square is a zero.\nBob already has eight lamps, so he can send one row of eight squares at a time.\nHe flashes the first row, and his friend paints it on the wall. Then the next row. Then the next.\nIf you want to beat him to it, pause now."},
-    {"id": "06", "scene": "Reveal",
-     "text": "Those are the same numbers from the start of the video. You just read a picture.\nIt's Bob! Sort of. You can make out the hat, and there's a smile under it."},
-    {"id": "07", "scene": "Width",
-     "text": "There's one catch. His friend has to know where each row ends.\nIf he thinks the rows are only four squares wide, the exact same numbers come out like this.\nSo before any picture, a computer sends two numbers first. How wide it is, and how tall."},
-    {"id": "08", "scene": "Gray",
-     "text": "Still, two colors isn't much to work with.\nSo instead of one lamp per square, Bob uses all eight. And eight lamps can count from zero all the way up to two hundred and fifty-five.\nZero means black. Two hundred and fifty-five means white. Every number in between is a shade of gray."},
-    {"id": "09", "scene": "Red, green, blue",
-     "text": "Color surprised me the first time I learned how it works.\nEvery pixel on your screen is really three tiny lights, sitting side by side. A red one, a green one, and a blue one.\nThere's no yellow light in there. When red and green turn on together, your eyes just decide they're seeing yellow.\nTurn all three up and you get white. Turn them all off and you get black."},
-    {"id": "10", "scene": "Three numbers",
-     "text": "So any color is just three numbers. How much red, how much green, and how much blue.\nBob's shirt, for example, is forty red, a hundred green, and two hundred blue."},
-    {"id": "11", "scene": "Sending the face",
-     "text": "Now Bob can send the real thing. A face sixteen squares wide and sixteen tall, with three numbers for every square.\nThat's seven hundred and sixty-eight numbers. It takes a while."},
-    {"id": "12", "scene": "Face arrives",
-     "text": "And there he is. Lucky for Bob, his face was already made of squares."},
-    {"id": "13", "scene": "Your phone",
-     "text": "Your phone does exactly the same thing. It just uses a lot more squares.\nA normal photo has about twelve million pixels. Three numbers each. That's thirty-six million numbers, for one picture of your lunch.\nAnd your screen reads them and sets every one of those tiny lights again, about sixty times a second."},
-    {"id": "14", "scene": "Close",
-     "text": "So that screenshot you forgot about? It's a list of numbers, with a width and a height at the front.\nYour phone reads the list and turns on millions of tiny red, green and blue lights. That's a picture."},
-    {"id": "15", "scene": "Map outro",
-     "text": "Bob plants flag number five. The desert's almost behind him now.\nAnd up ahead, somewhere in that fog, something is smoking."}
+    {
+      "id": "01",
+      "scene": "Hook",
+      "text": "There are probably a few thousand photos on your phone. Most of them are screenshots you forgot you took.\nBut your phone has never stored a single picture. Not one. It only stores numbers. Long lists of them.\nLike this.\nThat's a picture. I promise. And in a couple of minutes, you're going to read it yourself."
+    },
+    {
+      "id": "02",
+      "scene": "Map recap",
+      "text": "This is stop number five on Bob's trip. There are four flags behind him already.\nAt the first one, he found out what a computer really is. At the second, why it only understands ones and zeros. Then he learned to count with them.\nAnd last time, he stood at the edge of this canyon and sent his friend a message, one letter at a time, with a row of eight lamps."
+    },
+    {
+      "id": "03",
+      "scene": "The problem",
+      "text": "Today, his friend wants something harder. He wants to see what Bob looks like.\nFair enough. From over there, Bob is about the size of a bean.\nBut the lamps can only send numbers. So how do you turn a face into numbers?"
+    },
+    {
+      "id": "04",
+      "scene": "Pixels",
+      "text": "Start with the screen you're watching right now. Get close to it, way closer than your eyes can handle, and the picture breaks apart into tiny squares.\nEach square is called a pixel. And a pixel can only do one job. It shows one color.\nThat's all a picture on a screen is. A grid of colored squares, packed so tight that your eyes blend them together."
+    },
+    {
+      "id": "05",
+      "scene": "Ones and zeros",
+      "text": "So let's start as easy as it gets. Just two colors, light and dark.\nA light square is a one. A dark square is a zero.\nBob already has eight lamps, so he can send one row of eight squares at a time.\nHe flashes the first row, and his friend paints it on the wall. Then the next row. Then the next.\nIf you want to beat him to it, pause now."
+    },
+    {
+      "id": "06",
+      "scene": "Reveal",
+      "text": "Those are the same numbers from the start of the video. You just read a picture.\nIt's Bob! Sort of. You can make out the hat, and there's a smile under it."
+    },
+    {
+      "id": "07",
+      "scene": "Width",
+      "text": "There's one catch. His friend has to know where each row ends.\nIf he thinks the rows are only four squares wide, the exact same numbers come out like this.\nSo before any picture, a computer sends two numbers first. How wide it is, and how tall."
+    },
+    {
+      "id": "08",
+      "scene": "Gray",
+      "text": "Still, two colors isn't much to work with.\nSo instead of one lamp per square, Bob uses all eight. And eight lamps can count from zero all the way up to two hundred and fifty-five.\nZero means black. Two hundred and fifty-five means white. Every number in between is a shade of gray."
+    },
+    {
+      "id": "09",
+      "scene": "Red, green, blue",
+      "text": "Color surprised me the first time I learned how it works.\nEvery pixel on your screen is really three tiny lights, sitting side by side. A red one, a green one, and a blue one.\nThere's no yellow light in there. When red and green turn on together, your eyes just decide they're seeing yellow.\nTurn all three up and you get white. Turn them all off and you get black."
+    },
+    {
+      "id": "10",
+      "scene": "Three numbers",
+      "text": "So any color is just three numbers. How much red, how much green, and how much blue.\nBob's shirt, for example, is forty red, a hundred green, and two hundred blue."
+    },
+    {
+      "id": "11",
+      "scene": "Sending the face",
+      "text": "Now Bob can send the real thing. A face sixteen squares wide and sixteen tall, with three numbers for every square.\nThat's seven hundred and sixty-eight numbers. It takes a while."
+    },
+    {
+      "id": "12",
+      "scene": "Face arrives",
+      "text": "And there he is. Lucky for Bob, his face was already made of squares."
+    },
+    {
+      "id": "13",
+      "scene": "Your phone",
+      "text": "Your phone does exactly the same thing. It just uses a lot more squares.\nA normal photo has about twelve million pixels. Three numbers each. That's thirty-six million numbers, for one picture of your lunch.\nAnd your screen reads them and sets every one of those tiny lights again, about sixty times a second."
+    },
+    {
+      "id": "14",
+      "scene": "Close",
+      "text": "So that screenshot you forgot about? It's a list of numbers, with a width and a height at the front.\nYour phone reads the list and turns on millions of tiny red, green and blue lights. That's a picture."
+    },
+    {
+      "id": "15",
+      "scene": "Map outro",
+      "text": "Bob plants flag number five. The desert's almost behind him now.\nAnd up ahead, somewhere in that fog, something is smoking."
+    }
+  ],
+  "takes": [
+    {
+      "id": "part1",
+      "title": "Hook, recap, the problem, pixels",
+      "sections": [
+        "01",
+        "02",
+        "03",
+        "04"
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Ones and zeros, reveal, width, gray",
+      "sections": [
+        "05",
+        "06",
+        "07",
+        "08"
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Color, three numbers, sending the face",
+      "sections": [
+        "09",
+        "10",
+        "11",
+        "12"
+      ]
+    },
+    {
+      "id": "part4",
+      "title": "Your phone, close, map outro",
+      "sections": [
+        "13",
+        "14",
+        "15"
+      ]
+    }
   ]
 }
