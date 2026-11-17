@@ -72,7 +72,9 @@ def whisper_words(path, prompt):
     global _model
     from faster_whisper import WhisperModel
     if _model is None: _model = WhisperModel("small.en", device="cpu", compute_type="int8")
-    segs, info = _model.transcribe(path, word_timestamps=True, initial_prompt=prompt[:220], beam_size=5)
+    raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "16000", "-f", "f32le", "-"], capture_output=True).stdout
+    audio = np.frombuffer(raw, np.float32).copy()
+    segs, info = _model.transcribe(audio, word_timestamps=True, initial_prompt=prompt[:220], beam_size=5)
     words = []
     for s in segs:
         for w in s.words: words.append((w.word, w.start, w.end))
