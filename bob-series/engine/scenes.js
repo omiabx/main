@@ -1,11 +1,11 @@
 // Scene builders. Each returns {scene, cam, L, O (objects), update(t, shot)}
 import * as THREE from 'three';
 import { VB, rgb, hash3, shade } from './vox.js';
-import { C, character, pose, lampBoard, paintWall, cactus, rock, house, flag, phone, pedestal, makeTiles } from './models.js';
+import { C, character, pose, lampBoard, paintWall, cactus, rock, house, flag, phone, pedestal, makeTiles, hornRecorder, speakerBox, airRow } from './models.js';
 import { TS, plateau, noise2, sandCol, cliffCol, island } from './terrain.js';
 import { SKY, lights, makeCam, aim, v3 } from './core.js';
 import { buildMap } from './map.js';
-import { thumbA, thumbB, thumbC, thumbD, thumbE } from './thumbs.js';
+import { thumbA, thumbB, thumbC, thumbD, thumbE, thumbF } from './thumbs.js';
 
 function base(sky = 'day', preset = 'day') {
   const scene = new THREE.Scene(); scene.background = SKY[sky];
@@ -36,6 +36,8 @@ export function canyon() {
   O.wall8 = paintWall(8, 64); O.wall8.position.set(118, G, -20); O.wall8.rotation.y = -0.42; scene.add(O.wall8);
   O.wall16 = paintWall(16, 64); O.wall16.position.copy(O.wall8.position); O.wall16.rotation.copy(O.wall8.rotation); O.wall16.visible = false; scene.add(O.wall16);
   O.house = house(); O.house.position.set(200, G, -90); O.house.rotation.y = -0.5; scene.add(O.house);
+  O.horn = hornRecorder(); O.horn.position.set(-88, G, 6); O.horn.rotation.y = 0.35; O.horn.visible = false; scene.add(O.horn);
+  O.speaker = speakerBox(); O.speaker.position.set(92, G, -2); O.speaker.rotation.y = -0.6; O.speaker.visible = false; scene.add(O.speaker);
   const props = [[cactus(1, 16), -175, -60], [cactus(2, 12), -40, -70], [cactus(3, 14), 160, 10], [cactus(4, 18), 60, -80], [rock(1, 5), -150, 30], [rock(2, 4), 120, 40], [rock(3, 6), -200, -10], [cactus(5, 10), 230, -20], [rock(4, 4), 40, -40]];
   for (const [m, x, z] of props) { m.position.set(x, G, z); m.rotation.y = hash3(x, 0, z) * 6; scene.add(m); }
   S.L.fitShadow(0, 0, -20, 260);
@@ -108,6 +110,17 @@ export function stage() {
   O.rgb.add(fv.mesh());
   O.bars = [0xff2a2a, 0x2aff4a, 0x2a6aff].map((c, k) => { const m = new THREE.Mesh(new THREE.BoxGeometry(8, 40, 4), new THREE.MeshBasicMaterial({ color: c })); m.position.set((k - 1) * 9, 22.5, 0); O.rgb.add(m); m.userData.c = new THREE.Color(c); return m; });
   S.setBars = (lv) => O.bars.forEach((m, k) => { const v = Math.max(0.08, lv[k]); m.material.color.copy(m.userData.c).multiplyScalar(v); });
+  // sound episode extras: graph board, air row, speaker, 16-lamp board
+  const bc = document.createElement('canvas'); bc.width = 1500; bc.height = 700; const btex = new THREE.CanvasTexture(bc); btex.colorSpace = THREE.SRGBColorSpace;
+  O.board = new THREE.Group(); O.board.position.set(0, 4, -6); O.board.visible = false; scene.add(O.board);
+  const bv = new VB(); bv.box(-78, 0, -2, -76, 84, 0, C.woodD); bv.box(76, 0, -2, 78, 84, 0, C.woodD); bv.box(-77, 8, -2, 77, 84, -1, rgb(30, 26, 48)); O.board.add(bv.mesh());
+  const bplane = new THREE.Mesh(new THREE.PlaneGeometry(150, 70), new THREE.MeshBasicMaterial({ map: btex })); bplane.position.set(0, 46, 0.1); O.board.add(bplane);
+  S.boardCanvas = bc; S.boardDraw = (fn) => { fn(bc.getContext('2d'), bc.width, bc.height); btex.needsUpdate = true; };
+  S.boardToWorld = (u, v) => v3(-75 + u * 150, 46 + 35 - v * 70, 0.5).add(O.board.position); // u,v in 0..1 canvas coords
+  O.air = airRow(36, 5, 3.2); O.air.position.set(-40, 14, 10); O.air.visible = false; scene.add(O.air);
+  O.spk = speakerBox(); O.spk.position.set(-62, 0, 10); O.spk.rotation.y = Math.PI / 2; O.spk.visible = false; scene.add(O.spk);
+  O.lamps16 = lampBoard(16); O.lamps16.position.set(0, 0, 0); O.lamps16.visible = false; scene.add(O.lamps16);
+  S.mkFriend = () => { const f = character('friend'); scene.add(f); return f; };
   S.L.fitShadow(0, 0, 0, 140);
   aim(S.cam, v3(0, 50, 190), v3(0, 30, 0));
   S.update = (t, shot) => { if (shot.act) shot.act(t, S); };
@@ -128,6 +141,6 @@ export function bobtest() {
   return S;
 }
 
-export function map() { return buildMap(); }
+export function map() { return buildMap({ episode: window.EP_NUM || 5 }); }
 
-export const SCENES = { canyon, stage, bobtest, map, thumbA, thumbB, thumbC, thumbD, thumbE };
+export const SCENES = { canyon, stage, bobtest, map, thumbA, thumbB, thumbC, thumbD, thumbE, thumbF };

@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # Build an episode MP4 from a folder of voice files (01.mp3 ... 15.mp3 or .wav).
-# usage: engine/build.sh <voice_dir> <work_dir> <out.mp4> [workers]
+# usage: EP=06 engine/build.sh <voice_dir> <work_dir> <out.mp4> [workers]   (EP defaults to 05)
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 VO="$1"; WORK="$2"; OUT="$3"; NW="${4:-4}"
 mkdir -p "$WORK/seg"
-python3 "$HERE/align.py" "$VO" "$HERE/../ep05/script.json" "$WORK/align.json"
+export EP="${EP:-05}"
+python3 "$HERE/align.py" "$VO" "$HERE/../ep$EP/script.json" "$WORK/align.json"
 node "$HERE/render.js" info "$WORK/align.json" "$WORK/info.json"
 DUR=$(python3 -c "import json;print(json.load(open('$WORK/info.json'))['duration'])")
 python3 "$HERE/sfx.py" "$WORK/sfx" >/dev/null

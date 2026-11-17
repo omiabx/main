@@ -17,14 +17,22 @@ def place(buf, x, t, g=1.0):
     e = min(len(buf), i + len(x)); buf[i:e] += x[:e - i] * g
 
 # voice: level-match chunks (speech RMS)
+vgain, vfile = {}, {}
 for v in info['voice']:
     x = load(v['file'])
     a = np.abs(x); thr = np.percentile(a, 60); rms = np.sqrt(np.mean(x[a > thr] ** 2)) if np.any(a > thr) else 0.1
-    place(voice, x * (0.12 / max(rms, 1e-4)), v['t'])
+    vgain[v['id']] = 0.12 / max(rms, 1e-4); vfile[v['id']] = v['file']
+    place(voice, x * vgain[v['id']], v['t'])
 cache = {}
 SFX_GAIN = 0.32
 for e in info['sfx']:
     n = e['n']
+    if n == 'vclip':  # replay part of a voice section, optionally re-measured at a low rate (sample and hold)
+        x = load(vfile[e['sec']])[int(e['a'] * SR):int(e['b'] * SR)].copy()
+        if e.get('rate'):
+            step = SR / e['rate']; idx = (np.floor(np.floor(np.arange(len(x)) / step) * step)).astype(int); x = x[idx]
+        f = int(0.01 * SR); r = np.linspace(0, 1, f); x[:f] *= r; x[-f:] *= r[::-1]
+        place(voice, x * vgain[e['sec']] * e['g'], e['t']); continue
     if n.startswith('bed_'):
         place(beds, make(n, e['dur'] + 0.4), max(0, e['t'] - 0.2), e['g']); continue
     if 'dur' in e: x = make(n, e['dur'])

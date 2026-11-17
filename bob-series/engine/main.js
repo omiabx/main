@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import { renderer, out, octx, ov, g2, buf, bctx, W, H, aim, v3 } from './core.js';
 import { SCENES } from './scenes.js';
 import { buildTimeline } from './timeline.js';
+const EP = new URLSearchParams(location.search).get('ep') || '05';
+window.EP_NUM = parseInt(EP, 10);
+const { EPISODE } = await import(`./ep${EP}.js`);
 
 const cache = {};
 function getScene(name) { if (!cache[name]) cache[name] = SCENES[name](); return cache[name]; }
@@ -23,7 +26,7 @@ let TL = null;
 window.API = {
   async init(align, gaps) {
     await document.fonts.load('40px "PS2P"');
-    TL = buildTimeline(align, gaps);
+    TL = buildTimeline(align, EPISODE);
     return { duration: TL.duration, shots: TL.shots.map((s) => [s.scene, +s.t0.toFixed(2), +s.t1.toFixed(2)]), sfx: TL.sfx, voice: TL.voice };
   },
   frame(t, q = 0.93) {

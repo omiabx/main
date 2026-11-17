@@ -25,7 +25,7 @@ function serve() {
   const p = await b.newPage({ viewport: { width: 1920, height: 1080 } });
   p.on('console', (m) => { if ((m.type() === 'error' || m.type() === 'warning') && !m.text().includes('GPU stall')) console.error('C:', m.text()); });
   p.on('pageerror', (e) => console.log('PAGE ERROR:', e.message));
-  await p.goto(`http://localhost:${port}/index.html`); await p.waitForFunction('window.READY', null, { timeout: 60000 });
+  await p.goto(`http://localhost:${port}/index.html?ep=${process.env.EP || '05'}`); await p.waitForFunction('window.READY', null, { timeout: 60000 });
   const save = (url, f) => fs.writeFileSync(f, Buffer.from(url.split(',')[1], 'base64'));
   if (mode === 'still') {
     await p.evaluate(() => document.fonts.load('40px "PS2P"'));

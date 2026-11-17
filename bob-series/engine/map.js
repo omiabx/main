@@ -174,12 +174,13 @@ export function buildMap(opts = {}) {
     const T = tile(x, z); if (!T || state(T.r) !== 'locked') continue;
     if (noise2(x, z + 9, 10) < 0.45 || hash3(x, 5, z) < 0.35) continue;
     const sz = 3 + hash3(x, 6, z) * 3;
-    cloudList.push([x * BS, 44 + hash3(x, 7, z) * 16, z * BS, sz * BS, sz * BS * 0.32]);
+    cloudList.push([x * BS, 44 + hash3(x, 7, z) * 16, z * BS, sz * BS, sz * BS * 0.32, T.r]);
   }
   const clouds = new THREE.InstancedMesh(cloudGeo, cloudMat, cloudList.length);
   clouds.castShadow = true; clouds.receiveShadow = false; clouds.frustumCulled = false; root.add(clouds);
   const o3 = new THREE.Object3D();
-  const placeClouds = (t) => { cloudList.forEach(([x, y, z, s, h], i) => { o3.position.set(x + Math.sin(t * 0.15 + i) * 6, y + Math.sin(t * 0.3 + i * 1.7) * 1.5, z + Math.cos(t * 0.12 + i) * 4); o3.scale.set(s, h, s * 0.8); o3.updateMatrix(); clouds.setMatrixAt(i, o3.matrix); }); clouds.instanceMatrix.needsUpdate = true; };
+  const lift = {}; // region -> 0..1, clouds drift up and away (used when a region is about to open)
+  const placeClouds = (t) => { cloudList.forEach(([x, y, z, s, h, r], i) => { const L = lift[r] || 0, e = L * L * (3 - 2 * L); o3.position.set(x + Math.sin(t * 0.15 + i) * 6 + e * (40 + (i % 7) * 12), y + Math.sin(t * 0.3 + i * 1.7) * 1.5 + e * 70, z + Math.cos(t * 0.12 + i) * 4 - e * 30); const sc = Math.max(0.0001, 1 - e); o3.scale.set(s * sc, h * sc, s * 0.8 * sc); o3.updateMatrix(); clouds.setMatrixAt(i, o3.matrix); }); clouds.instanceMatrix.needsUpdate = true; };
   placeClouds(0);
 
   // smoke puffs (foundry chimneys) — visible even through the fog: the tease
@@ -229,7 +230,7 @@ export function buildMap(opts = {}) {
   aim(cam, v3(MW * BS / 2, 420, MD * BS / 2 + 330), v3(MW * BS / 2, 0, MD * BS / 2 + 10));
 
   const S = {
-    scene, cam, L, O: { bob, newFlag, ring, flags }, PD, wps, wpPos, between, episode, regions: REGIONS, state,
+    scene, cam, L, O: { bob, newFlag, ring, flags }, PD, wps, wpPos, between, episode, regions: REGIONS, state, lift,
     update(t, shot) {
       flags.forEach(({ f }) => f.userData.wave(t));
       newFlag.userData.wave(t);

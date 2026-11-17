@@ -257,3 +257,59 @@ export function pedestal(r = 24) {
   }
   return v.mesh();
 }
+
+// ---------- Episode 6 props (sound) ----------
+// Horn recorder: talk into the horn, a needle draws on a scrolling paper strip (canvas texture).
+export function hornRecorder() {
+  const g = new THREE.Group(); const v = new VB();
+  const brass = rgb(214, 170, 72), brassD = rgb(176, 132, 52);
+  // table
+  v.box(-14, 0, -5, -13, 10, -4, C.woodD); v.box(12, 0, -5, 13, 10, -4, C.woodD); v.box(-14, 0, 4, -13, 10, 5, C.woodD); v.box(12, 0, 4, 13, 10, 5, C.woodD);
+  v.box(-16, 11, -7, 15, 12, 7, C.wood);
+  // drum box holding the needle
+  v.box(-6, 13, -4, 2, 19, 3, C.woodD);
+  // horn: widening cone pointing toward +x/-x (mouth faces left, toward where Bob stands)
+  for (let k = 0; k < 14; k++) { const r = Math.round(1 + k * 0.55); const x = -7 - k; for (let y = -r; y <= r; y++) for (let z = -r; z <= r; z++) { const d = Math.sqrt(y * y + z * z); if (d <= r && d > r - 1.3) v.set(x, 16 + y + Math.round(k * 0.5), z, (k + y) & 1 ? brass : brassD); } }
+  g.add(v.mesh());
+  // paper strip
+  const cv = document.createElement('canvas'); cv.width = 1024; cv.height = 160;
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  const paper = new THREE.Mesh(new THREE.BoxGeometry(30, 0.4, 7), [0, 0, new THREE.MeshLambertMaterial({ map: tex }), 0, 0, 0].map((m) => m || new THREE.MeshLambertMaterial({ color: 0xf2ead8 })));
+  paper.position.set(0, 13.2, 0); paper.receiveShadow = true; g.add(paper);
+  const needle = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.6, 5), new THREE.MeshLambertMaterial({ color: 0x30303a })); needle.position.set(2.5, 15, 0); g.add(needle);
+  g.userData = { cv, tex, needle, draw(fn) { const x = cv.getContext('2d'); fn(x, cv.width, cv.height); tex.needsUpdate = true; } };
+  return g;
+}
+// Speaker: wooden box with a cone that moves in/out along +z.
+export function speakerBox() {
+  const g = new THREE.Group(); const v = new VB();
+  v.box(-9, 0, -6, 9, 24, 5, (x, y, z) => (y === 0 || y === 24 || x === -9 || x === 9) ? C.woodD : C.wood);
+  // carve the round opening in the front so the cone sits inside it
+  for (let x = -8; x <= 8; x++) for (let y = 5; y <= 21; y++) for (let z = 3; z <= 5; z++) if (Math.hypot(x, y - 13) <= 7.6) v.set(x, y, z, z === 3 ? rgb(28, 24, 30) : null);
+  g.add(v.mesh());
+  const cone = new THREE.Group(); cone.position.set(0, 13, 4.6); g.add(cone);
+  const cv = new VB();
+  for (let x = -7; x <= 7; x++) for (let y = -7; y <= 7; y++) { const d = Math.sqrt(x * x + y * y); if (d > 7.4) continue; const depth = d < 2 ? 0 : d < 5 ? -1 : 0; cv.set(x, y, depth, d < 2 ? rgb(70, 70, 82) : d > 6.3 ? rgb(40, 40, 50) : rgb(232, 224, 206)); }
+  cone.add(cv.mesh({ offset: [0, 0, 0] }));
+  g.userData = { cone, push(v) { cone.position.z = 4.6 + v * 1.4; } };
+  return g;
+}
+// A row of "air" blocks: compression wave travelling along +x.
+export function airRow(n = 36, rows = 5, gap = 3.2) {
+  const geo = new THREE.BoxGeometry(1.6, 1.6, 1.6);
+  const inst = new THREE.InstancedMesh(geo, new THREE.MeshLambertMaterial({ color: 0xbfe6ff, emissive: 0x16304a }), n * rows);
+  inst.frustumCulled = false; inst.castShadow = false;
+  const o = new THREE.Object3D();
+  inst.userData = {
+    n, rows, gap,
+    update(t, amp = 1, k = 0.55, w = 9, on = 1) {
+      for (let r = 0; r < rows; r++) for (let i = 0; i < n; i++) {
+        const x0 = i * gap; const front = on * (n * gap + 20) - x0; const a = amp * Math.max(0, Math.min(1, front / 10));
+        o.position.set(x0 + a * Math.sin(w * t - k * i), r * gap, ((i * 7 + r * 3) % 5 - 2) * 0.4); o.updateMatrix(); inst.setMatrixAt(r * n + i, o.matrix);
+      }
+      inst.instanceMatrix.needsUpdate = true;
+    },
+  };
+  inst.userData.update(0, 0);
+  return inst;
+}

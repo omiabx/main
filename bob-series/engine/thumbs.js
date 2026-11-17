@@ -161,3 +161,41 @@ export function thumbE() {
   };
   return S;
 }
+
+// F (episode 6): BINARY | SOUND. Left: the voice wave as columns of 0/1. Right: Bob shouting, a glowing wave leaving his mouth.
+export function thumbF() {
+  const S = desertBase();
+  const bob = character('bob', { mouth: 'open', brows: true }); bob.position.set(26, 4, 30); bob.rotation.y = -1.15; pose(bob, 0, { blink: 0, cheer: 0.35, nod: -0.15 }); S.scene.add(bob);
+  aim(S.cam, v3(4, 26, 92), v3(4, 22, 20));
+  const TAU = Math.PI * 2;
+  const env = (u) => 0.3 + 0.7 * Math.abs(Math.sin(Math.PI * 2.6 * u + 0.4));
+  const voice = (u) => env(u) * (0.62 * Math.sin(TAU * 6 * u) + 0.26 * Math.sin(TAU * 15 * u + 1) + 0.12 * Math.sin(TAU * 29 * u + 2));
+  S.update = () => {};
+  S.post = () => {
+    const [mx, my] = project(S.cam, bob.getWorldPosition(v3(0, 0, 0)).add(v3(-6.5, 15.5, 2)));
+    const seam = W / 2, mid = 610, A = 380;
+    // left panel
+    g2.fillStyle = '#120e26'; g2.fillRect(0, 0, seam, H);
+    g2.strokeStyle = 'rgba(140,120,220,0.16)'; g2.lineWidth = 2; for (let x = 0; x < seam; x += 60) { g2.beginPath(); g2.moveTo(x, 0); g2.lineTo(x, H); g2.stroke(); } for (let y = 0; y < H; y += 60) { g2.beginPath(); g2.moveTo(0, y); g2.lineTo(seam, y); g2.stroke(); }
+    const cs = 36, cols = Math.floor(seam / cs);
+    g2.font = '30px "PS2P"'; g2.shadowColor = '#4ff07a'; g2.shadowBlur = 10; g2.textAlign = 'center'; g2.textBaseline = 'middle';
+    for (let i = 0; i < cols; i++) {
+      const u = 0.08 + i / cols * 0.84; const v = voice(u); const n = Math.round(Math.abs(v) * A / cs); const dir = v >= 0 ? -1 : 1;
+      for (let k = 0; k <= n; k++) { const y = mid + dir * k * cs; const hot = k === n; g2.fillStyle = hot ? '#ffd23f' : `rgba(79,240,122,${0.55 + 0.45 * k / Math.max(1, n)})`; g2.fillText(((i * 7 + k * 3) % 5) > 1 ? '1' : '0', i * cs + cs / 2, y); }
+    }
+    g2.shadowBlur = 0;
+    // glowing wave from Bob's mouth to the seam
+    g2.save(); g2.strokeStyle = '#ffd23f'; g2.lineWidth = 12; g2.shadowColor = '#ffd23f'; g2.shadowBlur = 26; g2.lineJoin = 'round'; g2.beginPath();
+    const x0 = mx - 20, x1 = seam;
+    for (let i = 0; i <= 300; i++) { const f = i / 300; const x = x0 + (x1 - x0) * f; const amp = 40 + 260 * f; const y = lerpN(my, mid, f) + Math.sin(f * TAU * 4.2) * amp * (0.6 + 0.4 * Math.sin(f * 9)); if (!i) g2.moveTo(x, y); else g2.lineTo(x, y); }
+    g2.stroke(); g2.restore();
+    // seam line
+    g2.save(); g2.strokeStyle = '#ffd23f'; g2.lineWidth = 8; g2.shadowColor = '#ffd23f'; g2.shadowBlur = 22; g2.beginPath(); g2.moveTo(seam, 0); g2.lineTo(seam, H); g2.stroke(); g2.restore();
+    const plate = (cx, w, col) => { const y0 = 34, h = 136; g2.fillStyle = '#0d0b1e'; g2.fillRect(cx - w / 2 - 8, y0 - 8, w + 16, h + 16); g2.fillStyle = '#1d1640'; g2.fillRect(cx - w / 2, y0, w, h); g2.strokeStyle = col; g2.lineWidth = 6; g2.strokeRect(cx - w / 2 + 6, y0 + 6, w - 12, h - 12); };
+    plate(W / 4, 720, G); plate(W * 3 / 4, 600, Y);
+    text('BINARY', W / 4, 106, { size: 100, color: G });
+    text('SOUND', W * 3 / 4, 106, { size: 100, color: Y });
+  };
+  return S;
+}
+function lerpN(a, b, t) { return a + (b - a) * t; }

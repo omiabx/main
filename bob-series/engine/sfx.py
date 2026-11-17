@@ -119,7 +119,14 @@ def rumble():
     x = lp(noise(2.2), 140, 4) * np.sin(np.pi * T(2.2) / 2.2) ** 1.5
     return norm(x, 0.8)
 
-ONESHOT = dict(pop=pop, tick=tick, lamp=lamp, tile=tile, block=block, whoosh=whoosh, zoom=zoom, zoomout=zoomout, glitch=glitch,
+def gust():
+    d = 2.4; n = noise(d); x = lp(n, 900, 2) * 0.7 + bp(n, 300, 2500) * 0.5
+    e = np.sin(np.pi * np.clip(T(d) / d, 0, 1)) ** 1.5 * (0.7 + 0.3 * np.sin(2 * np.pi * 1.7 * T(d)))
+    return norm(x * e, 0.7)
+def thump():
+    t = T(0.3); x = np.sin(2 * np.pi * (85 - 30 * t / 0.3) * t) * env(len(t), 0.004, 0.07) + lp(noise(0.3), 400) * env(len(t), 0.001, 0.02) * 0.5
+    return norm(x, 0.85)
+ONESHOT = dict(gust=gust, thump=thump, pop=pop, tick=tick, lamp=lamp, tile=tile, block=block, whoosh=whoosh, zoom=zoom, zoomout=zoomout, glitch=glitch,
                sparkle=sparkle, step=step, flagpop=flagpop, flag=flag, shatter=shatter, settle=settle, chime=chime, buzz=buzz,
                split=split, lighton=lighton, lightoff=lightoff, pick=pick, boop=boop, scan=scan, rumble=rumble)
 
@@ -151,7 +158,17 @@ def bed(kind, d):
     x = x / (np.std(x) + 1e-9) * g
     f = min(n // 2, int(SR * 0.35)); ramp = np.linspace(0, 1, f); x[:f] *= ramp; x[-f:] *= ramp[::-1]
     return x
-DUR = dict(count=count, flicker=flicker, paintloop=paintloop,
+def scratch(d):
+    n = int(SR * (d + 0.2)); t = np.arange(n) / SR
+    x = bp(rng.standard_normal(n), 2500, 7000) * (0.5 + 0.5 * np.abs(np.sin(2 * np.pi * 7 * t))) * (0.6 + 0.4 * np.sin(2 * np.pi * 0.9 * t))
+    f = int(SR * 0.08); r = np.linspace(0, 1, f); x[:f] *= r; x[-f:] *= r[::-1]
+    return norm(x, 0.35)
+def hum(d):
+    n = int(SR * (d + 0.2)); t = np.arange(n) / SR
+    x = lp(rng.standard_normal(n), 220, 2) * (0.6 + 0.4 * np.sin(2 * np.pi * 9 * t))
+    f = int(SR * 0.3); r = np.linspace(0, 1, min(f, n // 2)); x[:len(r)] *= r; x[-len(r):] *= r[::-1]
+    return norm(x, 0.4)
+DUR = dict(scratch=scratch, hum=hum, count=count, flicker=flicker, paintloop=paintloop,
            bed_canyon=lambda d: bed('canyon', d), bed_map=lambda d: bed('map', d), bed_stage=lambda d: bed('stage', d))
 
 def make(name, dur=None):
