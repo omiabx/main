@@ -1,0 +1,7 @@
+build/
+output/*.mp4
+clips/*
+!clips/.gitkeep
+vo/*.mp3
+thumb/*.png
+__pycache__/
