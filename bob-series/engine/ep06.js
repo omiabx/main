@@ -249,7 +249,7 @@ export const EPISODE = {
       if (t > tOften && t < tNowThen) text('HOW OFTEN?', W / 2, 120, { size: 56, color: Y, scale: pop(t, tOften) });
       if (t > tBlocky) text([['BLOCKY ', R], ['COPY', WH]], W / 2, 120, { size: 52, scale: pop(t, tBlocky) });
       if (t > tTwoK) tag('2,000 TIMES A SECOND', W / 2, 990, { size: 30, scale: pop(t, tTwoK), color: R });
-      if (t > demo1 - 0.3 && t < demo1 + demoLen + 0.4) listenIcon(t, demo1 - 0.3, W / 2, 250);
+      if (t > demo1 - 0.3 && t < demo1 + demoLen + 0.4) { listenIcon(t, demo1 - 0.3, W / 2, 250); quoteLine(t, demo1 - 0.2); }
       vignette(0.35);
     } });
     fx('pop', tOften, 0.6); fx('tick', tNowThen, 0.6); fx('buzz', tAwful, 0.5); fx('pop', tTwoK, 0.6);
@@ -260,7 +260,7 @@ export const EPISODE = {
       aim(S.cam, v3(10, 50, 200), v3(0, 46, -6));
     }, overlay(t, g) {
       const tf = c('09', 'forty'); if (t > tf) tag('44,000 TIMES A SECOND', W / 2, 990, { size: 30, scale: pop(t, tf), color: G });
-      if (t > demo2 - 0.3 && t < demo2 + demoLen + 0.4) listenIcon(t, demo2 - 0.3, W / 2, 250);
+      if (t > demo2 - 0.3 && t < demo2 + demoLen + 0.4) { listenIcon(t, demo2 - 0.3, W / 2, 250); quoteLine(t, demo2 - 0.2); }
       if (t > c('09', 'music')) text([['MUSIC ', WH], ['QUALITY', G]], W / 2, 120, { size: 52, scale: pop(t, c('09', 'music')) });
       vignette(0.35);
     } });
@@ -344,12 +344,13 @@ export const EPISODE = {
 const CYc = '#5ff2ff';
 function demoLen(al) { const w = al['01'].words; return (w[5].e + 0.25) - Math.max(0, w[0].s - 0.08); }
 function headPos(S, ch, up = 36) { return project(S.cam, ch.getWorldPosition(v3(0, 0, 0)).add(v3(0, up, 0))); }
+function quoteLine(t, t0) { text('"RIGHT NOW, YOU\'RE LISTENING', W / 2, 860, { size: 34, scale: pop(t, t0) }); text('TO NUMBERS."', W / 2, 910, { size: 34, scale: pop(t, t0 + 0.05) }); }
 function listenIcon(t, t0, x, y) {
-  const k = pop(t, t0); if (k <= 0) return; g2.save(); g2.translate(x - 150, y); g2.scale(k, k);
+  const k = pop(t, t0); if (k <= 0) return; g2.save(); g2.translate(x - 190, y); g2.scale(k, k);
   g2.fillStyle = '#14102a'; g2.fillRect(-40, -32, 48, 64); g2.beginPath(); g2.moveTo(0, -32); g2.lineTo(44, -62); g2.lineTo(44, 62); g2.lineTo(0, 32); g2.fill();
   g2.fillStyle = WH; g2.fillRect(-34, -26, 38, 52); g2.beginPath(); g2.moveTo(4, -26); g2.lineTo(38, -50); g2.lineTo(38, 50); g2.lineTo(4, 26); g2.fill();
   g2.strokeStyle = WH; g2.lineWidth = 8; for (let r = 0; r < 3; r++) { const a = 0.5 + 0.5 * Math.sin(t * 8 - r); g2.globalAlpha = a; g2.beginPath(); g2.arc(44, 0, 34 + r * 24, -0.7, 0.7); g2.stroke(); }
-  g2.restore(); text('LISTEN', x + 70, y + 4, { size: 48, scale: k });
+  g2.restore(); text('LISTEN', x + 110, y + 4, { size: 48, scale: k });
 }
 const _songC = document.createElement('canvas'); _songC.width = 240; _songC.height = 460;
 function songCanvas(t) {
