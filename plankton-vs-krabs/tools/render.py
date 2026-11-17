@@ -314,7 +314,7 @@ def decode_mono(p):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--preview", action="store_true")
-    ap.add_argument("--chunks"); ap.add_argument("--out"); ap.add_argument("--jobs", type=int, default=4)
+    ap.add_argument("--chunks"); ap.add_argument("--out"); ap.add_argument("--jobs", type=int, default=4); ap.add_argument("--reuse", action="store_true")
     a = ap.parse_args()
     os.makedirs(BUILD, exist_ok=True)
     chunks = load_chunks()
@@ -351,8 +351,12 @@ def main():
               open(os.path.join(BUILD, "plan.json"), "w"), indent=1, default=str)
     print(f"total runtime {t_global / 60:.2f} min, {sum(len(p[1]) for p in plan)} shots, {len(audio_events)} sfx hits")
 
+    todo = plan
+    if a.reuse:
+        todo = [p for p in plan if not (os.path.exists(p[5]) and abs(probe_dur(p[5]) - round(p[2] * FPS) / FPS) < .1)]
+        print("  reusing", len(plan) - len(todo), "chunks")
     with ProcessPoolExecutor(a.jobs) as ex:
-        for out in ex.map(render_chunk, plan): print("  rendered", os.path.basename(out))
+        for out in ex.map(render_chunk, todo): print("  rendered", os.path.basename(out))
 
     # audio mix
     n = int(t_global * SR) + SR; mixv = np.zeros(n, np.float32); mixs = np.zeros(n, np.float32)

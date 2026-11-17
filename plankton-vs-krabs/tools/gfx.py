@@ -360,6 +360,7 @@ def three_versions(t, d, active=None, unreliable=(), titles=("KRABS", "PLANKTON"
     for i in range(3):
         cx = W * (0.2 + 0.3 * i); s = ease_back((t - i * .12) / .25)
         if s <= 0: continue
+        s = max(s, .15)
         on = active is None or active == i
         pw, ph = int(460 * s), int(640 * s)
         pan = Image.new("RGBA", (pw, ph), (0, 0, 0, 0)); pd = ImageDraw.Draw(pan)
@@ -461,8 +462,9 @@ def exchange(t, d, rows=(("1¢", "one balloon", "for Plankton"), ("62¢", "one s
 
 def phone(t, d, handle="chum.bucket.official", viewer="krusty_krab_backup_2", sub="Story viewed by"):
     c = bg_ocean(t); dr = ImageDraw.Draw(c)
-    s = ease_back(t / .3); pw, ph = int(560 * s), int(980 * s)
+    s = ease_back(t / .3)
     if s <= 0: return c
+    s = max(s, .2); pw, ph = int(560 * s), int(980 * s)
     ph_ = Image.new("RGBA", (pw, ph), (0, 0, 0, 0)); pd = ImageDraw.Draw(ph_)
     pd.rounded_rectangle([0, 0, pw - 1, ph - 1], int(70 * s), fill=(15, 15, 18, 255))
     pd.rounded_rectangle([int(24 * s), int(24 * s), pw - int(24 * s), ph - int(24 * s)], int(50 * s), fill=(250, 250, 250, 255))
