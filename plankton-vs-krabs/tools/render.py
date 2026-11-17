@@ -393,7 +393,16 @@ def main():
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-i", wav, "-map", "0:v", "-map", "1:a",
                     "-c:v", "copy", "-af", ln, "-ac", "2", "-c:a", "aac", "-b:a", "192k",
                     "-movflags", "+faststart", "-shortest", out], check=True)
-    print("wrote", out)
+    # loudnorm's linear mode can undershoot; measure and apply a final clean gain trim toward -14 LUFS
+    r = subprocess.run(["ffmpeg", "-i", out, "-af", "ebur128=peak=true", "-f", "null", "-"], capture_output=True, text=True).stderr
+    I = float(re.findall(r"I:\s+(-?[\d.]+) LUFS", r)[-1]); pk = float(re.findall(r"Peak:\s+(-?[\d.]+) dBFS", r)[-1])
+    gain = min(-14 - I, -1.5 - pk)
+    if abs(gain) > .2:
+        tmp = out + ".tmp.mp4"
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", out, "-map", "0:v", "-map", "0:a", "-c:v", "copy", "-af", f"volume={gain:.2f}dB",
+                        "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", tmp], check=True)
+        os.replace(tmp, out)
+    print(f"wrote {out}  (loudness {I + gain:.1f} LUFS)")
 
 
 if __name__ == "__main__":
