@@ -74,7 +74,7 @@ def whisper_words(path, prompt):
     if _model is None: _model = WhisperModel("small.en", device="cpu", compute_type="int8")
     raw = subprocess.run(["ffmpeg", "-v", "error", "-i", path, "-ac", "1", "-ar", "16000", "-f", "f32le", "-"], capture_output=True).stdout
     audio = np.frombuffer(raw, np.float32).copy()
-    segs, info = _model.transcribe(audio, word_timestamps=True, initial_prompt=prompt[:220], beam_size=5)
+    segs, info = _model.transcribe(audio, word_timestamps=True, beam_size=5, condition_on_previous_text=False)
     words = []
     for s in segs:
         for w in s.words: words.append((w.word, w.start, w.end))
@@ -384,8 +384,14 @@ def main():
     open(lst, "w").write("".join(f"file '{p[5]}'\n" for p in plan))
     out = a.out or os.path.join(ROOT, "output", "preview.mp4" if a.preview else "plankton_vs_krabs_FINAL.mp4")
     os.makedirs(os.path.dirname(out), exist_ok=True)
+    # two-pass loudness normalisation to -14 LUFS / -1.5 dBTP
+    r = subprocess.run(["ffmpeg", "-hide_banner", "-i", wav, "-af", "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
+                       capture_output=True, text=True).stderr
+    mj = json.loads(r[r.rindex("{"):r.rindex("}") + 1])
+    ln = (f"loudnorm=I=-14:TP=-1.5:LRA=11:measured_I={mj['input_i']}:measured_TP={mj['input_tp']}:measured_LRA={mj['input_lra']}"
+          f":measured_thresh={mj['input_thresh']}:offset={mj['target_offset']}:linear=true,aresample=48000")
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "concat", "-safe", "0", "-i", lst, "-i", wav, "-map", "0:v", "-map", "1:a",
-                    "-c:v", "copy", "-af", "loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000", "-ac", "2", "-c:a", "aac", "-b:a", "192k",
+                    "-c:v", "copy", "-af", ln, "-ac", "2", "-c:a", "aac", "-b:a", "192k",
                     "-movflags", "+faststart", "-shortest", out], check=True)
     print("wrote", out)
 
