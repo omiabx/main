@@ -137,6 +137,7 @@ def ydl_base(args, quiet=True):
         o["js_runtimes"] = {RUNTIME["name"]: {"path": RUNTIME["path"]}}
         o["remote_components"] = ["ejs:github"]  # lets yt-dlp fetch its YouTube solver scripts if not installed
     if args.cookies_browser: o["cookiesfrombrowser"] = (args.cookies_browser,)
+    if getattr(args, "cookies", None): o["cookiefile"] = args.cookies
     return o
 
 
@@ -278,6 +279,7 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--candidates", type=int, default=6, help="search results to consider per clip")
     ap.add_argument("--cookies-browser", help="chrome / firefox / edge / brave, if YouTube blocks you")
+    ap.add_argument("--cookies", help="path to an exported cookies.txt (Netscape format)")
     ap.add_argument("--check", action="store_true", help="test your setup on one video and explain any problem")
     ap.add_argument("--quality", type=int, default=1080, help="max video height (default 1080, matches the final render)")
     ap.add_argument("--download-candidates", action="store_true",
