@@ -79,6 +79,7 @@ def shadow(im, off=8, blur=12, op=130):
 
 def write_on(canvas, text, x, y, t, size=80, kind="marker", fill=INK, cps=16, anchor="l", rot=0):
     """handwriting reveal: text appears left to right. x,y = left-center (anchor l) or center (anchor c)"""
+    if not text or not text.strip(): return Image.new("RGBA", (1, 1), (0, 0, 0, 0))
     full = text_img(text, size, kind, fill)
     p = min(1, max(0, t * cps / max(1, len(text))))
     if p <= 0: return full
@@ -309,7 +310,7 @@ def map_street(t, d, left="KRUSTY KRAB", right="CHUM BUCKET", note="about one st
         paste(c, shadow(bx, 6, 10, 90), cx, H / 2, 1, min(1, lt / .15))
     p = (t - .8) / .5; y = H * .22
     marker_arrow(dr, W * .23 + 300, y, W * .77 - 300, y, p, RED)
-    if p >= 1: write_on(c, note, W / 2, y - 70, t - 1.3, 60, "marker", RED, anchor="c")
+    if p >= 1 and note: write_on(c, note, W / 2, y - 70, t - 1.3, 60, "marker", RED, anchor="c")
     return c
 
 
@@ -317,7 +318,6 @@ def magnify(t, d):
     c = bg_paper(); dr = ImageDraw.Draw(c)
     cx, cy = W * .5, H * .54
     dr.ellipse([cx - 4, cy - 4, cx + 4, cy + 4], fill=INK)
-    write_on(c, "HILLENBURG'S ORIGINAL PLAN", W / 2, 150, t, 80, "cond", INK, cps=40, anchor="c")
     p = ease_out((t - .4) / .8); mx = cx + (1 - p) * 700; my = cy + (1 - p) * 300; r = 220
     if p > 0:
         lens = Image.new("RGBA", (2 * r, 2 * r), (0, 0, 0, 0)); ld = ImageDraw.Draw(lens)
@@ -329,9 +329,6 @@ def magnify(t, d):
         dr.ellipse([mx - r, my - r, mx + r, my + r], outline=INK, width=20)
         a = math.radians(45)
         dr.line([mx + r * math.cos(a), my + r * math.sin(a), mx + (r + 250) * math.cos(a), my + (r + 250) * math.sin(a)], fill=INK, width=44)
-    if t > 1.4:
-        write_on(c, "that's him", cx - 560, cy + 250, t - 1.4, 64, "marker", RED)
-        marker_arrow(dr, cx - 300, cy + 220, cx - 30, cy + 30, (t - 1.8) / .3, RED, 7)
     return c
 
 
@@ -377,7 +374,6 @@ def checklist(t, d, items=("STEAL THE FORMULA", "MAKE KRABBY PATTIES", "BANKRUPT
 
 def scoreboard(t, d, p="0", k="∞", note=None, flip=None):
     c = bg_notebook(); dr = ImageDraw.Draw(c)
-    write_on(c, "the score so far", 320, 160, 9, 64, "marker", (90, 84, 76))
     dr.line([W / 2, 270, W / 2, H - 140], fill=INK, width=6); dr.line([360, 380, W - 360, 380], fill=INK, width=6)
     for lab, val, cx in (("PLANKTON", p, W * .32), ("KRABS", k, W * .68)):
         paste(c, text_img(lab, 96, "cond", INK), cx, 320)
@@ -405,8 +401,6 @@ def three_versions(t, d, active=None, unreliable=(), titles=("Krabs's version", 
             if lt2 > 0:
                 marker_line(dr, cx - 230, H / 2 - 160, cx + 230, H / 2 + 200, lt2 / .2, RED, 12)
                 marker_line(dr, cx + 230, H / 2 - 160, cx - 230, H / 2 + 200, (lt2 - .15) / .2, RED, 12)
-    if unreliable:
-        write_on(c, "unreliable narrators", W / 2, H - 90, t - stamp_t - .3, 56, "marker", RED, anchor="c")
     return c
 
 
@@ -526,7 +520,6 @@ def watch_loop(t, d):
     for k, y in enumerate((H * .3, H * .72)):
         marker_arrow(dr, W * .22 + 290, y, W * .78 - 290, y, (t - 1.3 - k * .3) / .4, RED)
     for x in (W * .22, W * .78): marker_arrow(dr, x, H * .3 + 100, x, H * .72 - 100, (t - 1.0) / .3, INK, 7)
-    if t > 2.0: write_on(c, "watching each other", W / 2, H * .51, t - 2.0, 66, "marker", RED, anchor="c")
     return c
 
 
@@ -557,13 +550,13 @@ def heartbreak(t, d, text="a breakup."):
     L = h.copy(); L.putalpha(Image.composite(h.split()[3], Image.new("L", h.size, 0), m))
     R = h.copy(); R.putalpha(Image.composite(Image.new("L", h.size, 0), h.split()[3], m))
     paste(c, L, W / 2 - split, H / 2 - 100, 1, min(1, t / .15), split * .15); paste(c, R, W / 2 + split, H / 2 - 100, 1, min(1, t / .15), -split * .15)
-    if t > .7: paste(c, text_img(text.upper(), 130, "cond", YELLOW), W / 2, H - 170, 1, ease_out((t - .7) / .2))
+    if text and t > .7: paste(c, text_img(text.upper(), 130, "cond", YELLOW), W / 2, H - 170, 1, ease_out((t - .7) / .2))
     return c
 
 
 def verdict(t, d, lit=None, title="WHO'S THE BAD GUY?"):
     c = bg_navy(t); dr = ImageDraw.Draw(c)
-    paste(c, text_img(title, 110, "cond", YELLOW), W / 2, 190, 1, ease_out(t / .3))
+    if title: paste(c, text_img(title, 110, "cond", YELLOW), W / 2, 190, 1, ease_out(t / .3))
     for i, (lab, cx) in enumerate([("KRABS", W * .3), ("PLANKTON", W * .7)]):
         on = lit is None or lit == i
         bx = card(600, 260, (245, 240, 226) if on else (90, 92, 100))
@@ -598,7 +591,7 @@ def coins(t, d, text="every penny after that", n=70):
         ry = 18 if y >= ty else 40
         dr.ellipse([x - 60, y - ry, x + 60, y + ry], fill=(206, 160, 70), outline=(120, 84, 20), width=5)
     write_on(c, text, W / 2, 170, t, 70, "marker", (235, 230, 220), anchor="c")
-    paste(c, text_img(f"${landed * 0.01:.2f}", 64, "type", (226, 190, 100)), W - 260, 170)
+    if text: paste(c, text_img(f"${landed * 0.01:.2f}", 64, "type", (226, 190, 100)), W - 260, 170)
     return c
 
 
@@ -606,7 +599,6 @@ def watchlist(t, d, eps=("Plankton!", "F.U.N.", "Friend or Foe", "Enemy In-Law",
                           "Plankton's Regular", "Single Cell Anniversary", "Imitation Krabs", "Born Again Krabs",
                           "The Algae's Always Greener", "Plankton's Pet")):
     c = bg_navy(t); dr = ImageDraw.Draw(c)
-    write_on(c, "WHAT I REWATCHED", W / 2, 90, t * 2, 70, "cond", YELLOW, cps=40, anchor="c")
     for i, e in enumerate(eps):
         r, k = divmod(i, 3); lt = t - i * .1
         if lt < 0: continue
