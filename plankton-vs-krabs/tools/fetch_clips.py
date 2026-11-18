@@ -62,7 +62,7 @@ CLIPS = {
     "C14": ("SpongeBob Friend or Foe Stinky's Burgers", ["stinky", "business"], 8),
     "C15": ("SpongeBob Friend or Foe burger stand dump", ["burger", "customer"], 8),
     "C16": ("SpongeBob Friend or Foe old man Jenkins burger", ["jenkins"], 8),
-    "C17": ("SpongeBob Friend or Foe recipe ripped in half fight", ["recipe", "fault"], 8),
+    "C17": ("SpongeBob Friend or Foe young Krabs Plankton fight over recipe", ["recipe", "fault", "your"], 8),
     "C18": ("SpongeBob Friend or Foe Krabby Patty invented", ["krabby patty", "delicious"], 8),
     "C19": ("SpongeBob Friend or Foe Plankton chum burger revenge", ["chum", "revenge", "formula"], 8),
     "C20": ("SpongeBob Plankton controls SpongeBob brain", ["brain", "control"], 8),
@@ -77,11 +77,11 @@ CLIPS = {
     "C29": ("SpongeBob Plankton's Regular Krusty Krab chum menu", ["chum", "menu"], 8),
     "C30": ("SpongeBob Enemy In-Law Plankton dating Mama Krabs", ["mother", "mom", "mama"], 8),
     "C31": ("SpongeBob One Coarse Meal Krabs dresses as Pearl whale", ["whale", "pearl"], 10),
-    "C32": ("SpongeBob One Coarse Meal SpongeBob too far", ["too far", "enough"], 8),
+    "C32": ("SpongeBob One Coarse Meal Mr Krabs Plankton Pearl costume SpongeBob", ["too far", "enough", "pearl"], 8),
     "C33": ("SpongeBob Born Again Krabs 62 cents Flying Dutchman", ["62", "sixty two", "cents"], 8),
     "C34": ("SpongeBob Born Again Krabs Squidward 62 cents", ["cents", "soul"], 8),
-    "C35": ("SpongeBob Plankton Retires", ["retire", "retirement"], 8),
-    "C36": ("SpongeBob Plankton Retires ceiling fan spying", ["fan", "spy"], 8),
+    "C35": ("SpongeBob Plankton Retires full scene", ["retire", "retirement"], 8),
+    "C36": ("SpongeBob Plankton Retires Mr Krabs SpongeBob spy retirement home", ["retire", "spy", "fan"], 8),
     "C37": ("SpongeBob Plankton Retires robot", ["robot"], 8),
     "C38": ("Plankton The Movie Netflix trailer Karen", ["karen"], 8),
     "C39": ("SpongeBob Friend or Foe ending formula chase", ["formula", "friends"], 10),
@@ -107,7 +107,8 @@ CLIPS = {
 OFFICIAL = re.compile(r"spongebob|nickelodeon|nick\b|paramount|netflix", re.I)
 # meme edits / reuploads that would put the wrong (or edited) footage in the video
 JUNK = re.compile(r"\bhood\b|meme|\bytp\b|poop|parody|remix|reverse|earrape|ear rape|\bbut\b|\bif\b|1 ?hour|10 ?hours|loop|"
-                  r"in real life|\birl\b|\bai\b|edit\b|edited|animatic|fan ?made|roblox|minecraft|reaction|react", re.I)
+                  r"in real life|\birl\b|\bai\b|edit\b|edited|animatic|fan ?made|roblox|minecraft|reaction|react|"
+                  r"soundtrack|\bost\b|music|should'?ve ended|should have ended|\bhise\b|theory|explained|ranking|ranked", re.I)
 BOT_HITS = [0]
 LAST_ERR = [""]
 RUNTIME = {}
@@ -301,7 +302,7 @@ def main():
     src_path = os.path.join(out, "sources.csv"); rev_path = os.path.join(out, "review.csv")
     sources = {r["id"]: r for r in csv.DictReader(open(src_path, encoding="utf-8"))} if os.path.exists(src_path) else {}
     review = []
-    ok = 0
+    ok = 0; net_fail = 0
     for cid in ids:
         if cid not in CLIPS: print(f"{cid}: unknown id, skipped"); continue
         query, kws, secs = CLIPS[cid]
@@ -312,8 +313,18 @@ def main():
         print(f"{cid}: searching '{query}' ...", flush=True)
         try:
             cands = rank(search(args, query, args.candidates), query, kws)
+            net_fail = 0
         except Exception as e:
-            print(f"   search failed: {e}"); review.append({"id": cid, "reason": "search failed", "candidates": ""}); continue
+            msg = str(e)
+            if "getaddrinfo" in msg or "Failed to resolve" in msg or "timed out" in msg.lower() or "connection" in msg.lower():
+                net_fail += 1
+                print("   no internet connection")
+                if net_fail >= 2:
+                    print("\nYour internet connection dropped. Everything finished so far is saved; run the same command again "
+                          "when you're back online and it continues from here.")
+                    break
+                time.sleep(15); continue
+            print(f"   search failed: {msg.splitlines()[0][:160]}"); review.append({"id": cid, "reason": "search failed", "candidates": ""}); continue
         picked = None
         for c in cands[:3]:
             if c["duration"] and c["duration"] > 3 * 3600: continue
