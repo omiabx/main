@@ -1,18 +1,20 @@
 # CLIP LIST: what I need from the show
 
-I can't pull episodes from the internet for you, so the footage comes from your own copy. Each clip only needs to be **5–10 seconds**, starting just before the moment described. The renderer pans across it, freezes it and zooms it, and **mutes its audio** (show audio carries the score, and this video has no music).
+Footage comes from your own copy of the episodes. Each `C` clip needs **5–10 s**, starting just before the moment. The renderer zooms and freezes it and **mutes its audio**.
 
-**Two ways to hand them over:**
-1. Put trimmed files in `clips/` named by ID: `clips/C01.mp4`, `clips/C07.mkv`, …
-2. Or put whole episodes in `clips/` and list timestamps in `clips/clips.csv`:
+**Dialogue bites (`B` clips)** are the channel's narrate → show line → narrate rhythm. Trim each one tightly around a single short line (1–4 s). Their audio **is** played, so pick moments where the line is clear and there's little or no background score (the video has no music). Any bite you skip is simply left out, and the narration runs straight through.
+
+**Two ways to hand them over:** trimmed files named by ID (`clips/C01.mp4`, `clips/B03.mkv`, …), or whole episodes plus `clips/clips.csv`:
 ```
 id,file,start,end
 C13,friend_or_foe.mp4,03:12,03:20
-C16,friend_or_foe.mp4,05:40,05:48
+B03,friend_or_foe.mp4,05:44.5,05:47
 ```
-Any clip you skip renders as a labelled placeholder card, so you can fill gaps in later.
+Missing `C` clips render as labelled placeholder cards.
 
-*Fair use:* short clips with commentary and transformation are standard for this kind of channel, but the call is yours. Keep each clip short and keep the voiceover talking over it, which the edit already does.
+*Fair use:* short clips under commentary, as the channel already does (its descriptions carry a fair-use line, and so does `05_DESCRIPTION.md`).
+
+## Episode clips
 
 | ID | Episode | Year | Moment | Used in chunks |
 |---|---|---|---|---|
@@ -24,9 +26,9 @@ Any clip you skip renders as a labelled placeholder card, so you can fill gaps i
 | **C06** | Plankton's Regular |  | the regular customer happily eating chum at the Chum Bucket | 01, 12 |
 | **C07** | Friend or Foe | 2007 | young Krabs and young Plankton together as kids | 02, 07 |
 | **C08** | Friend or Foe | 2007 | opening: SpongeBob asks Mr. Krabs about Plankton | 05 |
-| **C09** | Friend or Foe | 2007 | Krabs's version: kid Plankton as the evil one | 06 |
+| **C09** | Friend or Foe | 2007 | Krabs's version: kid Plankton as the evil one | 05, 06 |
 | **C10** | Friend or Foe | 2007 | Krabs's version: Krabs tossed into the garbage pile | 06 |
-| **C11** | Friend or Foe | 2007 | Plankton's version: same scenes, roles swapped | 06 |
+| **C11** | Friend or Foe | 2007 | Plankton's version: same scenes, roles swapped | 05, 06 |
 | **C12** | Friend or Foe | 2007 | Karen starts telling the real version | 05, 06, 07 |
 | **C13** | Friend or Foe | 2007 | carnival: little Krabs finds the penny and buys Plankton the balloon | 07, 16 |
 | **C14** | Friend or Foe | 2007 | Stinky's Burgers at the dump, owner refuses to serve them | 08 |
@@ -61,7 +63,23 @@ Any clip you skip renders as a labelled placeholder card, so you can fill gaps i
 | **C44** | any episode |  | Pearl on screen | 14 |
 | **C45** | Friend or Foe | 2007 | kids picking on young Krabs and Plankton | 07 |
 
-### Thumbnail frames
-- `thumb/krabs.png`: Mr. Krabs looking guilty or side-eyeing, as big and clean as possible (a background-removed PNG is best).
-- `thumb/plankton.png`: Plankton angry or yelling.
+## Dialogue bites (optional, but they're a big part of the channel's feel)
+
+| ID | Episode | Year | Line / moment | Plays in chunk |
+|---|---|---|---|---|
+| **B01** | Plankton! | 1999 | Plankton's first threat at Krabs in the Krusty Krab (one short line) | 01 |
+| **B02** | Friend or Foe | 2007 | SpongeBob asking Mr. Krabs about Plankton (one short line) | 05 |
+| **B03** | Friend or Foe | 2007 | Old Man Jenkins's reaction after the bite | 08 |
+| **B04** | Friend or Foe | 2007 | kid Krabs and Plankton arguing over whose recipe it is | 09 |
+| **B05** | Plankton's Regular |  | the moment it's revealed Karen pays the regular | 12 |
+| **B06** | Enemy In-Law | 2005 | Mr. Krabs's reaction to Plankton dating his mom | 13 |
+| **B07** | One Coarse Meal |  | SpongeBob telling Mr. Krabs it's gone too far | 14 |
+| **B08** | Born Again Krabs | 2003 | Mr. Krabs's reply when Squidward calls out the 62-cent deal | 14 |
+| **B09** | Plankton Retires | 2017 | Mr. Krabs revealing his own robots | 15 |
+| **B10** | Friend or Foe | 2007 | Plankton grabbing the formula at the end and the chase starting | 16 |
+| **B11** | Plankton! | 1999 | Plankton: "I went to college!" (the payoff, plays after the last line) | 17 |
+
+## Thumbnail frames
+- `thumb/krabs.png`: Mr. Krabs looking guilty / side-eye (a background-removed PNG gets the white sticker outline).
+- `thumb/plankton.png`: Plankton angry / yelling.
 

@@ -218,6 +218,17 @@ def build():
     d = 1.5; tt = t(d)
     save("ring", tone(3800, d) * env(len(tt), 0.01, 1.4, 1) * 0.5)
 
+    # paper slide: soft band-passed swish with fibre crackle
+    d = 0.42; tt = t(d); x = tt / d
+    sw = bp(noise(d), 1800 + 1800 * x, 1.2) * np.sin(np.pi * x) ** 1.2
+    cr = np.zeros(len(tt))
+    for k in range(25):
+        s0 = int(rng.random() * len(tt) * .9); L = int(SR * .003); cr[s0:s0 + L] += rng.standard_normal(L) * .5
+    save("paper", sw + hp(cr, 2500) * .6, 0.7)
+    # pin into board: tiny click + soft thud
+    d = 0.18; tt = t(d)
+    save("pin", hp(noise(d), 3000) * env(len(tt), 0.0003, 0.008, 6) + tone(140 * np.exp(-tt * 20) + 60, d) * env(len(tt), 0.001, 0.04, 5) * .6, 0.7)
+
     # crowd gasp substitute: short reversed noise swell
     d = 0.6; tt = t(d)
     save("reverse_swell", (lp(noise(d), 2500) * (tt / d) ** 3))

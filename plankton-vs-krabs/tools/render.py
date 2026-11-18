@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFilter
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
 import gfx
-from gfx import W, H, text_img, paste, ease_out, ease_back, draw_stamp, KRABS, PLANK, WHITE, INK, YELLOW
+from gfx import W, H, text_img, paste, ease_out, ease_back, KRABS, PLANK, WHITE, INK, YELLOW
 import timeline as TL
 
 FPS = 30; SR = 48000
@@ -150,7 +150,7 @@ def clip_index():
             en = parse_ts(row[3]) if len(row) > 3 and row[3].strip() else None
             p = f if os.path.isabs(f) else os.path.join(CLIPDIR, f)
             if os.path.exists(p): idx[cid] = (p, st, en)
-    for p in glob.glob(os.path.join(CLIPDIR, "C*.*")):
+    for p in glob.glob(os.path.join(CLIPDIR, "C*.*")) + glob.glob(os.path.join(CLIPDIR, "B*.*")):
         cid = os.path.splitext(os.path.basename(p))[0]
         if cid not in idx and not p.endswith(".csv"): idx[cid] = (p, 0, None)
     return idx
@@ -193,18 +193,13 @@ def apply_fx(a, fx, fi):
     f = a.astype(np.float32)
     if fx == "sepia":
         g = f @ np.array([[.393, .349, .272], [.769, .686, .534], [.189, .168, .131]], np.float32)
-        f = f * .25 + g * .75
-        f += np.random.default_rng(fi).normal(0, 6, (H, W, 1)).astype(np.float32)
+        f = f * .62 + g * .38
     elif fx == "bw":
         g = f.mean(2, keepdims=True); f = np.repeat(g, 3, 2) * 1.05
     elif fx == "dark":
         f = f * 0.62
     elif fx == "vhs":
-        f[..., 0] = np.roll(f[..., 0], 7, 1); f[..., 2] = np.roll(f[..., 2], -5, 1)
-        f[::3] *= .82
-        r = np.random.default_rng(fi)
-        y = r.integers(0, H - 40); f[y:y + 30] = np.roll(f[y:y + 30], r.integers(-40, 40), 1)
-        f += r.normal(0, 9, (H, W, 1)).astype(np.float32)
+        return a
     return np.clip(f, 0, 255).astype(np.uint8)
 
 
@@ -216,34 +211,50 @@ def zoom_crop(im, z, ox=0, oy=0):
     return im.resize((W, H), Image.BILINEAR, box=(x0, y0, x0 + w, y0 + h))
 
 
-def pill(text, bg, fg=WHITE, size=40):
-    ti = text_img(text, size, "black", fg)
-    im = Image.new("RGBA", (ti.width + 50, ti.height + 26), (0, 0, 0, 0))
-    ImageDraw.Draw(im).rounded_rectangle([0, 0, im.width - 1, im.height - 1], 14, fill=bg + (230,))
-    im.paste(ti, (25, 13), ti); return im
+def strip(ti, bg, alpha=180, padx=26, pady=12):
+    im = Image.new("RGBA", (ti.width + 2 * padx, ti.height + 2 * pady), bg + (alpha,))
+    im.paste(ti, (padx, pady), ti); return im
 
 
 def overlays(c, sh, lt, dur, chapter, subtitle):
     v = sh["v"]
     if v.get("tag"):
-        p = ease_out(lt / .3); im = pill("▶ " + v["tag"], (15, 15, 18), (235, 235, 235), 34)
-        paste(c, im, 60 + im.width / 2 - (1 - p) * 300, H - 90, 1, p)
+        im = strip(text_img(v["tag"], 34, "type", (238, 234, 224)), (10, 10, 12), 170)
+        paste(c, im, 50 + im.width / 2, H - 80, 1, min(1, lt / .25))
     if v.get("label"):
-        txt, col = v["label"]; im = pill(txt, col, WHITE, 46)
-        paste(c, im, 60 + im.width / 2, 80, 1, min(1, lt / .1))
-    if chapter and sh["v"]["type"] == "clip":
-        im = pill(chapter, (15, 15, 18), (200, 200, 200), 28); paste(c, im, W - 50 - im.width / 2, 60, 1, .85)
+        txt, col = v["label"]; im = strip(text_img(txt, 50, "cond", WHITE), col, 235)
+        paste(c, im, 50 + im.width / 2, 80, 1, min(1, lt / .1))
     if v.get("text"):
-        ti = text_img(v["text"], 120, "black", WHITE, 10, INK)
-        sc = min(1, 1700 / ti.width) * (0.7 + 0.3 * ease_back(lt / .2))
-        y = H * .80 if v.get("textpos") != "lower" else H * .84
-        paste(c, ti, W / 2, y, sc, min(1, lt / .05), -2)
+        ti = text_img(v["text"], 96, "cond", gfx.YELLOW, 7, gfx.INK)
+        paste(c, ti, W / 2, H * .83, min(1, 1700 / ti.width) * (0.96 + 0.04 * ease_out(lt / .2)), min(1, lt / .1))
     if v.get("stamp"):
-        draw_stamp(c, v["stamp"], W * .66, H * .42, lt - .1, KRABS, 120, -10)
+        gfx.scrawl(c, v["stamp"].lower(), W * .68, H * .38, lt - .1, gfx.RED, 92, -6)
     if subtitle:
         ti = text_img(subtitle, 34, "bold", WHITE)
         bx = Image.new("RGBA", (ti.width + 40, ti.height + 20), (0, 0, 0, 170)); bx.paste(ti, (20, 10), ti)
         paste(c, bx, W / 2, H - 40 - bx.height / 2 + 20)
+
+
+_still_cache = {}
+def get_still(cid, cidx, ss=1.0):
+    key = (cid, ss)
+    if key not in _still_cache:
+        im = None
+        if cid in cidx:
+            p, st, en = cidx[cid]; L = (en - st) if en else probe_dur(p) - st
+            fr = read_frames(p, st + min(ss, max(0, L - .3)), 1)
+            if fr: im = Image.fromarray(fr[0])
+        _still_cache[key] = im
+    return _still_cache[key]
+
+
+def gfx_args(v, cidx):
+    a = dict(v.get("args", {}))
+    if "stills" in a: a["stills"] = tuple(get_still(x, cidx) if x else None for x in a["stills"])
+    if "still" in a:
+        if "label" not in a: a["label"] = a["still"]
+        a["still"] = get_still(a["still"], cidx, a.pop("still_ss", 1.0))
+    return a
 
 
 def render_chunk(job):
@@ -256,13 +267,7 @@ def render_chunk(job):
     for si, sh in enumerate(shots):
         f0 = int(round(sh["start"] * FPS)); f1 = nframes_total if si == len(shots) - 1 else int(round(sh["end"] * FPS))
         n = max(1, f1 - f0); dur = n / FPS; v = sh["v"]
-        sfxn = [s if isinstance(s, str) else s[0] for s in sh["sfx"]]
-        sfx0 = [s for s in sh["sfx"] if (isinstance(s, str) or s[1] <= .1)]
-        names0 = [s if isinstance(s, str) else s[0] for s in sfx0]
-        whip = any(x.startswith("whoosh") for x in names0)
-        shake = any(x in ("impact", "boom", "door_slam") for x in names0)
-        flash = "boom" in names0 or "impact" in names0
-        frames = None
+        frames = None; gargs = gfx_args(v, cidx) if v["type"] == "gfx" else None
         if v["type"] == "clip":
             if v["id"] in cidx:
                 p, st, en = cidx[v["id"]]
@@ -277,16 +282,11 @@ def render_chunk(job):
             if v["type"] == "clip":
                 base = Image.fromarray(apply_fx(frames[min(k, len(frames) - 1)], v.get("fx"), fi))
                 p = k / max(1, n - 1); zm = v.get("zoom")
-                z = {"in": 1.0 + .08 * p, "out": 1.12 - .1 * p, "punch": 1.2 + .05 * p}.get(zm, 1.0)
+                z = {"in": 1.0 + .06 * p, "out": 1.08 - .07 * p, "punch": 1.16 + .04 * p}.get(zm, 1.0)
+                if v.get("bite"): z = 1.0 + .03 * p
             else:
-                base = gfx.GFX[v["name"]](lt, dur, **v.get("args", {})); z = 1.0
-            ox = oy = 0
-            if shake and k < 9:
-                amp = 22 * (1 - k / 9); ox = amp * math.sin(k * 2.7); oy = amp * math.cos(k * 3.3)
-            if whip and k < 5:
-                ox += (1 - ease_out(k / 5)) * -260
-            img = zoom_crop(base, max(z, 1.02 if (ox or oy) else z), ox, oy)
-            if whip and k < 4: img = img.filter(ImageFilter.BoxBlur(10 - 2 * k))
+                base = gfx.GFX[v["name"]](lt, dur, **gargs); z = 1.0
+            img = zoom_crop(base, z)
             if v["type"] == "clip":
                 a = (np.asarray(img).astype(np.float32) * vignette()).astype(np.uint8); img = Image.fromarray(a)
             sub = None
@@ -294,9 +294,7 @@ def render_chunk(job):
                 tt = sh["start"] + lt
                 for (s0, s1, txt) in subs:
                     if s0 <= tt < s1: sub = txt; break
-            overlays(img, sh, lt, dur, chapter if v["type"] == "clip" else None, sub)
-            if flash and k < 3:
-                img = Image.blend(img, Image.new("RGB", (W, H), WHITE), [.7, .4, .15][k])
+            overlays(img, sh, lt, dur, None, sub)
             enc.stdin.write(img.tobytes()); fi += 1
     enc.stdin.close(); enc.wait()
     return out
@@ -314,6 +312,46 @@ def decode_mono(p):
     return np.frombuffer(raw, np.float32)
 
 
+def anchor_time(words, anchor):
+    tokens = [w for w, _ in words]; at = toks(anchor)
+    for i in range(len(tokens) - len(at) + 1):
+        if tokens[i:i + len(at)] == at: return words[i][1]
+    raise SystemExit(f"anchor not found: {anchor!r}")
+
+
+def apply_bites(cid, shots, total, words, vo_dur):
+    """Insert show-dialogue bites: the VO pauses, the clip plays with its own audio, then VO resumes."""
+    cidx = clip_index(); ins = []; pos_tokens = 0
+    for anchor, bid, mx in TL.BITES.get(cid, []):
+        if bid not in cidx: continue
+        p, st, en = cidx[bid]; L = (en - st) if en else probe_dur(p) - st
+        d = max(.5, min(L, mx))
+        tb = vo_dur + .25 if anchor == "@end" else max(0, anchor_time(words, anchor) - .08)
+        ins.append((tb, bid, d, p, st))
+    ins.sort()
+    def shift(tt):
+        return tt + sum(d for (tb, _, d, _, _) in ins if tb <= tt + 1e-6)
+    out = []
+    for sh in shots:
+        sh = dict(sh); sh["start"] = shift(sh["start"]) if sh["start"] > 0 else 0.0; out.append(sh)
+    acc = 0.0; bite_audio = []
+    for (tb, bid, d, p, st) in ins:
+        bs = tb + acc
+        out.append({"start": bs, "end": bs + d, "at": "(bite)", "v": {"type": "clip", "id": bid, "bite": True}, "sfx": []})
+        bite_audio.append((bs, p, st, d)); acc += d
+    out.sort(key=lambda x: x["start"])
+    new_total = total + acc
+    for i, sh in enumerate(out):
+        sh["end"] = out[i + 1]["start"] if i + 1 < len(out) else new_total
+    # resume shots that were interrupted by a bite: the shot after a bite continues the pre-bite visual
+    bounds = [0.0] + [tb for (tb, *_r) in ins] + [vo_dur + 30]
+    segs = []; acc = 0.0
+    for i in range(len(bounds) - 1):
+        segs.append((bounds[i], bounds[i + 1], bounds[i] + acc))
+        if i < len(ins): acc += ins[i][2]
+    return out, new_total, segs, bite_audio, shift
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--preview", action="store_true")
     ap.add_argument("--chunks"); ap.add_argument("--out"); ap.add_argument("--jobs", type=int, default=4); ap.add_argument("--reuse", action="store_true")
@@ -321,7 +359,7 @@ def main():
     os.makedirs(BUILD, exist_ok=True)
     chunks = load_chunks()
     ids = a.chunks.split(",") if a.chunks else sorted(chunks)
-    plan = []; t_global = 0.0; audio_events = []; vo_parts = []; chapter = None
+    plan = []; t_global = 0.0; audio_events = []; vo_parts = []; chapter = None; chapters = []; bites_global = []
     for cid in ids:
         text = chunks[cid]
         have_vo = os.path.exists(os.path.join(VO, cid + ".mp3")) and not a.preview
@@ -329,6 +367,16 @@ def main():
         else: words, vo_dur = estimate_words(text)
         tail = TL.TAIL.get(cid, .3)
         shots, total = resolve(cid, TL.T[cid], words, vo_dur, tail)
+        shots, total, vo_segs, bite_audio, shift = apply_bites(cid, shots, total, words, vo_dur)
+        for (ccid, anchor, name) in TL.CHAPTERS:
+            if ccid == cid:
+                tt = 0.0 if anchor is None else anchor_time(words, anchor)
+                chapters.append((t_global + shift(tt), name))
+        for sh in shots:
+            v = sh["v"]
+            if v["type"] == "gfx" and v["name"] in gfx.PAPER_CARDS and not any(
+                    (x if isinstance(x, str) else x[0]) in ("paper", "type", "type_burst") or (not isinstance(x, str) and x[1] <= .15 and False) for x in sh["sfx"]):
+                sh["sfx"] = [("pin" if v["name"] in ("polaroid", "three_versions") else "paper", 0, .55)] + list(sh["sfx"])
         chapter = TL.CH.get(cid, chapter)
         subs = None
         if a.preview:
@@ -347,7 +395,8 @@ def main():
                 rep, iv = (s[3], s[4]) if len(s) > 4 else (1, 0)
                 for r in range(rep):
                     audio_events.append((t_global + sh["start"] + off + r * iv, name, vol))
-        vo_parts.append((t_global, os.path.join(VO, cid + ".mp3") if have_vo else None))
+        vo_parts.append((t_global, os.path.join(VO, cid + ".mp3") if have_vo else None, vo_segs))
+        for (bt, bp, bst, bd) in bite_audio: bites_global.append((t_global + bt, bp, bst, bd))
         t_global += total
     json.dump([[p[0], [{k: (v if k != "v" else v) for k, v in s.items()} for s in p[1]], p[2]] for p in plan],
               open(os.path.join(BUILD, "plan.json"), "w"), indent=1, default=str)
@@ -362,9 +411,26 @@ def main():
 
     # audio mix
     n = int(t_global * SR) + SR; mixv = np.zeros(n, np.float32); mixs = np.zeros(n, np.float32)
-    for t0, p in vo_parts:
+    vo_rms = []
+    for t0, p, segs in vo_parts:
         if p:
-            a_ = decode_mono(p); s = int(t0 * SR); mixv[s:s + len(a_)] += a_[:n - s]
+            a_ = decode_mono(p); vo_rms.append(np.sqrt(np.mean(a_[np.abs(a_) > .01] ** 2)) if np.any(np.abs(a_) > .01) else .1)
+            for (v0, v1, at) in segs:
+                seg = a_[int(v0 * SR):int(v1 * SR)]; s = int((t0 + at) * SR)
+                fade = min(len(seg), int(.01 * SR))
+                if fade: seg = seg.copy(); seg[:fade] *= np.linspace(0, 1, fade); seg[-fade:] *= np.linspace(1, 0, fade)
+                mixv[s:s + len(seg)] += seg[:n - s]
+    target = float(np.median(vo_rms)) if vo_rms else .1
+    for (t0, p, st, d) in bites_global:
+        raw = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{st:.3f}", "-i", p, "-t", f"{d:.3f}", "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"],
+                             capture_output=True).stdout
+        b = np.frombuffer(raw, np.float32).copy()
+        if not len(b): continue
+        act = b[np.abs(b) > .01]; r = np.sqrt(np.mean(act ** 2)) if len(act) else .1
+        b *= min(4.0, target * .9 / max(r, 1e-4))
+        f_ = min(len(b), int(.03 * SR)); b[:f_] *= np.linspace(0, 1, f_); b[-f_:] *= np.linspace(1, 0, f_)
+        s = int(t0 * SR); mixv[s:s + len(b)] += b[:n - s]
+    json.dump(chapters, open(os.path.join(BUILD, "chapters.json"), "w"))
     cache = {}
     for t0, name, vol in audio_events:
         if name not in cache: cache[name] = load_wav(os.path.join(SFXDIR, name + ".wav"))
@@ -373,7 +439,7 @@ def main():
     # keep SFX under the voice: ~-8 dB relative, light duck while VO active
     vo_env = np.convolve(np.abs(mixv), np.ones(2400) / 2400, "same")
     duck = 1 - 0.45 * np.clip(vo_env / 0.05, 0, 1)
-    mix = mixv + mixs * 0.42 * duck
+    mix = mixv + mixs * 0.34 * duck
     peak = np.max(np.abs(mix)) or 1
     if peak > .98: mix = mix / peak * .98
     wav = os.path.join(BUILD, "mix.wav")
