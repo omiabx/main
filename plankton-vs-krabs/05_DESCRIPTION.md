@@ -13,23 +13,23 @@ July 31, 1999: a guy the size of a sesame seed tells Mr. Krabs he went to colleg
 The show's own origin story says Plankton and Krabs were best friends, and that the Krabby Patty was invented by both of them, by accident, during the fight that ended the friendship. I went back through Friend or Foe, Plankton's Regular, Enemy In-Law, One Coarse Meal and Plankton Retires to figure out who the actual bad guy is.
 
 0:00 July 31, 1999
-0:49 I was watching this wrong
-1:23 The smallest villain on TV
-2:11 The plan (every time)
-2:39 Three liars and a computer
-4:01 Karen's version
-4:51 Plabs
-5:08 The fight that made the Krabby Patty
-6:01 He was in the room
-6:22 The losing streak
-6:50 Plan Z
-7:33 One customer
-8:04 Okay, about Krabs
-8:27 One Coarse Meal
-8:56 62 cents
-9:23 Plankton Retires
-10:22 Who's the bad guy?
-11:14 He went to college
+0:54 I was watching this wrong
+1:28 The smallest villain on TV
+2:16 The plan (every time)
+2:43 Three liars and a computer
+4:08 Karen's version
+5:01 Plabs
+5:18 The fight that made the Krabby Patty
+6:16 He was in the room
+6:38 The losing streak
+7:10 Plan Z
+7:52 One customer
+8:28 Okay, about Krabs
+8:56 One Coarse Meal
+9:25 62 cents
+9:57 Plankton Retires
+11:00 Who's the bad guy?
+11:56 He went to college
 
 Episodes referenced:
 Plankton! (S1, 1999) · The Algae's Always Greener (S3) · Born Again Krabs (S3) · Plankton's Regular · Enemy In-Law (S4) · F.U.N. · Imitation Krabs · Plankton's Pet · Friend or Foe (S5, 2007) · Single Cell Anniversary · One Coarse Meal (S7) · Plankton Retires (S10, 2017) · The SpongeBob SquarePants Movie (2004) · Plankton: The Movie (Netflix, 2025)
