@@ -436,7 +436,8 @@ def rip_paper(t, d, rip_at=0.6, label=None, title="SECRET RECIPE", halves=("", "
     rot = ease_out((t - rip_at) / .5) * 7 if t > rip_at else 0
     for im, sgn in ((L, -1), (R, 1)): paste(c, shadow(im, 8, 12, 110), W / 2 + sgn * sep, H / 2 + 20, 1, 1, -sgn * rot)
     if t > rip_at + .4:
-        for (txt, col), sgn in zip(halves, (-1, 1)):
+        for h_, sgn in zip(halves, (-1, 1)):
+            txt = h_[0] if isinstance(h_, (tuple, list)) and h_ else None
             if txt: write_on(c, txt.lower(), W / 2 + sgn * (sep + 200), H - 90, t - rip_at - .4, 60, "marker", YELLOW, anchor="c")
     return c
 
