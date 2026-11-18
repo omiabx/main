@@ -199,3 +199,55 @@ export function thumbF() {
   return S;
 }
 function lerpN(a, b, t) { return a + (b - a) * t; }
+
+// G (episode 6, no text): sound turns into binary across the frame, no hard split.
+// right: Bob + smooth glowing wave. middle: the scene breaks into pixel blocks and the wave becomes a staircase.
+// left: fully binary, the wave rebuilt from columns of 0/1.
+export function thumbG() {
+  const S = desertBase();
+  const bob = character('bob', { mouth: 'open', brows: true }); bob.position.set(26, 4, 30); bob.rotation.y = -1.15; pose(bob, 0, { blink: 0, cheer: 0.35, nod: -0.15 }); S.scene.add(bob);
+  aim(S.cam, v3(4, 26, 92), v3(4, 22, 20));
+  const TAU = Math.PI * 2;
+  const tmp = document.createElement('canvas'); tmp.width = W; tmp.height = H; const tx = tmp.getContext('2d', { willReadFrequently: true });
+  S.update = () => {};
+  S.post = () => {
+    tx.drawImage(renderer.domElement, 0, 0); const d = tx.getImageData(0, 0, W, H).data;
+    const [mx, my] = project(S.cam, bob.getWorldPosition(v3(0, 0, 0)).add(v3(-6.5, 15.5, 2)));
+    const cs = 36, cols = Math.ceil(W / cs), rows = Math.ceil(H / cs), mid = 600;
+    const hash = (i, j) => { let h = (i * 374761393 + j * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
+    const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    // how "binary" each column is: 1 on the left, 0 near Bob
+    const bin = (x) => 1 - sm(W * 0.2, W * 0.66, x);
+    // the wave (screen space): amplitude grows away from the mouth
+    const x0 = mx - 20;
+    const waveY = (x) => { const f = Math.min(1, Math.max(0, (x0 - x) / (x0 - 0))); const amp = 40 + 300 * Math.min(1, f * 1.6); return my + (mid - my) * Math.min(1, f * 2.2) + Math.sin(f * TAU * 6.2) * amp * (0.62 + 0.38 * Math.sin(f * 11 + 1)); };
+    // 1) pixel-block dissolve of the scene
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      const cx = i * cs + cs / 2; const b = bin(cx); if (hash(i, j) >= b) continue;
+      const sx = Math.min(W - 1, Math.floor(cx)), sy = Math.min(H - 1, Math.floor(j * cs + cs / 2)), k = (sy * W + sx) * 4;
+      const t = 0.18 + 0.2 * (1 - b);
+      g2.fillStyle = `rgb(${Math.round(10 + d[k] * t)},${Math.round(10 + d[k + 1] * t)},${Math.round(28 + d[k + 2] * t)})`;
+      g2.fillRect(i * cs, j * cs, cs, cs);
+      if (b > 0.7 && hash(j, i) < 0.3) { g2.font = '18px "PS2P"'; g2.textAlign = 'center'; g2.textBaseline = 'middle'; g2.fillStyle = `rgba(120,110,190,${0.2 * b})`; g2.fillText(hash(i + 7, j) > 0.5 ? '1' : '0', cx, j * cs + cs / 2 + 2); }
+    }
+    // 2) digit columns on the left (fade in where the scene is mostly binary)
+    g2.font = '32px "PS2P"'; g2.textAlign = 'center'; g2.textBaseline = 'middle'; g2.shadowColor = '#4ff07a'; g2.shadowBlur = 14;
+    for (let i = 0; i < cols; i++) {
+      const cx = i * cs + cs / 2; const a = sm(W * 0.36, W * 0.24, cx); if (a <= 0) continue;
+      const v = waveY(cx) - mid; const n = Math.round(Math.abs(v) / cs); const dir = v < 0 ? -1 : 1;
+      for (let k = 0; k <= n; k++) { const hot = k === n; g2.globalAlpha = a; g2.fillStyle = hot ? '#ffd23f' : `rgba(79,240,122,${0.55 + 0.45 * k / Math.max(1, n)})`; g2.fillText(hash(i, k) > 0.4 ? '1' : '0', cx, mid + dir * k * cs); }
+    }
+    g2.globalAlpha = 1; g2.shadowBlur = 0;
+    // 3) the wave: smooth near Bob, staircase in the middle (fades out where the digits take over)
+    g2.save(); g2.lineJoin = 'miter'; g2.lineCap = 'butt'; g2.shadowColor = '#ffd23f'; g2.shadowBlur = 26;
+    const step = (x) => { const c = Math.floor(x / cs); return waveY(c * cs + cs / 2); };
+    for (let x = x0; x > W * 0.2; x -= 3) {
+      const b = bin(x); const fade = sm(W * 0.24, W * 0.36, x);
+      const yS = waveY(x), yQ = step(x), y = yS + (yQ - yS) * sm(0.15, 0.6, b);
+      const xn = x - 3, ySn = waveY(xn), yQn = step(xn), yn = ySn + (yQn - ySn) * sm(0.15, 0.6, bin(xn));
+      g2.strokeStyle = `rgba(255,210,63,${fade})`; g2.lineWidth = 12; g2.beginPath(); g2.moveTo(x, y); g2.lineTo(xn, yn); g2.stroke();
+    }
+    g2.restore();
+  };
+  return S;
+}
