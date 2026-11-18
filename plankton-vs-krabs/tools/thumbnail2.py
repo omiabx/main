@@ -117,7 +117,36 @@ def final():
     return c.convert("RGB")
 
 
+def final_duo():
+    """Krabs + Plankton cutouts facing each other, blurred dark episode background, red outlined text on top"""
+    bg = Image.open(os.path.join(ROOT, "thumb", "bg.png")).convert("RGB")
+    bg = ImageOps.fit(bg, (TW, TH), Image.LANCZOS).filter(ImageFilter.GaussianBlur(10))
+    a = np.asarray(bg).astype(np.float32) * 0.55
+    x = np.linspace(-1, 1, TW)[None, :, None]; y = np.linspace(-1, 1, TH)[:, None, None]
+    a *= 1 - 0.4 * np.clip(x ** 2 + y ** 2 - .2, 0, None)
+    c = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).convert("RGBA")
+    kr = fit_h(trim(Image.open(os.path.join(ROOT, "thumb", "krabs_cut.png")).convert("RGBA")), 560)
+    pl = ImageOps.mirror(fit_h(trim(Image.open(os.path.join(ROOT, "thumb", "plankton_cut.png")).convert("RGBA")), 520))
+    gk, pk = glow(kr, radius=14, strength=1.5); gp, pp = glow(pl, radius=14, strength=1.5)
+    c.alpha_composite(gk, (20 - pk, TH - kr.height + 30 - pk))
+    c.alpha_composite(gp, (TW - pl.width - 70 - pp, TH - pl.height + 30 - pp))
+    t = text_block([("HALF WAS HIS?", 150)], os.path.join(F, "LilitaOne-Regular.ttf"),
+                   (232, 36, 28), 14, (12, 8, 8))
+    ts, tp = drop_shadow(t, 10, 200, (6, 8))
+    c.alpha_composite(ts, ((TW - t.width) // 2 - tp, 18 - tp))
+    return c.convert("RGB")
+
+
 if __name__ == "__main__":
+    os.makedirs(os.path.join(ROOT, "output"), exist_ok=True)
+    T = final_duo(); T.save(os.path.join(ROOT, "output", "thumbnail.png"))
+    chk = Image.new("RGB", (290, 180), (255, 255, 255)); chk.paste(T.resize((246, 138), Image.LANCZOS), (22, 21))
+    chk.save(os.path.join(ROOT, "output", "thumbnail_mobile_check.png"))
+    print("wrote output/thumbnail.png")
+    raise SystemExit
+
+
+if False:
     os.makedirs(os.path.join(ROOT, "output"), exist_ok=True)
     T = final(); T.save(os.path.join(ROOT, "output", "thumbnail.png"))
     chk = Image.new("RGB", (290, 180), (255, 255, 255)); chk.paste(T.resize((246, 138), Image.LANCZOS), (22, 21))
