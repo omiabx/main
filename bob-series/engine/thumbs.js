@@ -192,13 +192,17 @@ export function thumbF() {
     // seam line
     g2.save(); g2.strokeStyle = '#ffd23f'; g2.lineWidth = 8; g2.shadowColor = '#ffd23f'; g2.shadowBlur = 22; g2.beginPath(); g2.moveTo(seam, 0); g2.lineTo(seam, H); g2.stroke(); g2.restore();
     const plate = (cx, w, col) => { const y0 = 34, h = 136; g2.fillStyle = '#0d0b1e'; g2.fillRect(cx - w / 2 - 8, y0 - 8, w + 16, h + 16); g2.fillStyle = '#1d1640'; g2.fillRect(cx - w / 2, y0, w, h); g2.strokeStyle = col; g2.lineWidth = 6; g2.strokeRect(cx - w / 2 + 6, y0 + 6, w - 12, h - 12); };
-    plate(W / 4, 720, G); plate(W * 3 / 4, 600, Y);
-    text('BINARY', W / 4, 106, { size: 100, color: G });
-    text('SOUND', W * 3 / 4, 106, { size: 100, color: Y });
+    if (!S.noText) {
+      plate(W / 4, 720, G); plate(W * 3 / 4, 600, Y);
+      text('BINARY', W / 4, 106, { size: 100, color: G });
+      text('SOUND', W * 3 / 4, 106, { size: 100, color: Y });
+    }
   };
   return S;
 }
 function lerpN(a, b, t) { return a + (b - a) * t; }
+// F without labels
+export function thumbFnt() { const S = thumbF(); S.noText = true; return S; }
 
 // G (episode 6, no text): sound turns into binary across the frame, no hard split.
 // right: Bob + smooth glowing wave. middle: the scene breaks into pixel blocks and the wave becomes a staircase.
