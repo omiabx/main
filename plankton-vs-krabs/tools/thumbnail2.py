@@ -99,7 +99,34 @@ def variant_b():
     return c.convert("RGB")
 
 
+def final():
+    """one thumbnail: Plankton cutout with white edge glow, blurred dark episode background, red outlined text"""
+    bg = Image.open(os.path.join(ROOT, "thumb", "bg.png")).convert("RGB")
+    bg = ImageOps.fit(bg, (TW, TH), Image.LANCZOS).filter(ImageFilter.GaussianBlur(10))
+    a = np.asarray(bg).astype(np.float32) * 0.55
+    x = np.linspace(-1, 1, TW)[None, :, None]; y = np.linspace(-1, 1, TH)[:, None, None]
+    a *= 1 - 0.4 * np.clip(x ** 2 + y ** 2 - .2, 0, None)
+    c = Image.fromarray(np.clip(a, 0, 255).astype(np.uint8)).convert("RGBA")
+    pl = fit_h(trim(Image.open(os.path.join(ROOT, "thumb", "plankton_cut.png")).convert("RGBA")), 700)
+    g, pad = glow(pl, radius=16, strength=1.6)
+    c.alpha_composite(g, (70 - pad, TH - pl.height + 40 - pad))
+    t = text_block([("HALF WAS", 170), ("HIS?", 230)], os.path.join(F, "LilitaOne-Regular.ttf"),
+                   (232, 36, 28), 14, (12, 8, 8), line_gap=-0.1)
+    ts, tp = drop_shadow(t, 10, 200, (6, 8))
+    c.alpha_composite(ts, (TW - t.width - 50 - tp, (TH - t.height) // 2 - tp))
+    return c.convert("RGB")
+
+
 if __name__ == "__main__":
+    os.makedirs(os.path.join(ROOT, "output"), exist_ok=True)
+    T = final(); T.save(os.path.join(ROOT, "output", "thumbnail.png"))
+    chk = Image.new("RGB", (290, 180), (255, 255, 255)); chk.paste(T.resize((246, 138), Image.LANCZOS), (22, 21))
+    chk.save(os.path.join(ROOT, "output", "thumbnail_mobile_check.png"))
+    print("wrote output/thumbnail.png")
+    raise SystemExit
+
+
+if False:
     os.makedirs(os.path.join(ROOT, "output"), exist_ok=True)
     A, B = variant_a(), variant_b()
     A.save(os.path.join(ROOT, "output", "thumbnail_A.png")); B.save(os.path.join(ROOT, "output", "thumbnail_B.png"))

@@ -1,7 +1,7 @@
 # YouTube upload copy
 
 ## Title (pick one; channel format: a curiosity statement, occasional CAPS word or trailing `..`)
-1. **Plankton Helped Make the Krabby Patty..** (recommended; pairs with thumbnail A or B)
+1. **Plankton Helped Make the Krabby Patty..** (recommended; pairs with the thumbnail)
 2. SpongeBob's MOST Toxic Friendship (mirrors your best performer, "Spongebob's MOST Tragic Character")
 3. Mr. Krabs Is Hiding Something About Plankton..
 
