@@ -22,7 +22,7 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 12 | **He owns a restaurant** | GFX `map_street`  | whoosh@-0.15s |
 | 13 | **his one regular** | **C06**, zoom: in | — |
 | 14 | **secretly being paid** | **C06**, ss: 2, FREEZE | stamp@+0.1s |
-| bite | before **He has been** | **B01** dialogue bite (≤4.0s, show audio on) | — |
+| bite | before **He has been** | **B01** dialogue bite (≤4.6s, show audio on) | — |
 
 ## 02 · The hook
 
@@ -88,7 +88,7 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 7 | **The Kurosawa** | **C09**, zoom: in, fx: sepia | — |
 | 8 | **About a SpongeBob** | **C08**, ss: 4, zoom: punch | pop |
 | 9 | **nobody in this story** | **C12**, zoom: in | shutter@+0.4s |
-| bite | before **and what we get** | **B02** dialogue bite (≤4.0s, show audio on) | — |
+| bite | before **and what we get** | **B02** dialogue bite (≤1.8s, show audio on) | — |
 
 ## 06 · Version one, version two
 
@@ -115,11 +115,11 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 2 | **best friends** | **C07**, zoom: in, fx: sepia, tag: FRIEND OR FOE · 2007 | — |
 | 3 | **both outcasts** | **C07**, ss: 3, zoom: in, fx: sepia | — |
 | 4 | **the other kids** | **C45**, zoom: in, fx: sepia | — |
-| 5 | **There's a moment** | **C13**, zoom: in, fx: sepia | bubbles@+0s |
-| 6 | **finds a penny** | **C13**, ss: 1.5, zoom: punch, fx: sepia, FREEZE | coin |
+| 5 | **There's a moment** | **C16**, zoom: in, fx: sepia | — |
+| 6 | **finds a penny** | GFX `coins` {'text': '', 'n': 1} | coin |
 | 7 | **the same man** | **C33**, zoom: in, fx: vhs, tag: BORN AGAIN KRABS · 2003 | whoosh_short@-0.1s |
-| 8 | **spends it** | **C13**, ss: 3, zoom: in, fx: sepia | squeak@+0.1s |
-| 9 | **For Plankton** | **C13**, ss: 4, zoom: punch, fx: sepia, FREEZE | — |
+| 8 | **spends it** | **C07**, ss: 1, zoom: in, fx: sepia | — |
+| 9 | **For Plankton** | **C16**, ss: 7, zoom: in, fx: sepia, FREEZE | — |
 | 10 | **Remember the balloon** | GFX `balloon` {'text': ''} | thump |
 
 ## 08 · Karen's version, part two
@@ -137,7 +137,7 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 9 | **takes one bite** | **C16**, ss: 2, zoom: punch, fx: sepia | — |
 | 10 | **and collapses** | **C16**, ss: 4, zoom: punch, fx: sepia | thump@+0s |
 | 11 | **The burger poisoned** | **C16**, ss: 5, zoom: in, fx: bw, FREEZE | ring@+0.1s |
-| bite | before **The burger poisoned** | **B03** dialogue bite (≤3.5s, show audio on) | — |
+| bite | before **And the owner** | **B13** dialogue bite (≤3.8s, show audio on) | — |
 
 ## 09 · The fight that made the Krabby Patty
 
@@ -156,7 +156,8 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 11 | **Plankton storms** | **C19**, zoom: in, fx: sepia | — |
 | 12 | **Chum Burger** | **C19**, ss: 2, zoom: punch, fx: sepia | thump@+0.2s |
 | 13 | **And that's the day** | **C19**, ss: 4, zoom: in, fx: sepia | thump@+0.4s |
-| bite | before **They grab the paper** | **B04** dialogue bite (≤4.0s, show audio on) | — |
+| bite | before **They grab the paper** | **B04** dialogue bite (≤3.5s, show audio on) | — |
+| bite | before **and nobody wants it** | **B14** dialogue bite (≤2.6s, show audio on) | — |
 
 ## 10 · He was in the room
 
@@ -196,6 +197,7 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 17 | **He finally wins** | GFX `scoreboard` {'p': '1', 'k': '∞'} | cha_ching@+0s |
 | 18 | **And it lasts** | **C26**, zoom: in | — |
 | 19 | **with a guitar** | **C26**, ss: 2, zoom: punch | thump@+0s, thump@+0.05s |
+| bite | before **He's built** | **B12** dialogue bite (≤3.7s, show audio on) | — |
 
 ## 12 · Even the wins are losses
 
@@ -211,7 +213,7 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 8 | **Turns out** | **C28**, zoom: punch | cha_ching@+0s |
 | 9 | **Which is bleak** | **C28**, ss: 2, zoom: in, fx: bw, FREEZE | thump |
 | 10 | **Now watch** | **C40**, zoom: in | riser@+0.2s |
-| bite | before **Which is bleak** | **B05** dialogue bite (≤4.0s, show audio on) | — |
+| bite | before **Which is bleak** | **B05** dialogue bite (≤5.1s, show audio on) | — |
 
 ## 13 · Chapter: Okay, about Krabs
 
@@ -229,7 +231,7 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 10 | **which, fair** | **C30**, ss: 5, zoom: in, FREEZE | — |
 | 11 | **But his first** | **C40**, zoom: in | — |
 | 12 | **But it never** | GFX `pie`  | pop@+0.2s, pop@+1.3s |
-| bite | before **which, fair** | **B06** dialogue bite (≤3.5s, show audio on) | — |
+| bite | before **which, fair** | **B06** dialogue bite (≤4.6s, show audio on) | — |
 
 ## 14 · One Coarse Meal
 
@@ -254,8 +256,7 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 17 | **But if you just** | **C29**, ss: 1, zoom: punch | shutter |
 | 18 | **episode after** | **C31**, ss: 4, zoom: punch | shutter |
 | 19 | **the crab has** | **C40**, zoom: in, fx: dark | thump@+0s |
-| bite | before **This is also the man** | **B07** dialogue bite (≤4.0s, show audio on) | — |
-| bite | before **So yeah** | **B08** dialogue bite (≤3.5s, show audio on) | — |
+| bite | before **So yeah** | **B08** dialogue bite (≤6.0s, show audio on) | — |
 
 ## 15 · Chapter: Neither of them wants it to end
 
@@ -276,7 +277,7 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 13 | **And Plankton did** | **C38**, zoom: in, tag: PLANKTON: THE MOVIE · 2025 | whoosh@-0.15s |
 | 14 | **Twenty-six years** | **C38**, ss: 1, zoom: in | — |
 | 15 | **and the villain** | **C38**, ss: 3, zoom: punch | thump@+0s |
-| bite | before **Both of them** | **B09** dialogue bite (≤4.0s, show audio on) | — |
+| bite | before **Both of them** | **B09** dialogue bite (≤3.3s, show audio on) | — |
 
 ## 16 · The verdict
 
@@ -298,11 +299,11 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 14 | **Because the day** | **C02**, zoom: in | — |
 | 15 | **no reason to come** | **C03**, zoom: out | — |
 | 16 | **Remember the balloon** | GFX `balloon` {'text': ''} | squeak@+0.3s |
-| 17 | **The first penny** | **C13**, ss: 2, zoom: in, fx: sepia | — |
-| 18 | **he spent on Plankton** | **C13**, ss: 4, zoom: in, fx: sepia, FREEZE | — |
+| 17 | **The first penny** | GFX `coins` {'text': '', 'n': 1} | coin@+0.2s |
+| 18 | **he spent on Plankton** | **C16**, ss: 7, zoom: in, fx: sepia, FREEZE | — |
 | 19 | **Every penny** | GFX `coins` {'text': ''} | coin@+0s, coin@+0.4s, coin@+0.9s, coin@+1.3s |
 | 20 | **he kept** | **C41**, zoom: in, fx: dark | thump@+0s |
-| bite | before **They had the chance** | **B10** dialogue bite (≤4.0s, show audio on) | — |
+| bite | before **They had the chance** | **B10** dialogue bite (≤4.1s, show audio on) | — |
 
 ## 17 · Button (last line, after a beat of silence)
 
@@ -316,5 +317,5 @@ Each shot starts on the **bold anchor words** and runs until the next shot. `C##
 | 6 | **he did go** | **C01**, ss: 2, zoom: punch | — |
 | 7 | **1.2s after VO ends** | **C01**, ss: 4, zoom: out | door_slam, slide_down@+0.15s |
 | 8 | **2.6s after VO ends** | GFX `end_black`  | — |
-| bite | after the last line | **B11** dialogue bite (≤3.0s, show audio on) | — |
+| bite | after the last line | **B11** dialogue bite (≤2.0s, show audio on) | — |
 

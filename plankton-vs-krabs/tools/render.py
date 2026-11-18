@@ -148,11 +148,15 @@ def clip_index():
             cid, f = row[0].strip(), row[1].strip()
             st = parse_ts(row[2]) if len(row) > 2 and row[2].strip() else 0
             en = parse_ts(row[3]) if len(row) > 3 and row[3].strip() else None
+            opt = {}
+            for k, i in (("zoom", 4), ("cx", 5), ("cy", 6)):
+                if len(row) > i and row[i].strip(): opt[k] = float(row[i])
+            if len(row) > 7 and row[7].strip() in ("1", "true", "yes"): opt["hflip"] = True
             p = f if os.path.isabs(f) else os.path.join(CLIPDIR, f)
-            if os.path.exists(p): idx[cid] = (p, st, en)
+            if os.path.exists(p): idx[cid] = (p, st, en, opt)
     for p in glob.glob(os.path.join(CLIPDIR, "C*.*")) + glob.glob(os.path.join(CLIPDIR, "B*.*")):
         cid = os.path.splitext(os.path.basename(p))[0]
-        if cid not in idx and not p.endswith(".csv"): idx[cid] = (p, 0, None)
+        if cid not in idx and not p.endswith(".csv"): idx[cid] = (p, 0, None, {})
     return idx
 
 
@@ -169,9 +173,14 @@ def probe_dur(p):
     except: return 5.0
 
 
-def read_frames(path, start, n):
+def read_frames(path, start, n, opt=None):
+    pre = ""
+    if opt:
+        z = opt.get("zoom", 1.0); cx = opt.get("cx", .5); cy = opt.get("cy", .5)
+        if z > 1.001: pre += f"crop=iw/{z}:ih/{z}:(iw-iw/{z})*{cx}:(ih-ih/{z})*{cy},"
+        if opt.get("hflip"): pre += "hflip,"
     cmd = ["ffmpeg", "-v", "error", "-ss", f"{start:.3f}", "-i", path, "-frames:v", str(n), "-vf",
-           f"fps={FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
+           f"{pre}fps={FPS},scale={W}:{H}:force_original_aspect_ratio=increase,crop={W}:{H},setsar=1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]
     raw = subprocess.run(cmd, capture_output=True).stdout
     k = len(raw) // (W * H * 3)
     fr = [np.frombuffer(raw, np.uint8, W * H * 3, i * W * H * 3).reshape(H, W, 3) for i in range(k)]
@@ -241,8 +250,8 @@ def get_still(cid, cidx, ss=1.0):
     if key not in _still_cache:
         im = None
         if cid in cidx:
-            p, st, en = cidx[cid]; L = (en - st) if en else probe_dur(p) - st
-            fr = read_frames(p, st + min(ss, max(0, L - .3)), 1)
+            p, st, en, opt = cidx[cid]; L = (en - st) if en else probe_dur(p) - st
+            fr = read_frames(p, st + min(ss, max(0, L - .3)), 1, opt)
             if fr: im = Image.fromarray(fr[0])
         _still_cache[key] = im
     return _still_cache[key]
@@ -270,10 +279,10 @@ def render_chunk(job):
         frames = None; gargs = gfx_args(v, cidx) if v["type"] == "gfx" else None
         if v["type"] == "clip":
             if v["id"] in cidx:
-                p, st, en = cidx[v["id"]]
+                p, st, en, opt = cidx[v["id"]]
                 L = (en - st) if en else probe_dur(p) - st
                 ss = min(v.get("ss", 0), max(0, L - 0.3))
-                frames = read_frames(p, st + ss, 1 if v.get("freeze") else min(n, int(max(1, (L - ss) * FPS))))
+                frames = read_frames(p, st + ss, 1 if v.get("freeze") else min(n, int(max(1, (L - ss) * FPS))), opt)
             if not frames:
                 desc = TL.CLIPS.get(v["id"], ("", None, ""))
                 frames = [np.array(gfx.placeholder(v["id"], f"{desc[0]}: {desc[2]}", 0))]
@@ -324,7 +333,7 @@ def apply_bites(cid, shots, total, words, vo_dur):
     cidx = clip_index(); ins = []; pos_tokens = 0
     for anchor, bid, mx in TL.BITES.get(cid, []):
         if bid not in cidx: continue
-        p, st, en = cidx[bid]; L = (en - st) if en else probe_dur(p) - st
+        p, st, en, _opt = cidx[bid]; L = (en - st) if en else probe_dur(p) - st
         d = max(.5, min(L, mx))
         tb = vo_dur + .25 if anchor == "@end" else max(0, anchor_time(words, anchor) - .08)
         ins.append((tb, bid, d, p, st))

@@ -30,10 +30,10 @@ Missing `C` clips render as labelled placeholder cards.
 | **C10** | Friend or Foe | 2007 | Krabs's version: Krabs tossed into the garbage pile | 06 |
 | **C11** | Friend or Foe | 2007 | Plankton's version: same scenes, roles swapped | 05, 06 |
 | **C12** | Friend or Foe | 2007 | Karen starts telling the real version | 05, 06, 07 |
-| **C13** | Friend or Foe | 2007 | carnival: little Krabs finds the penny and buys Plankton the balloon | 07, 16 |
+| **C13** | Friend or Foe | 2007 | carnival: little Krabs finds the penny and buys Plankton the balloon |  |
 | **C14** | Friend or Foe | 2007 | Stinky's Burgers at the dump, owner refuses to serve them | 08 |
 | **C15** | Friend or Foe | 2007 | Plabs Burgers stand at the dump, no customers | 02, 08 |
-| **C16** | Friend or Foe | 2007 | Old Man Jenkins takes a bite and collapses | 08 |
+| **C16** | Friend or Foe | 2007 | Old Man Jenkins takes a bite and collapses | 07, 08, 16 |
 | **C17** | Friend or Foe | 2007 | the two blame each other and rip the recipe in half | 02, 09, 10 |
 | **C18** | Friend or Foe | 2007 | shelf falls, ingredients spill into the mix; Krabs left with the new recipe | 02, 09, 10, 16 |
 | **C19** | Friend or Foe | 2007 | Plankton storms off; his Chum Burger fails; he vows revenge | 09 |
@@ -67,17 +67,18 @@ Missing `C` clips render as labelled placeholder cards.
 
 | ID | Episode | Year | Line / moment | Plays in chunk |
 |---|---|---|---|---|
-| **B01** | Plankton! | 1999 | Plankton's first threat at Krabs in the Krusty Krab (one short line) | 01 |
-| **B02** | Friend or Foe | 2007 | SpongeBob asking Mr. Krabs about Plankton (one short line) | 05 |
-| **B03** | Friend or Foe | 2007 | Old Man Jenkins's reaction after the bite | 08 |
+| **B01** | Plankton! | 1999 | Plankton's first threat to Krabs about the formula | 01 |
+| **B02** | Friend or Foe | 2007 | Krabs: the story is about to get juicy | 05 |
 | **B04** | Friend or Foe | 2007 | kid Krabs and Plankton arguing over whose recipe it is | 09 |
-| **B05** | Plankton's Regular |  | the moment it's revealed Karen pays the regular | 12 |
-| **B06** | Enemy In-Law | 2005 | Mr. Krabs's reaction to Plankton dating his mom | 13 |
-| **B07** | One Coarse Meal |  | SpongeBob telling Mr. Krabs it's gone too far | 14 |
-| **B08** | Born Again Krabs | 2003 | Mr. Krabs's reply when Squidward calls out the 62-cent deal | 14 |
-| **B09** | Plankton Retires | 2017 | Mr. Krabs revealing his own robots | 15 |
-| **B10** | Friend or Foe | 2007 | Plankton grabbing the formula at the end and the chase starting | 16 |
-| **B11** | Plankton! | 1999 | Plankton: "I went to college!" (the payoff, plays after the last line) | 17 |
+| **B05** | Plankton's Regular |  | Karen sensing the regular coming in with cash | 12 |
+| **B06** | Enemy In-Law | 2005 | Mr. Krabs insisting Plankton is after the formula | 13 |
+| **B08** | Born Again Krabs | 2003 | Squidward calls out the 62-cent deal; Krabs's reply | 14 |
+| **B09** | Imitation Krabs |  | the real Krabs vs. the robot Krabs | 15 |
+| **B10** | Friend or Foe | 2007 | Plankton admitting he was after the formula | 16 |
+| **B11** | Plankton! | 1999 | Plankton: "I went to college." (the payoff) | 17 |
+| **B12** | Plankton! | 1999 | SpongeBob fighting Plankton out of his brain | 11 |
+| **B13** | Friend or Foe | 2007 | the Stinky's Burgers jingle line | 08 |
+| **B14** | Friend or Foe | 2007 | Plankton pitching his chum burger | 09 |
 
 ## Thumbnail frames
 - `thumb/krabs.png`: Mr. Krabs looking guilty / side-eye (a background-removed PNG gets the white sticker outline).

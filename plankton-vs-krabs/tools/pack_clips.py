@@ -7,13 +7,15 @@ and skips _candidates/ and _preview/ (not needed). 30 clips usually come to ~40-
 
 RUN (point it at your clips folder):
   python pack_clips.py "C:\\Users\\realo\\AppData\\Local\\Programs\\Microsoft VS Code\\clips"
-Output: clips_packed.zip next to this script. Upload that file.
+Output: clips_packed_1.zip, clips_packed_2.zip, ... next to this script, each under 25 MB. Upload them all.
+Need smaller parts? Add a size in MB at the end, e.g.:  python pack_clips.py "<clips folder>" 15
 """
 import os, re, shutil, subprocess, sys, zipfile
 
 if len(sys.argv) < 2:
     sys.exit(__doc__)
 src = sys.argv[1]
+part_mb = float(sys.argv[2]) if len(sys.argv) > 2 else 25.0
 if not os.path.isdir(src):
     sys.exit(f"Folder not found: {src}")
 if not shutil.which("ffmpeg"):
@@ -41,9 +43,23 @@ for i, f in enumerate(files, 1):
 for extra in ("sources.csv", "review.csv"):
     if os.path.exists(os.path.join(src, extra)): shutil.copy(os.path.join(src, extra), os.path.join(work, extra))
 
-zpath = os.path.join(here, "clips_packed.zip")
-with zipfile.ZipFile(zpath, "w", zipfile.ZIP_STORED) as z:
-    for f in sorted(os.listdir(work)): z.write(os.path.join(work, f), f)
+# split into parts under part_mb each
+for old in os.listdir(here):
+    if re.match(r"^clips_packed(_\d+)?\.zip$", old): os.remove(os.path.join(here, old))
+limit = part_mb * 1e6 * 0.97
+parts, cur, cur_size = [], [], 0
+for f in sorted(os.listdir(work)):
+    sz = os.path.getsize(os.path.join(work, f))
+    if cur and cur_size + sz > limit: parts.append(cur); cur, cur_size = [], 0
+    cur.append(f); cur_size += sz
+if cur: parts.append(cur)
+paths = []
+for k, group in enumerate(parts, 1):
+    zpath = os.path.join(here, f"clips_packed_{k}.zip")
+    with zipfile.ZipFile(zpath, "w", zipfile.ZIP_STORED) as z:
+        for f in group: z.write(os.path.join(work, f), f)
+    paths.append(zpath)
 shutil.rmtree(work, ignore_errors=True)
-print(f"\nDone: {len(files)} clips, {before / 1e6:.0f} MB -> {os.path.getsize(zpath) / 1e6:.0f} MB")
-print(f"Upload this file: {zpath}")
+print(f"\nDone: {len(files)} clips, {before / 1e6:.0f} MB -> {after / 1e6:.0f} MB, split into {len(paths)} zip(s):")
+for zp in paths: print(f"  {zp}  ({os.path.getsize(zp) / 1e6:.1f} MB)")
+print("Upload all of them.")
