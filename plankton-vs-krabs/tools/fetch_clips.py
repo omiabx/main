@@ -6,8 +6,8 @@ HOW IT WORKS (per clip)
   1. Searches YouTube for the moment (prefers official SpongeBob / Nickelodeon uploads).
   2. Reads the video's English captions and looks for that moment's keywords to locate it.
   3. Downloads ONLY that short section (a few seconds) as clips/<ID>.mp4.
-  If it can't locate the moment, it downloads the short candidate video(s) to clips/_candidates/
-  and lists them in clips/review.csv so you can trim by hand (or just send me start/end times).
+  If it can't locate the moment, it lists the candidate links in clips/review.csv (send me that file and I'll pick
+  timestamps, or use --download-candidates to fetch them into clips/_candidates/).
 
 SETUP (once)
   pip install -U "yt-dlp[default]"
@@ -24,6 +24,10 @@ RUN
   python fetch_clips.py --redo C13          # replace one you didn't like
   python fetch_clips.py --cookies-browser chrome   # if YouTube asks you to "confirm you're not a bot"
   python fetch_clips.py --check             # test your setup on one video and explain any problem
+  python fetch_clips.py --quality 480       # slow internet: ~50 MB total instead of ~100 MB
+
+DATA USE: only the few seconds needed from each video are downloaded (about 100 MB for all 55 clips at 720p).
+Videos where the moment can't be found are NOT downloaded, just listed in review.csv (add --download-candidates to fetch them).
 
 AFTER
   Check clips/_preview/*.jpg (one frame per clip) and clips/review.csv, fix any misses, then send me the clips/ folder.
@@ -190,15 +194,20 @@ def locate(args, url, kws, tmp):
     return best[1]
 
 
+def fmt(args):
+    q = args.quality
+    return f"bv*[height<={q}][ext=mp4]+ba[ext=m4a]/bv*[height<={q}]+ba/b[height<={q}]/wv*+wa/w"
+
+
 def download_section(args, url, start, end, out_noext):
-    o = {**ydl_base(args), "format": "bv*[height<=1080][ext=mp4]+ba[ext=m4a]/bv*[height<=1080]+ba/b[height<=1080]/b",
+    o = {**ydl_base(args), "format": fmt(args),
          "merge_output_format": "mp4", "outtmpl": out_noext + ".%(ext)s",
          "download_ranges": download_range_func(None, [(max(0, start), end)]), "force_keyframes_at_cuts": True}
     with yt_dlp.YoutubeDL(o) as y: y.download([url])
 
 
 def download_whole(args, url, out_noext):
-    o = {**ydl_base(args), "format": "bv*[height<=1080]+ba/b[height<=1080]/b", "merge_output_format": "mp4", "outtmpl": out_noext + ".%(ext)s"}
+    o = {**ydl_base(args), "format": fmt(args), "merge_output_format": "mp4", "outtmpl": out_noext + ".%(ext)s"}
     with yt_dlp.YoutubeDL(o) as y: y.download([url])
 
 
@@ -250,6 +259,9 @@ def main():
     ap.add_argument("--candidates", type=int, default=6, help="search results to consider per clip")
     ap.add_argument("--cookies-browser", help="chrome / firefox / edge / brave, if YouTube blocks you")
     ap.add_argument("--check", action="store_true", help="test your setup on one video and explain any problem")
+    ap.add_argument("--quality", type=int, default=720, help="max video height: 720 (default, ~100 MB total) or 480 (~50 MB)")
+    ap.add_argument("--download-candidates", action="store_true",
+                    help="when a moment isn't found, also download the short candidate videos (uses more data; off by default)")
     args = ap.parse_args()
     name, path = detect_runtime()
     if name: RUNTIME.update(name=name, path=path)
@@ -302,8 +314,8 @@ def main():
                     print(f"   download failed: {str(e).splitlines()[0][:160]}\n   fix: {explain(str(e))}"); review.append({"id": cid, "reason": f"download failed: {e}", "candidates": c["url"]})
         else:
             short = [c for c in cands if c["duration"] and c["duration"] <= MAX_CANDIDATE_SECONDS][:2]
-            print(f"   couldn't locate the moment from captions; {len(short)} short candidate(s) for manual trim")
-            if not args.dry_run:
+            print(f"   couldn't locate the moment from captions; {len(short)} candidate link(s) saved to review.csv")
+            if not args.dry_run and args.download_candidates:
                 for k, c in enumerate(short):
                     try: download_whole(args, c["url"], os.path.join(cand_dir, f"{cid}__{k + 1}"))
                     except Exception as e:
