@@ -36,7 +36,7 @@ AFTER
 These are short excerpts for commentary/criticism, which is how your channel already uses them. Clips are only ever
 a few seconds long; the script never downloads a full episode on purpose (candidates are capped at 8 minutes).
 """
-import argparse, csv, glob, os, re, shutil, subprocess, sys
+import argparse, csv, glob, os, random, re, shutil, subprocess, sys, time
 
 try:
     import yt_dlp
@@ -131,7 +131,8 @@ MAX_CANDIDATE_SECONDS = 8 * 60
 
 
 def ydl_base(args, quiet=True):
-    o = {"quiet": quiet, "no_warnings": True, "noprogress": True, "logger": _Quiet()}
+    o = {"quiet": quiet, "no_warnings": True, "noprogress": True, "logger": _Quiet(),
+         "retries": 5, "fragment_retries": 5, "sleep_interval_requests": 1.0, "sleep_interval_subtitles": 2}
     if RUNTIME:
         o["js_runtimes"] = {RUNTIME["name"]: {"path": RUNTIME["path"]}}
         o["remote_components"] = ["ejs:github"]  # lets yt-dlp fetch its YouTube solver scripts if not installed
@@ -178,12 +179,18 @@ def locate(args, url, kws, tmp):
     """returns caption time (s) of the best keyword hit, or None"""
     for f in glob.glob(os.path.join(tmp, "*")): os.remove(f)
     o = {**ydl_base(args), "skip_download": True, "writesubtitles": True, "writeautomaticsub": True,
-         "subtitleslangs": ["en", "en-US", "en-GB", "en.*"], "subtitlesformat": "vtt", "outtmpl": os.path.join(tmp, "sub.%(ext)s")}
-    try:
-        with yt_dlp.YoutubeDL(o) as y: y.download([url])
-    except Exception as e:
-        print(f"   captions failed for {url}: {str(e).splitlines()[0][:160]}")
-        return None
+         "subtitleslangs": ["en", "en-US", "en-GB"], "subtitlesformat": "vtt", "outtmpl": os.path.join(tmp, "sub.%(ext)s")}
+    for attempt in range(3):
+        try:
+            with yt_dlp.YoutubeDL(o) as y: y.download([url])
+            break
+        except Exception as e:
+            msg = str(e).splitlines()[0]
+            if "429" in msg and attempt < 2:
+                wait = 30 * (attempt + 1)
+                print(f"   YouTube says slow down (429); waiting {wait}s ...", flush=True); time.sleep(wait); continue
+            print(f"   captions failed for {url}: {msg[:160]}")
+            return None
     vtts = glob.glob(os.path.join(tmp, "*.vtt"))
     if not vtts: return None
     cues = vtt_cues(vtts[0]); best = (0, None)
@@ -200,10 +207,19 @@ def fmt(args):
 
 
 def download_section(args, url, start, end, out_noext):
-    o = {**ydl_base(args), "format": fmt(args),
-         "merge_output_format": "mp4", "outtmpl": out_noext + ".%(ext)s",
-         "download_ranges": download_range_func(None, [(max(0, start), end)]), "force_keyframes_at_cuts": True}
-    with yt_dlp.YoutubeDL(o) as y: y.download([url])
+    last = None
+    for exact in (True, False):
+        for p in glob.glob(out_noext + ".*"): os.remove(p)
+        o = {**ydl_base(args), "format": fmt(args),
+             "merge_output_format": "mp4", "outtmpl": out_noext + ".%(ext)s",
+             "download_ranges": download_range_func(None, [(max(0, start), end)]), "force_keyframes_at_cuts": exact}
+        try:
+            with yt_dlp.YoutubeDL(o) as y: y.download([url])
+            if [p for p in glob.glob(out_noext + ".*") if not p.endswith(".part")]: return
+        except Exception as e:
+            last = e
+            if exact: print("   exact cut failed, retrying with a simpler cut ...", flush=True)
+    raise last or RuntimeError("no file produced")
 
 
 def download_whole(args, url, out_noext):
@@ -223,6 +239,10 @@ def explain(msg):
     if "not available" in m or "javascript" in m or "challenge" in m or "n challenge" in m or "signature" in m:
         return ("yt-dlp couldn't unlock YouTube. Run:  pip install -U \"yt-dlp[default]\"  and make sure Deno (or Node) is "
                 "installed and on PATH (open a new terminal after installing). If it still fails, also try --cookies-browser chrome.")
+    if "429" in m or "too many requests" in m:
+        return "Rate-limited by YouTube. Wait ~10 minutes and run again (finished clips are kept), or add --cookies-browser chrome."
+    if "ffmpeg exited" in m:
+        return "ffmpeg crashed cutting this clip. Run again with --redo <ID>; if it repeats, update ffmpeg (winget upgrade ffmpeg)."
     if "private" in m or "removed" in m or "copyright" in m or "terminated" in m:
         return "That particular upload is gone; this one is fine to ignore, the script tries other results."
     return "Unexpected error; send me this message."
@@ -288,6 +308,7 @@ def main():
         have = [p for p in glob.glob(os.path.join(out, cid + ".*")) if not p.endswith(".part")]
         if have and cid not in redo: print(f"{cid}: already have {os.path.basename(have[0])}"); ok += 1; continue
         for p in have: os.remove(p)
+        time.sleep(random.uniform(2, 4))  # be gentle, avoids YouTube's 429 rate limit
         print(f"{cid}: searching '{query}' ...", flush=True)
         try:
             cands = rank(search(args, query, args.candidates), query, kws)
