@@ -127,7 +127,10 @@ export const EPISODE = {
       const sk = smooth(K(t, tShouts - 0.3, tShouts)) * (1 - K(t, tNothing, tNothing + 0.4));
       pose(S.O.bob, t, { cheer: sk * 0.55, nod: -0.25 * sk });
       if (t > tHes) { const n = Math.floor((t - tHes) * 5); S.O.lamps.userData.set([72, 69, 76, 76, 79, 33][n % 6]); }
-      if (t < tHes) cm(S, t, t03, tHes, v3(-30, 66, 300), v3(-6, 30, -10), v3(0, 70, 320), v3(0, 32, -10), smooth);
+      if (t < tHes) { // continue from where the previous canyon shot's camera is at the cut, so there is no jump
+        const k0 = smooth(K(t03, tAnd2, end('02') + 0.6)); const P0 = v3(-10, 70, 320).lerp(v3(10, 62, 290), k0), L0 = v3(0, 32, -10).lerp(v3(10, 34, -10), k0);
+        const k = K(t, t03, tHes); aim(S.cam, P0.clone().lerp(v3(0, 70, 320), k), L0.clone().lerp(v3(0, 32, -10), k));
+      }
       else cm(S, t, tHes, end('03') + 0.5, v3(-40, 52, 170), v3(-90, 28, -10), v3(-50, 48, 140), v3(-95, 30, -14), smooth);
     }, overlay(t, g, S) {
       if (t > tShouts && t < tNothing + 1.2) {
