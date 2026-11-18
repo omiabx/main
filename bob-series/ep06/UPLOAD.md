@@ -4,6 +4,7 @@ Video: `output/Ep06_How_Numbers_Became_Sound.mp4` (3:55, 1080p30)
 Captions: `Ep06_captions_en.srt` (word-timed from the final voice, includes the two audio demos)
 Thumbnail: `thumbnails/thumbnail_binary-sound-split_notext.jpg` (lead: binary | sound split, no text)
 Alternate: `thumbnails/thumbnail_binary-sound-split.jpg` (same, with BINARY / SOUND labels)
+Alternate: `thumbnails/thumbnail_wave-to-binary_desert.jpg` (no text, full desert; the wave turns into 0s and 1s mid-air)
 
 ## Title
 **How Numbers Became Sound**

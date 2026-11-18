@@ -255,3 +255,36 @@ export function thumbG() {
   };
   return S;
 }
+
+// I (episode 6, no text): full desert; the sound wave from Bob's mouth turns into columns of 0/1 partway across.
+export function thumbI() {
+  const S = desertBase();
+  const bob = character('bob', { mouth: 'open', brows: true }); bob.position.set(26, 4, 30); bob.rotation.y = -1.15; pose(bob, 0, { blink: 0, cheer: 0.35, nod: -0.15 }); S.scene.add(bob);
+  aim(S.cam, v3(4, 26, 92), v3(4, 22, 20));
+  const TAU = Math.PI * 2;
+  S.update = () => {};
+  S.post = () => {
+    const [mx, my] = project(S.cam, bob.getWorldPosition(v3(0, 0, 0)).add(v3(-6.5, 15.5, 2)));
+    const mid = 560, x0 = mx - 20, cs = 36, swap = W * 0.47;
+    const sm = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+    const waveY = (x) => { const f = Math.min(1, Math.max(0, (x0 - x) / x0)); const amp = 60 + 320 * Math.min(1, f * 2.4); return my + (mid - my) * Math.min(1, f * 2.2) + Math.sin(f * TAU * 6.2) * amp * (0.62 + 0.38 * Math.sin(f * 11 + 1)); };
+    // smooth glowing wave, fading out as it reaches the swap point
+    g2.save(); g2.lineCap = 'round'; g2.shadowColor = '#ffd23f'; g2.shadowBlur = 26;
+    for (let x = x0; x > swap - 60; x -= 3) { const a = sm(swap - 60, swap + 70, x); g2.strokeStyle = `rgba(255,210,63,${a})`; g2.lineWidth = 12; g2.beginPath(); g2.moveTo(x, waveY(x)); g2.lineTo(x - 3, waveY(x - 3)); g2.stroke(); }
+    g2.restore();
+    // digit columns following the same wave, fading in at the swap point
+    g2.font = '34px "PS2P"'; g2.textAlign = 'center'; g2.textBaseline = 'middle'; g2.lineJoin = 'round';
+    const hash = (i, j) => { let h = (i * 374761393 + j * 668265263) | 0; h = (h ^ (h >>> 13)) * 1274126177 | 0; return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
+    for (let i = 0; i * cs < swap + 40; i++) {
+      const cx = i * cs + cs / 2; const a = sm(swap + 40, swap - 70, cx); if (a <= 0) continue;
+      const v = waveY(cx) - mid; const n = Math.round(Math.abs(v) / cs); const dir = v < 0 ? -1 : 1;
+      for (let k = 0; k <= n; k++) {
+        const y = mid + dir * k * cs; const hot = k === n; const ch = hash(i, k) > 0.4 ? '1' : '0';
+        g2.globalAlpha = a; g2.lineWidth = 10; g2.strokeStyle = '#14102a'; g2.strokeText(ch, cx, y);
+        g2.fillStyle = hot ? '#ffd23f' : '#4ff07a'; g2.fillText(ch, cx, y);
+      }
+    }
+    g2.globalAlpha = 1;
+  };
+  return S;
+}
