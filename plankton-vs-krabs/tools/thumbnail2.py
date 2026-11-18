@@ -130,7 +130,7 @@ def final_duo():
     gk, pk = glow(kr, radius=14, strength=1.5); gp, pp = glow(pl, radius=14, strength=1.5)
     c.alpha_composite(gk, (20 - pk, TH - kr.height + 30 - pk))
     c.alpha_composite(gp, (TW - pl.width - 70 - pp, TH - pl.height + 30 - pp))
-    t = text_block([("HALF WAS HIS?", 150)], os.path.join(F, "LilitaOne-Regular.ttf"),
+    t = text_block([("RIVALRY", 190)], os.path.join(F, "LilitaOne-Regular.ttf"),
                    (232, 36, 28), 14, (12, 8, 8))
     ts, tp = drop_shadow(t, 10, 200, (6, 8))
     c.alpha_composite(ts, ((TW - t.width) // 2 - tp, 18 - tp))
