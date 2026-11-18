@@ -24,9 +24,8 @@ RUN
   python fetch_clips.py --redo C13          # replace one you didn't like
   python fetch_clips.py --cookies-browser chrome   # if YouTube asks you to "confirm you're not a bot"
   python fetch_clips.py --check             # test your setup on one video and explain any problem
-  python fetch_clips.py --quality 480       # slow internet: ~50 MB total instead of ~100 MB
 
-DATA USE: only the few seconds needed from each video are downloaded (about 100 MB for all 55 clips at 720p).
+DATA USE: only the few seconds needed from each video are downloaded (about 150-200 MB for all 55 clips at 1080p).
 Videos where the moment can't be found are NOT downloaded, just listed in review.csv (add --download-candidates to fetch them).
 
 AFTER
@@ -280,7 +279,7 @@ def main():
     ap.add_argument("--candidates", type=int, default=6, help="search results to consider per clip")
     ap.add_argument("--cookies-browser", help="chrome / firefox / edge / brave, if YouTube blocks you")
     ap.add_argument("--check", action="store_true", help="test your setup on one video and explain any problem")
-    ap.add_argument("--quality", type=int, default=720, help="max video height: 720 (default, ~100 MB total) or 480 (~50 MB)")
+    ap.add_argument("--quality", type=int, default=1080, help="max video height (default 1080, matches the final render)")
     ap.add_argument("--download-candidates", action="store_true",
                     help="when a moment isn't found, also download the short candidate videos (uses more data; off by default)")
     args = ap.parse_args()
