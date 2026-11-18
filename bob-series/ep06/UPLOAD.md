@@ -1,6 +1,6 @@
 # Episode 6: upload kit
 
-Video: `output/Ep06_How_Numbers_Became_Sound.mp4` (3:57, 1080p30)
+Video: `output/Ep06_How_Numbers_Became_Sound.mp4` (3:55, 1080p30)
 Captions: `Ep06_captions_en.srt` (word-timed from the final voice, includes the two audio demos)
 Thumbnail: `thumbnails/thumbnail_binary-sound-split.jpg` (BINARY | SOUND, same format as Episode 5)
 
@@ -15,22 +15,22 @@ Alternates for YouTube's title test:
 ```
 Every voice note, song and video you've ever heard on your phone arrived as a list of numbers. Bob tries to send his voice across a canyon using nothing but lamps, and you'll hear exactly what happens when a computer doesn't measure sound often enough.
 
-Use headphones for the demo at 2:33.
+Use headphones for the demo at 2:32.
 
 This is stop 6 on Bob's trip through the computer, and the last stop in the desert.
 
 0:00 You are hearing numbers
-0:16 Stop 6
+0:15 Stop 6
 0:29 Shouting across the canyon
 0:50 What sound is
 1:09 Drawing sound
-1:30 Turning a wiggle into numbers
-1:52 The speaker
+1:29 Turning a wiggle into numbers
+1:51 The speaker
 2:15 Too few measurements
-2:36 Music quality
-2:45 16 lamps
-3:05 How many numbers in a song
-3:29 The desert is done
+2:35 Music quality
+2:44 16 lamps
+3:04 How many numbers in a song
+3:27 The desert is done
 
 Catch up on the trip:
 Stop 1 · What is a computer? https://youtu.be/ptEXay77nQY
@@ -56,7 +56,7 @@ how computers store sound,how digital audio works,what is sample rate,sample rat
 ## Card
 - **0:18**, on "Last time, he even sent a picture of his face" → card to *How Numbers Became Pictures*
 
-## End screen (3:44 – 3:57)
+## End screen (3:42 – 3:55)
 The map holds while the fog drifts off the Foundry, under "NEXT STOP: THE FOUNDRY" in the centre. Bob is bottom-left.
 - Video element: **Best for viewer**, right side
 - Subscribe element, bottom right
