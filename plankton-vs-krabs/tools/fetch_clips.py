@@ -10,8 +10,12 @@ HOW IT WORKS (per clip)
   and lists them in clips/review.csv so you can trim by hand (or just send me start/end times).
 
 SETUP (once)
-  pip install -U yt-dlp
-  + ffmpeg on your PATH  (Windows: `winget install ffmpeg`, Mac: `brew install ffmpeg`)
+  pip install -U "yt-dlp[default]"
+  + ffmpeg on your PATH        (Windows: `winget install ffmpeg`,          Mac: `brew install ffmpeg`)
+  + a JavaScript runtime       (Windows: `winget install DenoLand.Deno`,   Mac: `brew install deno`)
+    YouTube now requires one; without it every video shows as "This video is not available".
+    Node.js or Bun also work if you already have them. Open a NEW terminal after installing.
+  Then test:  python fetch_clips.py --check
 
 RUN
   python fetch_clips.py                     # everything
@@ -19,6 +23,7 @@ RUN
   python fetch_clips.py --dry-run           # show what it would pick, download nothing
   python fetch_clips.py --redo C13          # replace one you didn't like
   python fetch_clips.py --cookies-browser chrome   # if YouTube asks you to "confirm you're not a bot"
+  python fetch_clips.py --check             # test your setup on one video and explain any problem
 
 AFTER
   Check clips/_preview/*.jpg (one frame per clip) and clips/review.csv, fix any misses, then send me the clips/ folder.
@@ -100,6 +105,15 @@ OFFICIAL = re.compile(r"spongebob|nickelodeon|nick\b|paramount|netflix", re.I)
 JUNK = re.compile(r"\bhood\b|meme|\bytp\b|poop|parody|remix|reverse|earrape|ear rape|\bbut\b|\bif\b|1 ?hour|10 ?hours|loop|"
                   r"in real life|\birl\b|\bai\b|edit\b|edited|animatic|fan ?made|roblox|minecraft|reaction|react", re.I)
 BOT_HITS = [0]
+LAST_ERR = [""]
+RUNTIME = {}
+
+
+def detect_runtime():
+    for name in ("deno", "node", "bun"):
+        path = shutil.which(name)
+        if path: return name, path
+    return None, None
 
 
 class _Quiet:
@@ -107,12 +121,16 @@ class _Quiet:
     def info(self, m): pass
     def warning(self, m): pass
     def error(self, m):
+        LAST_ERR[0] = m
         if "not a bot" in m or "Sign in to confirm" in m: BOT_HITS[0] += 1
 MAX_CANDIDATE_SECONDS = 8 * 60
 
 
 def ydl_base(args, quiet=True):
     o = {"quiet": quiet, "no_warnings": True, "noprogress": True, "logger": _Quiet()}
+    if RUNTIME:
+        o["js_runtimes"] = {RUNTIME["name"]: {"path": RUNTIME["path"]}}
+        o["remote_components"] = ["ejs:github"]  # lets yt-dlp fetch its YouTube solver scripts if not installed
     if args.cookies_browser: o["cookiesfrombrowser"] = (args.cookies_browser,)
     return o
 
@@ -159,7 +177,8 @@ def locate(args, url, kws, tmp):
          "subtitleslangs": ["en", "en-US", "en-GB", "en.*"], "subtitlesformat": "vtt", "outtmpl": os.path.join(tmp, "sub.%(ext)s")}
     try:
         with yt_dlp.YoutubeDL(o) as y: y.download([url])
-    except Exception:
+    except Exception as e:
+        print(f"   captions failed for {url}: {str(e).splitlines()[0][:160]}")
         return None
     vtts = glob.glob(os.path.join(tmp, "*.vtt"))
     if not vtts: return None
@@ -188,6 +207,40 @@ def preview(clip, jpg):
         subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", "1", "-i", clip, "-frames:v", "1", "-vf", "scale=640:-2", jpg])
 
 
+def explain(msg):
+    m = msg.lower()
+    if "not a bot" in m or "sign in to confirm" in m:
+        return "YouTube wants a logged-in browser. Re-run with:  --cookies-browser chrome   (or firefox / edge / brave)"
+    if "not available" in m or "javascript" in m or "challenge" in m or "n challenge" in m or "signature" in m:
+        return ("yt-dlp couldn't unlock YouTube. Run:  pip install -U \"yt-dlp[default]\"  and make sure Deno (or Node) is "
+                "installed and on PATH (open a new terminal after installing). If it still fails, also try --cookies-browser chrome.")
+    if "private" in m or "removed" in m or "copyright" in m or "terminated" in m:
+        return "That particular upload is gone; this one is fine to ignore, the script tries other results."
+    return "Unexpected error; send me this message."
+
+
+def check(args):
+    print(f"yt-dlp {yt_dlp.version.__version__}")
+    print(f"ffmpeg: {shutil.which('ffmpeg') or 'NOT FOUND'}")
+    print(f"JS runtime: {RUNTIME.get('name', 'NONE')} {RUNTIME.get('path', '')}")
+    try:
+        cands = search(args, "SpongeBob SquarePants official clip", 5)
+        print(f"search: OK ({len(cands)} results)")
+    except Exception as e:
+        print(f"search: FAILED -> {e}\n  fix: {explain(str(e))}"); return
+    for c in cands[:3]:
+        try:
+            with yt_dlp.YoutubeDL({**ydl_base(args)}) as y:
+                info = y.extract_info(c["url"], download=False)
+            fmts = [f for f in info.get("formats", []) if f.get("vcodec") not in (None, "none")]
+            print(f"video: OK  '{info.get('title', '')[:60]}'  ({len(fmts)} video formats)")
+            print("\nSetup looks good. Run:  python fetch_clips.py"); return
+        except Exception as e:
+            err = str(e).splitlines()[0]
+            print(f"video: FAILED for {c['url']}\n  {err[:200]}\n  fix: {explain(err)}")
+    print("\nAll test videos failed; apply the fix above and run --check again.")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", default="clips", help="output folder (default: ./clips)")
@@ -196,8 +249,16 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--candidates", type=int, default=6, help="search results to consider per clip")
     ap.add_argument("--cookies-browser", help="chrome / firefox / edge / brave, if YouTube blocks you")
+    ap.add_argument("--check", action="store_true", help="test your setup on one video and explain any problem")
     args = ap.parse_args()
+    name, path = detect_runtime()
+    if name: RUNTIME.update(name=name, path=path)
+    if args.check: check(args); return
     if not shutil.which("ffmpeg"): sys.exit("ffmpeg not found on PATH (needed to cut sections). Install it first.")
+    if not name:
+        sys.exit("No JavaScript runtime found. YouTube now needs one, or every video shows as 'not available'.\n"
+                 "  Windows: winget install DenoLand.Deno     Mac: brew install deno\n"
+                 "Then open a NEW terminal and run:  python fetch_clips.py --check")
 
     out = args.out; tmp = os.path.join(out, "_tmp"); cand_dir = os.path.join(out, "_candidates"); prev = os.path.join(out, "_preview")
     for d in (out, tmp, cand_dir, prev): os.makedirs(d, exist_ok=True)
@@ -238,14 +299,16 @@ def main():
                     sources[cid] = {"id": cid, "url": c["url"], "title": c["title"], "channel": c["channel"],
                                     "start": f"{start:.2f}", "end": f"{end:.2f}", "method": "captions"}
                 except Exception as e:
-                    print(f"   download failed: {e}"); review.append({"id": cid, "reason": f"download failed: {e}", "candidates": c["url"]})
+                    print(f"   download failed: {str(e).splitlines()[0][:160]}\n   fix: {explain(str(e))}"); review.append({"id": cid, "reason": f"download failed: {e}", "candidates": c["url"]})
         else:
             short = [c for c in cands if c["duration"] and c["duration"] <= MAX_CANDIDATE_SECONDS][:2]
             print(f"   couldn't locate the moment from captions; {len(short)} short candidate(s) for manual trim")
             if not args.dry_run:
                 for k, c in enumerate(short):
                     try: download_whole(args, c["url"], os.path.join(cand_dir, f"{cid}__{k + 1}"))
-                    except Exception as e: print(f"   candidate download failed: {e}")
+                    except Exception as e:
+                        print(f"   candidate download failed: {str(e).splitlines()[0][:120]}")
+                        if not getattr(main, "_hinted", False): print(f"   fix: {explain(str(e))}"); main._hinted = True
             review.append({"id": cid, "reason": "moment not found in captions (trim from _candidates/ or send me times)",
                            "candidates": " | ".join(f"{c['url']} ({c['title'][:50]})" for c in short)})
 
