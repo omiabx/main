@@ -5,7 +5,7 @@ import { C, character, pose, lampBoard, paintWall, cactus, rock, house, flag, ph
 import { TS, plateau, noise2, sandCol, cliffCol, island } from './terrain.js';
 import { SKY, lights, makeCam, aim, v3 } from './core.js';
 import { buildMap } from './map.js';
-import { thumbA, thumbB, thumbC, thumbD, thumbE, thumbF, thumbG, thumbFnt, thumbI } from './thumbs.js';
+import { thumbA, thumbB, thumbC, thumbD, thumbE, thumbF, thumbG, thumbFnt, thumbI, thumbJ } from './thumbs.js';
 
 function base(sky = 'day', preset = 'day') {
   const scene = new THREE.Scene(); scene.background = SKY[sky];
@@ -78,7 +78,7 @@ export function stage() {
   S.setTiles = (colors, f) => {
     for (let i = 0; i < SW * SH; i++) {
       const cx = i % SW, cy = Math.floor(i / SW); const q = f ? f(i, cx, cy) : { s: 1, z: 0 };
-      o.position.set(cx - (SW - 1) / 2, (SH - 1) / 2 - cy, q.z || 0); o.scale.set(q.s, q.s, Math.max(0.2, q.d ?? 0.4)); o.updateMatrix();
+      o.position.set(cx - (SW - 1) / 2 + (q.dx || 0), (SH - 1) / 2 - cy + (q.dy || 0), q.z || 0); o.scale.set(q.s, q.s, Math.max(0.2, q.d ?? 0.4)); o.updateMatrix();
       O.tiles.setMatrixAt(i, o.matrix); O.tiles.setColorAt(i, col.setHex(colors[i]));
     }
     O.tiles.instanceMatrix.needsUpdate = true; O.tiles.instanceColor.needsUpdate = true;
@@ -141,6 +141,52 @@ export function bobtest() {
   return S;
 }
 
+// ---------------- the Foundry (episode 7+) ----------------
+import { furnace, crucible, ingot, wafer } from './props7.js';
+export function foundry() {
+  const S = base('day'); const { scene, O } = S;
+  const c = document.createElement('canvas'); c.width = 4; c.height = 512; const x = c.getContext('2d');
+  const gr = x.createLinearGradient(0, 0, 0, 512); gr.addColorStop(0, '#2a2236'); gr.addColorStop(0.55, '#5a3a40'); gr.addColorStop(0.85, '#b0603a'); gr.addColorStop(1, '#e09050');
+  x.fillStyle = gr; x.fillRect(0, 0, 4, 512); const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; scene.background = tex;
+  S.L.sun.color.setRGB(1, 0.78, 0.6); S.L.sun.intensity = 1.8; S.L.hemi.color.setRGB(0.75, 0.68, 0.8); S.L.hemi.groundColor.setRGB(0.5, 0.3, 0.2); S.L.hemi.intensity = 1.2;
+  const vb = new VB();
+  const stone = (x, y, z) => { const h = hash3(x, y, z); return h > 0.66 ? rgb(108, 96, 92) : h > 0.33 ? rgb(96, 86, 84) : rgb(118, 106, 98); };
+  for (let x = -40; x <= 40; x++) for (let z = -32; z <= 20; z++) {
+    const edge = Math.hypot(x / 40, z / 30) + (noise2(x, z, 5) - 0.5) * 0.12; if (edge > 1.02) continue;
+    const lava = Math.abs(z - 8 - Math.round(Math.sin(x * 0.25) * 2)) < 1 && x < -6 || Math.abs(x - 26 - Math.round(Math.sin(z * 0.3) * 1.5)) < 1 && z < 2;
+    for (let y = -6; y <= 0; y++) vb.set(x, y, z, y === 0 && lava ? (hash3(x, 1, z) > 0.5 ? rgb(255, 140, 40) : rgb(255, 180, 70)) : y === 0 ? stone(x, y, z) : cliffCol(x, y, z));
+    if (!lava && noise2(x + 9, z, 6) > 0.72 && Math.hypot(x, z) > 18) vb.set(x, 1, z, stone(x, 1, z));
+  }
+  O.ground = vb.mesh({ scale: TS }); scene.add(O.ground);
+  const G = 4;
+  O.furnace = furnace(); O.furnace.position.set(-70, G, -80); O.furnace.rotation.y = 0.3; scene.add(O.furnace);
+  O.crucible = crucible(); O.crucible.position.set(0, G, -30); scene.add(O.crucible);
+  const fv = new VB(); fv.box(-16, 0, -2, -15, 70, -1, C.woodD); fv.box(15, 0, -2, 16, 70, -1, C.woodD); fv.box(-16, 70, -2, 16, 72, -1, C.wood); fv.box(-1, 72, -2, 0, 76, -1, rgb(80, 80, 90));
+  O.puller = fv.mesh(); O.puller.position.set(0, G, -30); scene.add(O.puller);
+  O.ingot = ingot(); O.ingot.position.set(0, G + 9, -30); scene.add(O.ingot);
+  O.sand = new VB(); for (let x = -9; x <= 9; x++) for (let z = -9; z <= 9; z++) { const h = Math.round(7 - Math.hypot(x, z) * 0.8 + hash3(x, 0, z) * 1.5); for (let y = 0; y < h; y++) O.sand.set(x, y, z, sandCol(x, y, z)); }
+  O.sandM = O.sand.mesh(); O.sandM.position.set(-48, G, -6); scene.add(O.sandM);
+  O.wafers = []; for (let k = 0; k < 6; k++) { const w = wafer(14); w.position.set(52, G + 1 + k * 1.2, -20); scene.add(w); O.wafers.push(w); }
+  O.bigWafer = wafer(24); O.bigWafer.position.set(52, G + 30, -10); O.bigWafer.rotation.x = Math.PI / 2 - 0.25; O.bigWafer.visible = false; scene.add(O.bigWafer);
+  O.beam = new THREE.Mesh(new THREE.ConeGeometry(26, 60, 24, 1, true), new THREE.MeshBasicMaterial({ color: 0xb48cff, transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide }));
+  O.beam.position.set(52, G + 62, -10); scene.add(O.beam);
+  O.bob = character('bob'); O.bob.position.set(-22, G, 22); O.bob.rotation.y = 0.6; scene.add(O.bob);
+  // chimney smoke
+  const puffs = 10; O.smoke = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshLambertMaterial({ color: 0x8a8590, transparent: true, opacity: 0.7 }), puffs); O.smoke.frustumCulled = false; scene.add(O.smoke);
+  const o3 = new THREE.Object3D();
+  S.L.fitShadow(0, 0, -20, 170);
+  aim(S.cam, v3(0, 60, 200), v3(0, 20, -20));
+  S.update = (t, shot) => {
+    pose(O.bob, t, {});
+    O.furnace.updateMatrixWorld(); const top = v3(6.5, 53, -1.5).applyMatrix4(O.furnace.matrixWorld);
+    for (let k = 0; k < puffs; k++) { const ph = (t * 0.25 + k / puffs) % 1; o3.position.set(top.x + ph * 30 + Math.sin(ph * 6 + k) * 3, top.y + ph * 90, top.z - ph * 10); o3.scale.setScalar(4 + ph * 14); o3.rotation.set(ph * 2, ph * 3, 0); o3.updateMatrix(); O.smoke.setMatrixAt(k, o3.matrix); }
+    O.smoke.instanceMatrix.needsUpdate = true;
+    O.crucible.userData.glow(0.5 + 0.5 * Math.sin(t * 3));
+    if (shot.act) shot.act(t, S);
+  };
+  return S;
+}
+
 export function map() { return buildMap({ episode: window.EP_NUM || 5 }); }
 
-export const SCENES = { canyon, stage, bobtest, map, thumbA, thumbB, thumbC, thumbD, thumbE, thumbF, thumbG, thumbFnt, thumbI };
+export const SCENES = { canyon, stage, bobtest, map, foundry, thumbA, thumbB, thumbC, thumbD, thumbE, thumbF, thumbG, thumbFnt, thumbI, thumbJ };

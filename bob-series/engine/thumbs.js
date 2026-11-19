@@ -288,3 +288,40 @@ export function thumbI() {
   };
   return S;
 }
+
+// J (episode 7, no text): SAND | CHIP split. Bob holds sand on the desert side; grains stream across and become glowing switches on a chip.
+export function thumbJ() {
+  const S = desertBase();
+  const bob = character('bob', { mouth: 'open', brows: true }); bob.position.set(-30, 4, 30); bob.rotation.y = 1.0; pose(bob, 0, { blink: 0, point: 0.85 }); S.scene.add(bob);
+  // a little heap of sand in his hand
+  const hv = new VB(); for (let x = -2; x <= 2; x++) for (let z = -2; z <= 2; z++) for (let y = 0; y < 4 - Math.abs(x) * 0.6 - Math.abs(z) * 0.6; y++) hv.set(x, y, z, hash3(x, y, z) > 0.5 ? rgb(236, 204, 144) : rgb(220, 186, 124));
+  const heap = hv.mesh({ scale: 1.25 }); S.scene.add(heap);
+  bob.updateMatrixWorld(); const hand = bob.userData.P.armR.localToWorld(v3(0, -7.5, 0)); heap.position.copy(hand).add(v3(-1, 1.2, 2));
+  aim(S.cam, v3(-20, 26, 104), v3(-11, 20, 30));
+  S.update = () => {};
+  S.post = () => {
+    const seam = W * 0.5;
+    const [hx, hy] = project(S.cam, heap.position.clone().add(v3(0, 2, 0)));
+    // right panel: dark, with faint circuit traces
+    const gr = g2.createLinearGradient(seam, 0, W, H); gr.addColorStop(0, '#120e26'); gr.addColorStop(1, '#1c1240'); g2.fillStyle = gr; g2.fillRect(seam, 0, W - seam, H);
+    g2.strokeStyle = 'rgba(95,242,255,0.18)'; g2.lineWidth = 4;
+    for (let k = 0; k < 14; k++) { const y = 60 + k * 72; g2.beginPath(); g2.moveTo(seam + 20, y); g2.lineTo(seam + 120 + (k * 53) % 160, y); g2.lineTo(seam + 170 + (k * 53) % 160, y + 36); g2.lineTo(W - 20, y + 36); g2.stroke(); }
+    // the chip
+    const cx = W * 0.75 + 20, cy = H * 0.52, cs = 420;
+    g2.save(); g2.shadowColor = '#5ff2ff'; g2.shadowBlur = 50; g2.fillStyle = '#0a0a14'; g2.fillRect(cx - cs / 2 - 14, cy - cs / 2 - 14, cs + 28, cs + 28); g2.restore();
+    g2.fillStyle = '#d8a83a'; for (let k = 0; k < 9; k++) { const o = -cs / 2 + 30 + k * (cs - 60) / 8; g2.fillRect(cx + o - 8, cy - cs / 2 - 46, 16, 34); g2.fillRect(cx + o - 8, cy + cs / 2 + 12, 16, 34); g2.fillRect(cx - cs / 2 - 46, cy + o - 8, 34, 16); g2.fillRect(cx + cs / 2 + 12, cy + o - 8, 34, 16); }
+    g2.fillStyle = '#23263a'; g2.fillRect(cx - cs / 2, cy - cs / 2, cs, cs);
+    const n = 12, ts = cs / n;
+    for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { const on = ((i * 7 + j * 11) % 5) < 3; g2.fillStyle = on ? (((i + j) % 4) ? '#4ff07a' : '#ffd23f') : '#34385a'; if (on) { g2.shadowColor = g2.fillStyle; g2.shadowBlur = 14; } g2.fillRect(cx - cs / 2 + i * ts + 5, cy - cs / 2 + j * ts + 5, ts - 10, ts - 10); g2.shadowBlur = 0; }
+    // stream of sand turning into switches
+    for (let k = 0; k < 130; k++) {
+      const f = (k % 65) / 65; const lane = k < 65 ? 0 : 1; const x = hx + (cx - cs / 2 - 30 - hx) * f; const y = hy + (cy - hy) * f - Math.sin(f * Math.PI) * (170 + lane * 50) + Math.sin(k * 2.3) * 34 * (1 - f * 0.4);
+      const mix = Math.min(1, Math.max(0, (x - seam + 80) / 220));
+      const sz = 11 + mix * 11 + (k % 3) * 2;
+      if (mix < 1) { g2.fillStyle = `rgba(${236 - 50 * mix},${200 + 30 * mix},${140 + 60 * mix},1)`; g2.fillRect(x - sz / 2, y - sz / 2, sz, sz); }
+      else { g2.save(); g2.shadowColor = '#4ff07a'; g2.shadowBlur = 16; g2.fillStyle = k % 3 ? '#4ff07a' : '#ffd23f'; g2.fillRect(x - sz / 2, y - sz / 2, sz, sz); g2.restore(); }
+    }
+    g2.save(); g2.strokeStyle = '#ffd23f'; g2.lineWidth = 8; g2.shadowColor = '#ffd23f'; g2.shadowBlur = 22; g2.beginPath(); g2.moveTo(seam, 0); g2.lineTo(seam, H); g2.stroke(); g2.restore();
+  };
+  return S;
+}

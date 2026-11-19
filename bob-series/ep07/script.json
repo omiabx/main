@@ -1,0 +1,86 @@
+{
+  "episode": 7,
+  "title": "How Sand Became a Switch",
+  "chunks": [
+    {
+      "id": "01",
+      "scene": "Hook",
+      "text": "A new phone has more switches inside it than there are people on Earth.\nYou've never seen any of them. Each one is thousands of times thinner than a hair. And every single one is made from sand.\nToday, Bob finds out how."
+    },
+    {
+      "id": "02",
+      "scene": "Map",
+      "text": "This is stop seven. Bob has finally left the desert, and the fog is gone.\nWelcome to the Foundry. This is where computers stop being an idea, and start being something you can hold."
+    },
+    {
+      "id": "03",
+      "scene": "The problem",
+      "text": "Back in the desert, everything came down to switches. On is one, off is zero.\nBut every switch Bob used, he flipped himself. When he sent his face across the canyon, he was flipping lamps until the sun went down.\nA computer has to flip billions of switches every second, with no hands. So Bob needs a switch that electricity can flip, instead of a finger."
+    },
+    {
+      "id": "04",
+      "scene": "Electricity",
+      "text": "Think of electricity like water in a pipe. When nothing is in the way, it flows all the way around, and the lamp at the end lights up.\nA switch is just a gap you can open and close. Close the gap, and electricity flows. That's a one. Open the gap, and nothing gets through. That's a zero."
+    },
+    {
+      "id": "05",
+      "scene": "Materials",
+      "text": "Some materials let electricity through really easily, like copper. That's why wires are made of it.\nOthers, like glass, block it almost completely.\nAnd then there's silicon. Silicon comes from sand, and it's somewhere in the middle. It's picky. With the right tricks, you get to decide when it lets electricity through."
+    },
+    {
+      "id": "06",
+      "scene": "The transistor",
+      "text": "So, put a tiny piece of silicon between two wires. On its own, it blocks the electricity. The gap is open.\nNow add a third wire on top. Send a little electricity into that one, and the silicon underneath starts letting electricity through. The gap closes.\nTurn it off, and the gap opens again.\nThat's a transistor. A switch with no lever. Electricity flips it."
+    },
+    {
+      "id": "07",
+      "scene": "Switches flipping switches",
+      "text": "This is the part that matters. The electricity coming out of one transistor can flip the next one. And that one can flip the next.\nSwitches flipping switches, and nobody touches anything. Pretty much everything a computer does is built on that one idea."
+    },
+    {
+      "id": "08",
+      "scene": "Making chips",
+      "text": "Of course, nobody builds these one at a time.\nFirst, the sand gets melted down and cleaned, over and over, until the silicon is almost perfectly pure. It's grown into one big shiny crystal, and sliced into discs thinner than a coin.\nThen billions of transistors get printed onto each disc, using light. Every little square on there is a chip."
+    },
+    {
+      "id": "09",
+      "scene": "Speed",
+      "text": "Remember how long it took Bob to send his face? Seven hundred and sixty-eight numbers, eight lamps each.\nA chip could flip every one of those switches before you finish blinking."
+    },
+    {
+      "id": "10",
+      "scene": "Map outro",
+      "text": "Bob plants flag number seven. His first flag in the Foundry.\nNext time, he wires a few of these switches together, and they start making decisions."
+    }
+  ],
+  "takes": [
+    {
+      "id": "part1",
+      "title": "Hook, map, the problem, electricity",
+      "sections": [
+        "01",
+        "02",
+        "03",
+        "04"
+      ]
+    },
+    {
+      "id": "part2",
+      "title": "Materials, the transistor, switches flipping switches",
+      "sections": [
+        "05",
+        "06",
+        "07"
+      ]
+    },
+    {
+      "id": "part3",
+      "title": "Making chips, speed, map outro",
+      "sections": [
+        "08",
+        "09",
+        "10"
+      ]
+    }
+  ]
+}

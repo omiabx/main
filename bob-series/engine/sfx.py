@@ -168,7 +168,16 @@ def hum(d):
     x = lp(rng.standard_normal(n), 220, 2) * (0.6 + 0.4 * np.sin(2 * np.pi * 9 * t))
     f = int(SR * 0.3); r = np.linspace(0, 1, min(f, n // 2)); x[:len(r)] *= r; x[-len(r):] *= r[::-1]
     return norm(x, 0.4)
-DUR = dict(scratch=scratch, hum=hum, count=count, flicker=flicker, paintloop=paintloop,
+def bed_foundry(d):
+    n = int(SR * d); t = np.arange(n) / SR
+    x = lp(rng.standard_normal(n), 160, 2) * (0.7 + 0.3 * np.sin(2 * np.pi * 0.2 * t))
+    crack = np.zeros(n)
+    for k in range(int(d * 6)):
+        i = int(rng.uniform(0, n - 2000)); crack[i:i + 600] += hp(rng.standard_normal(600), 2500) * np.exp(-np.arange(600) / 120) * rng.uniform(0.3, 1)
+    x = x / (np.std(x) + 1e-9) * 0.016 + crack * 0.01
+    f = min(n // 2, int(SR * 0.35)); r = np.linspace(0, 1, f); x[:f] *= r; x[-f:] *= r[::-1]
+    return x
+DUR = dict(bed_foundry=bed_foundry, scratch=scratch, hum=hum, count=count, flicker=flicker, paintloop=paintloop,
            bed_canyon=lambda d: bed('canyon', d), bed_map=lambda d: bed('map', d), bed_stage=lambda d: bed('stage', d))
 
 def make(name, dur=None):
