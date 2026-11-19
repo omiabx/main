@@ -238,12 +238,13 @@ export const EPISODE = {
       O.ingot.visible = t > tCrystal - 0.3;
       const gk = K(t, tCrystal - 0.3, tSliced - 0.2); O.ingot.userData.grow(t < tCrystal - 0.3 ? 0.08 : 0.08 + 0.92 * smooth(gk)); O.ingot.position.y = 4 + 9 + (t < tCrystal - 0.3 ? 0 : 6 * smooth(gk));
       O.wafers.forEach((w, k) => { const on = K(t, tSliced + k * 0.12, tSliced + k * 0.12 + 0.25); w.scale.setScalar(Math.max(0.001, backOut(on))); w.userData.chips(0); });
-      const pr = t > tPrinted - 0.3; O.bigWafer.visible = pr; O.bigWafer.userData.chips(K(t, tLight - 0.2, tLight + 1.2)); O.beam.material.opacity = pr ? 0.3 * (1 - K(t, tChip, tChip + 0.6)) * K(t, tPrinted - 0.3, tPrinted) : 0;
+      const pr = t > tPrinted - 0.3; O.bigWafer.visible = pr; O.bigWafer.scale.setScalar(Math.max(0.001, backOut(K(t, tPrinted - 0.3, tPrinted + 0.2)))); O.bigWafer.userData.chips(K(t, tLight - 0.2, tLight + 1.2)); O.beam.material.opacity = pr ? 0.3 * (1 - K(t, tChip, tChip + 0.6)) * K(t, tPrinted - 0.3, tPrinted) : 0;
       if (t < tMelted) cm(S, t, t08, tMelted, v3(-10, 70, 200), v3(-10, 20, -20), v3(-70, 34, 60), v3(-48, 8, -6), smooth);
       else if (t < tCrystal) cm(S, t, tMelted, tCrystal, v3(-70, 34, 60), v3(-48, 8, -6), v3(-6, 40, 50), v3(0, 14, -30), smooth);
       else if (t < tSliced) cm(S, t, tCrystal - 0.2, tSliced, v3(-6, 40, 50), v3(0, 14, -30), v3(-10, 58, 72), v3(0, 34, -30), smooth);
-      else if (t < tPrinted - 0.3) cm(S, t, tSliced - 0.1, tCoin, v3(-10, 58, 72), v3(0, 34, -30), v3(40, 30, 30), v3(52, 6, -20), smooth);
-      else cm(S, t, tPrinted - 0.3, end('08') + 0.6, v3(40, 34, 70), v3(52, 20, -20), v3(52, 40, 105), v3(52, 32, -10), smooth);
+      else if (t < tCoin) cm(S, t, tSliced - 0.1, tCoin, v3(-10, 58, 72), v3(0, 34, -30), v3(40, 30, 30), v3(52, 6, -20), smooth);
+      else if (t < tPrinted - 0.3) cm(S, t, tCoin, tPrinted - 0.3, v3(40, 30, 30), v3(52, 6, -20), v3(42, 32, 46), v3(52, 12, -18), (x) => x);
+      else cm(S, t, tPrinted - 0.3, end('08') + 0.6, v3(42, 32, 46), v3(52, 12, -18), v3(52, 40, 105), v3(52, 32, -10), smooth);
     }, overlay(t, g, S) {
       if (t > tSand8 && t < tMelted + 0.5) { const p = project(S.cam, v3(-48, 14, -6)); tag('SAND', p[0], p[1] - 40, { size: 28, scale: pop(t, tSand8) }); }
       if (t > tPure && t < tCrystal) text([['99.9999999% ', G], ['PURE', WH]], W / 2, 130, { size: 52, scale: pop(t, tPure) });
