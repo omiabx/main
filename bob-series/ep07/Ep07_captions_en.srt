@@ -1,0 +1,351 @@
+1
+00:00:00,500 --> 00:00:02,640
+A new phone has more switches inside
+
+2
+00:00:02,660 --> 00:00:04,840
+it than there are people on Earth.
+
+3
+00:00:05,260 --> 00:00:07,120
+You've never seen any of them.
+
+4
+00:00:07,340 --> 00:00:08,800
+Each one is thousands of
+
+5
+00:00:08,820 --> 00:00:10,520
+times thinner than a hair.
+
+6
+00:00:10,840 --> 00:00:13,880
+And every single one is made from sand.
+
+7
+00:00:14,720 --> 00:00:16,560
+Today, Bob finds out how.
+
+8
+00:00:17,390 --> 00:00:19,370
+This is stop seven.
+
+9
+00:00:19,390 --> 00:00:21,450
+Bob has finally left the desert,
+
+10
+00:00:21,470 --> 00:00:23,070
+and the fog is gone.
+
+11
+00:00:23,470 --> 00:00:24,790
+Welcome to the Foundry.
+
+12
+00:00:24,830 --> 00:00:27,070
+This is where computers stop being an idea,
+
+13
+00:00:27,090 --> 00:00:29,310
+and start being something you can hold.
+
+14
+00:00:29,330 --> 00:00:31,450
+Back in the desert, everything
+
+15
+00:00:31,470 --> 00:00:32,970
+came down to switches.
+
+16
+00:00:33,470 --> 00:00:35,750
+On is one, off is zero.
+
+17
+00:00:36,130 --> 00:00:37,970
+But every switch Bob used,
+
+18
+00:00:37,990 --> 00:00:39,230
+he flipped himself.
+
+19
+00:00:39,650 --> 00:00:40,870
+When he sent his face across
+
+20
+00:00:40,890 --> 00:00:42,370
+the canyon, he was flipping
+
+21
+00:00:42,390 --> 00:00:44,430
+lamps until the sun went down.
+
+22
+00:00:44,710 --> 00:00:46,730
+A computer has to flip billions of
+
+23
+00:00:46,750 --> 00:00:49,770
+switches every second, with no hands.
+
+24
+00:00:49,990 --> 00:00:51,970
+So Bob needs a switch that electricity
+
+25
+00:00:51,990 --> 00:00:54,070
+can flip, instead of a finger.
+
+26
+00:00:54,090 --> 00:00:57,530
+Think of electricity like water in a pipe.
+
+27
+00:00:57,750 --> 00:00:59,190
+When nothing is in the way, it
+
+28
+00:00:59,210 --> 00:01:00,930
+flows all the way around, and
+
+29
+00:01:00,950 --> 00:01:02,790
+the lamp at the end lights up.
+
+30
+00:01:03,010 --> 00:01:04,490
+A switch is just a gap
+
+31
+00:01:04,510 --> 00:01:05,970
+you can open and close.
+
+32
+00:01:06,410 --> 00:01:08,590
+Close the gap, and electricity flows.
+
+33
+00:01:08,810 --> 00:01:10,070
+That's a one.
+
+34
+00:01:10,090 --> 00:01:12,310
+Open the gap, and nothing gets through.
+
+35
+00:01:12,510 --> 00:01:14,008
+That's a zero.
+
+36
+00:01:14,208 --> 00:01:16,168
+Some materials let electricity through
+
+37
+00:01:16,188 --> 00:01:18,328
+really easily, like copper.
+
+38
+00:01:18,548 --> 00:01:20,268
+That's why wires are made of it.
+
+39
+00:01:20,368 --> 00:01:22,048
+Others, like glass, block
+
+40
+00:01:22,068 --> 00:01:23,528
+it almost completely.
+
+41
+00:01:23,968 --> 00:01:25,448
+And then there's silicon.
+
+42
+00:01:25,968 --> 00:01:27,748
+Silicon comes from sand, and
+
+43
+00:01:27,768 --> 00:01:29,088
+it's somewhere in the middle.
+
+44
+00:01:29,308 --> 00:01:30,428
+It's picky.
+
+45
+00:01:30,548 --> 00:01:32,648
+With the right tricks, you get to decide
+
+46
+00:01:32,668 --> 00:01:34,568
+when it lets electricity through.
+
+47
+00:01:35,038 --> 00:01:36,758
+So, put a tiny piece of
+
+48
+00:01:36,778 --> 00:01:38,598
+silicon between two wires.
+
+49
+00:01:38,838 --> 00:01:41,018
+On its own, it blocks the electricity.
+
+50
+00:01:41,338 --> 00:01:42,758
+The gap is open.
+
+51
+00:01:43,018 --> 00:01:45,198
+Now add a third wire on top.
+
+52
+00:01:45,478 --> 00:01:47,298
+Send a little electricity into that
+
+53
+00:01:47,318 --> 00:01:48,918
+one, and the silicon underneath
+
+54
+00:01:48,938 --> 00:01:50,958
+starts letting electricity through.
+
+55
+00:01:51,118 --> 00:01:52,418
+The gap closes.
+
+56
+00:01:52,818 --> 00:01:55,118
+Turn it off, and the gap opens again.
+
+57
+00:01:55,358 --> 00:01:56,738
+That's a transistor.
+
+58
+00:01:57,018 --> 00:01:58,658
+A switch with no lever.
+
+59
+00:01:59,378 --> 00:02:00,358
+Electricity flips it.
+
+60
+00:02:00,888 --> 00:02:02,628
+This is the part that matters.
+
+61
+00:02:02,808 --> 00:02:04,448
+The electricity coming out of one
+
+62
+00:02:04,468 --> 00:02:06,688
+transistor can flip the next one.
+
+63
+00:02:06,708 --> 00:02:08,528
+And that one can flip the next.
+
+64
+00:02:09,208 --> 00:02:10,568
+Switches flipping switches,
+
+65
+00:02:10,708 --> 00:02:12,628
+and nobody touches anything.
+
+66
+00:02:12,928 --> 00:02:14,268
+Pretty much everything a computer
+
+67
+00:02:14,288 --> 00:02:16,848
+does is built on that one idea.
+
+68
+00:02:17,518 --> 00:02:18,938
+Of course, nobody builds
+
+69
+00:02:18,958 --> 00:02:20,518
+these one at a time.
+
+70
+00:02:20,758 --> 00:02:22,718
+First, the sand gets melted down
+
+71
+00:02:22,738 --> 00:02:25,678
+and cleaned, over and over, until
+
+72
+00:02:25,698 --> 00:02:28,398
+the silicon is almost perfectly pure.
+
+73
+00:02:28,778 --> 00:02:31,378
+It's grown into one big shiny crystal,
+
+74
+00:02:31,398 --> 00:02:34,378
+and sliced into discs thinner than a coin.
+
+75
+00:02:34,738 --> 00:02:36,838
+Then billions of transistors get
+
+76
+00:02:36,858 --> 00:02:39,438
+printed onto each disc, using light.
+
+77
+00:02:39,778 --> 00:02:42,238
+Every little square on there is a chip.
+
+78
+00:02:42,298 --> 00:02:43,998
+Remember how long it took
+
+79
+00:02:44,018 --> 00:02:45,315
+Bob to send his face?
+
+80
+00:02:45,335 --> 00:02:46,498
+Seven hundred and sixty-eight
+
+81
+00:02:46,518 --> 00:02:49,178
+numbers, eight lamps each.
+
+82
+00:02:49,418 --> 00:02:51,238
+A chip could flip every one of those
+
+83
+00:02:51,258 --> 00:02:53,318
+switches before you finish blinking.
+
+84
+00:02:54,358 --> 00:02:56,218
+Bob plants flag number seven.
+
+85
+00:02:56,238 --> 00:02:58,318
+His first flag in the Foundry.
+
+86
+00:02:58,518 --> 00:03:00,118
+Next time, he wires a few of
+
+87
+00:03:00,138 --> 00:03:01,458
+these switches together, and
+
+88
+00:03:01,478 --> 00:03:02,878
+they start making decisions.
