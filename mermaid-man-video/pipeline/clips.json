@@ -1,0 +1,282 @@
+{
+ "C01": {
+  "src": "src/mmbegins.mp4",
+  "segs": [
+   [
+    633.42,
+    640.2
+   ]
+  ],
+  "note": "It feels just like yesterday / No, not really",
+  "asegs": [
+   [
+    633.2,
+    640.2
+   ]
+  ]
+ },
+ "C02": {
+  "src": "src/s1d1.mp4",
+  "segs": [
+   [
+    6414.34,
+    6420.7
+   ]
+  ],
+  "note": "Are you MM and BB? / we used to be, now we're retired",
+  "asegs": [
+   [
+    6414.3,
+    6420.7
+   ]
+  ]
+ },
+ "C03": {
+  "src": "src/s1d1.mp4",
+  "segs": [
+   [
+    6423.85,
+    6429.6
+   ]
+  ],
+  "note": "There's evil afoot / What? / EVIL!",
+  "asegs": [
+   [
+    6423.85,
+    6429.6
+   ]
+  ]
+ },
+ "C04": {
+  "src": "src/s1d1.mp4",
+  "segs": [
+   [
+    6502.4,
+    6510.7
+   ],
+   [
+    6535.45,
+    6537.2
+   ]
+  ],
+  "note": "broccoli / young ward / boy needs vitamins // will you stop calling me boy",
+  "asegs": [
+   [
+    6502.4,
+    6510.7
+   ],
+   [
+    6535.45,
+    6537.2
+   ]
+  ]
+ },
+ "C05": {
+  "src": "src/s1d1.mp4",
+  "segs": [
+   [
+    6793.95,
+    6797.1
+   ]
+  ],
+  "note": "We did it you old coot / Who are you?",
+  "asegs": [
+   [
+    6793.95,
+    6797.1
+   ]
+  ]
+ },
+ "C06": {
+  "src": "src/bttp.mp4",
+  "segs": [
+   [
+    89.08,
+    96.95
+   ]
+  ],
+  "note": "locker of memories / I can't remember",
+  "asegs": [
+   [
+    89.0,
+    96.95
+   ]
+  ]
+ },
+ "C07": {
+  "src": "src/mmbegins.mp4",
+  "segs": [
+   [
+    250.35,
+    262.1
+   ],
+   [
+    267.6,
+    269.9
+   ]
+  ],
+  "note": "young handsome muscular lad ... washing machine // What are you talking about?",
+  "asegs": [
+   [
+    250.35,
+    262.1
+   ],
+   [
+    267.6,
+    269.9
+   ]
+  ]
+ },
+ "C08": {
+  "src": "src/mmbegins.mp4",
+  "segs": [
+   [
+    399.95,
+    406.6
+   ]
+  ],
+  "note": "reason I teamed up with this joker",
+  "asegs": [
+   [
+    399.95,
+    406.6
+   ]
+  ]
+ },
+ "C09": {
+  "src": "src/mmbegins.mp4",
+  "segs": [
+   [
+    487.64,
+    494.55
+   ]
+  ],
+  "note": "Come on Ernie ... microwave, Tim",
+  "asegs": [
+   [
+    487.6,
+    494.55
+   ]
+  ]
+ },
+ "C10": {
+  "src": "src/s1d1.mp4",
+  "segs": [
+   [
+    6216.7,
+    6220.7
+   ]
+  ],
+  "note": "Mermaid Man, with his young associate Barnacle Boy",
+  "asegs": [
+   [
+    6216.7,
+    6220.7
+   ]
+  ]
+ },
+ "C11": {
+  "src": "src/s3d2.mp4",
+  "segs": [
+   [
+    4795.64,
+    4800.05
+   ],
+   [
+    4836.6,
+    4841.0
+   ],
+   [
+    4848.1,
+    4852.35
+   ]
+  ],
+  "note": "pip squeak for the boy // 68 years old // second banana",
+  "asegs": [
+   [
+    4795.55,
+    4800.05
+   ],
+   [
+    4836.6,
+    4841.0
+   ],
+   [
+    4848.1,
+    4852.35
+   ]
+  ]
+ },
+ "C12": {
+  "src": "src/s3d2.mp4",
+  "segs": [
+   [
+    5397.45,
+    5401.9
+   ]
+  ],
+  "note": "side of justice, Kyle",
+  "asegs": [
+   [
+    5397.45,
+    5401.9
+   ]
+  ]
+ },
+ "C13": {
+  "src": "src/s3d2.mp4",
+  "segs": [
+   [
+    4884.45,
+    4886.7
+   ]
+  ],
+  "note": "EVIL! (Mermaid Man, MMBB V)",
+  "asegs": [
+   [
+    4884.45,
+    4886.7
+   ]
+  ]
+ },
+ "C14": {
+  "src": "src/bttp.mp4",
+  "segs": [
+   [
+    311.25,
+    322.3
+   ],
+   [
+    329.1,
+    333.2
+   ]
+  ],
+  "note": "help the elderly / familiar / flipper // defenseless seniors",
+  "asegs": [
+   [
+    311.25,
+    322.3
+   ],
+   [
+    329.1,
+    333.2
+   ]
+  ]
+ },
+ "C15": {
+  "src": "src/s9d1.mp4",
+  "segs": [
+   [
+    1478.14,
+    1486.0
+   ]
+  ],
+  "note": "Patrick-Man ad: all in a day's work / true face of crime",
+  "asegs": [
+   [
+    1478.1,
+    1486.0
+   ]
+  ]
+ }
+}
