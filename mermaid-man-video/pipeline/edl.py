@@ -508,7 +508,7 @@ def build(align):
         (None, V(BTTP, 331.0, 1.0, 1.0, freeze=True)),
         ('i honestly', V(BTTP, 331.0, 1.0, 1.15, freeze=True, grade={'look': 'fade_desat', 'dur': 4.0})),
     ], ovs=[(None, 'i honestly', 'names', dict(items=[('McHALE (1962)', 330, 110, 560, 250), ('PARKER (1962)', 1640, 130, 1370, 280),
-                                                      ('BATMAN (1966)', 260, 560, 560, 650), ('ROBIN (1966)', 1700, 760, 1420, 900)], size=56))],
+                                                      ('BATMAN (1966)', 260, 520, 630, 610), ('ROBIN (1966)', 1700, 760, 1420, 900)], size=56))],
          sfx=[(None, 'shutter', -15)])
     B.gap(0.5)
 
