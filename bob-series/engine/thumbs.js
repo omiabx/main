@@ -337,17 +337,18 @@ export function thumbK() {
   aim(S.cam, v3(0, 34, 120), v3(4, 22, 30));
   S.update = () => {};
   S.post = () => {
-    g2.fillStyle = 'rgba(12,8,30,0.35)'; g2.fillRect(0, 0, W, H);
+    const P = S.grey ? { dim: 'rgba(12,8,30,0.25)', edge: '#000000', face: '#c6c6c6', hi: '#ffffff', lo: '#555555', slot: '#8b8b8b', slotHi: '#ffffff', slotLo: '#373737', arrow: '#8b8b8b', arrowEdge: '#373737' } : { dim: 'rgba(12,8,30,0.35)', edge: '#0d0b1e', face: '#2a2348', hi: '#3a3264', lo: '#1a1530', slot: '#1b1636', slotHi: '#5a5090', slotLo: '#100c22', arrow: '#ffd23f', arrowEdge: '#14102a' };
+    g2.fillStyle = P.dim; g2.fillRect(0, 0, W, H);
     // panel
     const px = 70, py = 150, pw = 1180, ph = 780;
-    g2.fillStyle = '#0d0b1e'; g2.fillRect(px - 10, py - 10, pw + 20, ph + 20);
-    g2.fillStyle = '#2a2348'; g2.fillRect(px, py, pw, ph);
-    g2.fillStyle = '#3a3264'; g2.fillRect(px, py, pw, 12); g2.fillRect(px, py, 12, ph);
-    g2.fillStyle = '#1a1530'; g2.fillRect(px, py + ph - 12, pw, 12); g2.fillRect(px + pw - 12, py, 12, ph);
+    g2.fillStyle = P.edge; g2.fillRect(px - 10, py - 10, pw + 20, ph + 20);
+    g2.fillStyle = P.face; g2.fillRect(px, py, pw, ph);
+    g2.fillStyle = P.hi; g2.fillRect(px, py, pw, 12); g2.fillRect(px, py, 12, ph);
+    g2.fillStyle = P.lo; g2.fillRect(px, py + ph - 12, pw, 12); g2.fillRect(px + pw - 12, py, 12, ph);
     const slot = (x, y, s, glow) => {
       if (glow) { g2.save(); g2.shadowColor = '#4ff07a'; g2.shadowBlur = 40; g2.fillStyle = '#4ff07a'; g2.fillRect(x - 6, y - 6, s + 12, s + 12); g2.restore(); }
-      g2.fillStyle = '#100c22'; g2.fillRect(x, y, s, s); g2.fillStyle = '#5a5090'; g2.fillRect(x, y + s - 8, s, 8); g2.fillRect(x + s - 8, y, 8, s);
-      g2.fillStyle = '#1b1636'; g2.fillRect(x + 8, y + 8, s - 16, s - 16);
+      g2.fillStyle = P.slotLo; g2.fillRect(x, y, s, s); g2.fillStyle = P.slotHi; g2.fillRect(x, y + s - 8, s, 8); g2.fillRect(x + s - 8, y, 8, s);
+      g2.fillStyle = P.slot; g2.fillRect(x + 8, y + 8, s - 16, s - 16);
     };
     // isometric voxel sand block icon
     const sandBlock = (cx, cy, r) => {
@@ -364,8 +365,8 @@ export function thumbK() {
     for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { const x = gx + i * gs, y = gy + j * gs; slot(x, y, gs - 12, false); sandBlock(x + (gs - 12) / 2, y + (gs - 12) / 2 + 4, 58); }
     // arrow
     const ax = gx + 3 * gs + 30, ay = py + ph / 2;
-    g2.fillStyle = '#14102a'; g2.beginPath(); g2.moveTo(ax - 6, ay - 34); g2.lineTo(ax + 96, ay - 34); g2.lineTo(ax + 96, ay - 72); g2.lineTo(ax + 176, ay); g2.lineTo(ax + 96, ay + 72); g2.lineTo(ax + 96, ay + 34); g2.lineTo(ax - 6, ay + 34); g2.closePath(); g2.fill();
-    g2.fillStyle = '#ffd23f'; g2.beginPath(); g2.moveTo(ax + 4, ay - 24); g2.lineTo(ax + 104, ay - 24); g2.lineTo(ax + 104, ay - 54); g2.lineTo(ax + 160, ay); g2.lineTo(ax + 104, ay + 54); g2.lineTo(ax + 104, ay + 24); g2.lineTo(ax + 4, ay + 24); g2.closePath(); g2.fill();
+    g2.fillStyle = P.arrowEdge; g2.beginPath(); g2.moveTo(ax - 6, ay - 34); g2.lineTo(ax + 96, ay - 34); g2.lineTo(ax + 96, ay - 72); g2.lineTo(ax + 176, ay); g2.lineTo(ax + 96, ay + 72); g2.lineTo(ax + 96, ay + 34); g2.lineTo(ax - 6, ay + 34); g2.closePath(); g2.fill();
+    g2.fillStyle = P.arrow; g2.beginPath(); g2.moveTo(ax + 4, ay - 24); g2.lineTo(ax + 104, ay - 24); g2.lineTo(ax + 104, ay - 54); g2.lineTo(ax + 160, ay); g2.lineTo(ax + 104, ay + 54); g2.lineTo(ax + 104, ay + 24); g2.lineTo(ax + 4, ay + 24); g2.closePath(); g2.fill();
     // output slot with a chip
     const os = 260, ox = ax + 200, oy = ay - os / 2; slot(ox, oy, os, true);
     const ccx = ox + os / 2, ccy = oy + os / 2, cs = 150;
@@ -376,4 +377,10 @@ export function thumbK() {
     for (let k = 0; k < 10; k++) { const a = k / 10 * Math.PI * 2; const rr = 175 + (k % 3) * 18; const x = ccx + Math.cos(a) * rr, y = ccy + Math.sin(a) * rr; const s = 8 + (k % 2) * 6; g2.fillStyle = k % 2 ? '#ffd23f' : '#ffffff'; g2.fillRect(x - s / 2, y - 2, s, 4); g2.fillRect(x - 2, y - s / 2, 4, s); }
   };
   return S;
+}
+
+// K2: same crafting idea, classic grey bevelled pixel-inventory look (own drawing, no game assets)
+export function thumbK2() {
+  const S = thumbK(); const base = S.post;
+  S.grey = true; return S;
 }

@@ -4,6 +4,7 @@ Video: `output/Ep07_How_Sand_Became_a_Switch.mp4` (3:16, 1080p30)
 Captions: `Ep07_captions_en.srt` (word-timed from the final voice)
 Thumbnail: `thumbnails/thumbnail_sand-chip-split.jpg` (no text: Bob's sand turns into glowing switches on a chip)
 Alternate: `thumbnails/thumbnail_crafting-sand-to-chip.jpg` (no text: crafting grid, 9 sand blocks -> chip, Bob amazed)
+Alternate: `thumbnails/thumbnail_crafting-grey.jpg` (same crafting grid in a classic grey bevelled inventory look; own drawing, no game assets)
 
 ## Title
 **How Sand Became a Switch**
