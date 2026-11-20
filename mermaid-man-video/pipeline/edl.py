@@ -126,8 +126,23 @@ class Build:
         for i, (a, b) in enumerate(c['segs']):
             d = b - a
             z = zooms[i] if zooms else (1.0, 1.06) if i % 2 == 0 else (1.14, 1.2)
-            self.add_shot(V(c['src'], a, z[0], z[1], y=y if not isinstance(y, list) else y[i],
-                            x=x if not isinstance(x, list) else x[i], grade=grade), self.t, self.t + d)
+            yy = y if not isinstance(y, list) else y[i]
+            xx = x if not isinstance(x, list) else x[i]
+            cuts = [ct for ct in SCENES.get(c['src'], []) if a + 0.01 < ct < b - 0.01]
+            head = [ct for ct in cuts if ct - a < 0.22]
+            tail_c = [ct for ct in cuts if b - ct < 0.45]
+            va, vb = a, b
+            if head:                      # hold first clean frame instead of flashing the previous shot
+                va = max(head) + 0.03
+            if tail_c:                    # hold last frame instead of flashing the next shot
+                vb = min(tail_c) - 0.03
+            zf = lambda tt: z[0] + (z[1] - z[0]) * (tt - a) / max(d, 1e-3)
+            if va > a:
+                self.add_shot(V(c['src'], va, zf(a), zf(a), y=yy, x=xx, grade=grade, freeze=True), self.t, self.t + (va - a))
+            csh = V(c['src'], va, zf(va), zf(vb), y=yy, x=xx, grade=grade); csh.kw['clip'] = True
+            self.add_shot(csh, self.t + (va - a), self.t + (vb - a))
+            if vb < b:
+                self.add_shot(V(c['src'], vb - 0.04, zf(vb), zf(vb), y=yy, x=xx, grade=grade, freeze=True), self.t + (vb - a), self.t + d)
             aa = c.get('asegs', c['segs'])[i][0]
             self.audio.append(dict(path=f'{ROOT}/clipaudio/{cid}_{i}_vox.wav', t=self.t - (a - aa), gain=gain, clip=True,
                                    fade_in=0.01, fade_out=0.03, trim=(a - aa, b - aa)))
@@ -194,6 +209,18 @@ class Build:
                 self.shots[i].end = self.shots[i + 1].start
             if self.shots[i].end > self.shots[i + 1].start:
                 self.shots[i].end = self.shots[i + 1].start
+        # re-fit slow-down after shots were stretched to be contiguous (B-roll only; clips keep lip-sync)
+        for sh in self.shots:
+            k = sh.kw
+            if sh.kind != 'video' or k['freeze'] or k.get('clip') or k['src'] not in SCENES:
+                continue
+            d = sh.end - sh.start
+            cuts = SCENES[k['src']]
+            i = bisect.bisect_right(cuts, k['t']) - 1
+            if 0 <= i < len(cuts) - 1:
+                avail = cuts[i + 1] - k['t'] - 0.04
+                if avail < d * k['speed'] and avail / d >= 0.70:
+                    k['speed'] = round(avail / d, 3)
         return dict(shots=self.shots, ovs=self.ovs, gfx=self.gfx, audio=self.audio, total=self.t, marks=self.marks)
 
 
@@ -533,7 +560,8 @@ def build(align):
     # VO 20
     b20 = B.vo('20', [
         (None, V(S9, 1486.0, 1.06, 1.06, freeze=True)),
-        ('a commercial', CARD(card_dark)),
+        ('a commercial', V(S9, 1462.0, 1.0, 1.1, grade={'look': 'desat', 'amt': 0.55})),
+        ("in somebody else's episode", V(S9, 1369.3, 1.0, 1.08, grade={'look': 'desat', 'amt': 0.6})),
         ('and behind the scenes', V(BTTP, 85.0, 1.0, 1.12, grade={'look': 'desat', 'amt': 0.6})),
         ("he wouldn't recast", CARD(card_dark)),
         ('showrunner vincent waller', CARD(card_dark)),

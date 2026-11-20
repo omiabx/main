@@ -114,14 +114,42 @@ def align_vo(vo_dir, cache_dir):
                       't0': times[idx[0]][0], 't1': times[idx[-1]][1], 'dur': dur}
         match = sum(1 for t in times if t) / len(times)
         print(f'part {part}: {len(words)} words transcribed, script aligned')
-    # cut points between blocks in the same part: midway in the silence
+    # cut points: snap to real silence in the waveform (protects against extra / improvised speech between blocks)
     for part, ids in PARTS:
+        path = out[ids[0]]['path']
+        pcm = subprocess.run(['ffmpeg', '-v', 'error', '-i', path, '-ac', '1', '-ar', '16000', '-f', 's16le', '-'], capture_output=True).stdout
+        x = np.frombuffer(pcm, np.int16).astype(np.float32) / 32768
+        hop = 160
+        fr = x[:len(x) // hop * hop].reshape(-1, hop)
+        db = 20 * np.log10(np.sqrt((fr ** 2).mean(1)) + 1e-7)
+        quiet = db < -50
+
+        def runs(a, b):
+            i0, i1 = max(0, int(a * 100)), min(len(quiet), int(b * 100))
+            rr, st = [], None
+            for i in range(i0, i1):
+                if quiet[i] and st is None:
+                    st = i
+                if (not quiet[i] or i == i1 - 1) and st is not None:
+                    if i - st >= 4:
+                        rr.append((st / 100, i / 100))
+                    st = None
+            return rr
+
         for i, b in enumerate(ids):
             o = out[b]
             prev_end = out[ids[i - 1]]['t1'] if i > 0 else 0.0
             next_start = out[ids[i + 1]]['t0'] if i + 1 < len(ids) else o['dur']
             o['a0'] = max(prev_end + (o['t0'] - prev_end) * 0.5, o['t0'] - 0.25)
             o['a1'] = min(o['t1'] + (next_start - o['t1']) * 0.5, o['t1'] + 0.35)
+            r = runs(o['t1'] - 0.25, o['t1'] + 0.7)
+            if r:
+                s0, s1 = r[0]
+                o['a1'] = s0 + min((s1 - s0) * 0.6, 0.25)
+            r = runs(o['t0'] - 0.7, o['t0'] + 0.15)
+            if r:
+                s0, s1 = r[-1]
+                o['a0'] = s1 - min((s1 - s0) * 0.5, 0.15)
     return out
 
 
