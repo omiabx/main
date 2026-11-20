@@ -5,7 +5,7 @@ import { C, character, pose, lampBoard, paintWall, cactus, rock, house, flag, ph
 import { TS, plateau, noise2, sandCol, cliffCol, island } from './terrain.js';
 import { SKY, lights, makeCam, aim, v3 } from './core.js';
 import { buildMap } from './map.js';
-import { thumbA, thumbB, thumbC, thumbD, thumbE, thumbF, thumbG, thumbFnt, thumbI, thumbJ } from './thumbs.js';
+import { thumbA, thumbB, thumbC, thumbD, thumbE, thumbF, thumbG, thumbFnt, thumbI, thumbJ, thumbK } from './thumbs.js';
 
 function base(sky = 'day', preset = 'day') {
   const scene = new THREE.Scene(); scene.background = SKY[sky];
@@ -189,4 +189,4 @@ export function foundry() {
 
 export function map() { return buildMap({ episode: window.EP_NUM || 5 }); }
 
-export const SCENES = { canyon, stage, bobtest, map, foundry, thumbA, thumbB, thumbC, thumbD, thumbE, thumbF, thumbG, thumbFnt, thumbI, thumbJ };
+export const SCENES = { canyon, stage, bobtest, map, foundry, thumbA, thumbB, thumbC, thumbD, thumbE, thumbF, thumbG, thumbFnt, thumbI, thumbJ, thumbK };

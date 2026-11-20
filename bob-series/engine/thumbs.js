@@ -325,3 +325,55 @@ export function thumbJ() {
   };
   return S;
 }
+
+// K (episode 7, no text): crafting-grid style. 3x3 sand blocks -> arrow -> glowing chip. Our own art, not any game's UI.
+export function thumbK() {
+  const S = desertBase();
+  const bob = character('bob', { mouth: 'open', brows: true }); bob.position.set(34, 4, 34); bob.rotation.y = -0.75; pose(bob, 0, { blink: 0, cheer: 0.5 }); S.scene.add(bob);
+  // a voxel workbench next to Bob
+  const wb = new VB(); const plank = (x, y, z) => ((x + z) % 4 === 0 ? rgb(120, 80, 44) : hash3(x, y, z) > 0.5 ? rgb(176, 124, 70) : rgb(160, 110, 62));
+  wb.box(-8, 0, -8, 8, 13, 8, plank); wb.box(-8, 14, -8, 8, 15, 8, (x, y, z) => ((Math.abs(x) % 5 === 0 || Math.abs(z) % 5 === 0) ? rgb(96, 62, 34) : rgb(196, 146, 88)));
+  const bench = wb.mesh(); bench.position.set(10, 4, 46); bench.rotation.y = -0.4; S.scene.add(bench);
+  aim(S.cam, v3(0, 34, 120), v3(4, 22, 30));
+  S.update = () => {};
+  S.post = () => {
+    g2.fillStyle = 'rgba(12,8,30,0.35)'; g2.fillRect(0, 0, W, H);
+    // panel
+    const px = 70, py = 150, pw = 1180, ph = 780;
+    g2.fillStyle = '#0d0b1e'; g2.fillRect(px - 10, py - 10, pw + 20, ph + 20);
+    g2.fillStyle = '#2a2348'; g2.fillRect(px, py, pw, ph);
+    g2.fillStyle = '#3a3264'; g2.fillRect(px, py, pw, 12); g2.fillRect(px, py, 12, ph);
+    g2.fillStyle = '#1a1530'; g2.fillRect(px, py + ph - 12, pw, 12); g2.fillRect(px + pw - 12, py, 12, ph);
+    const slot = (x, y, s, glow) => {
+      if (glow) { g2.save(); g2.shadowColor = '#4ff07a'; g2.shadowBlur = 40; g2.fillStyle = '#4ff07a'; g2.fillRect(x - 6, y - 6, s + 12, s + 12); g2.restore(); }
+      g2.fillStyle = '#100c22'; g2.fillRect(x, y, s, s); g2.fillStyle = '#5a5090'; g2.fillRect(x, y + s - 8, s, 8); g2.fillRect(x + s - 8, y, 8, s);
+      g2.fillStyle = '#1b1636'; g2.fillRect(x + 8, y + 8, s - 16, s - 16);
+    };
+    // isometric voxel sand block icon
+    const sandBlock = (cx, cy, r) => {
+      const top = [[cx, cy - r], [cx + r * 0.87, cy - r / 2], [cx, cy], [cx - r * 0.87, cy - r / 2]];
+      const left = [[cx - r * 0.87, cy - r / 2], [cx, cy], [cx, cy + r], [cx - r * 0.87, cy + r / 2]];
+      const right = [[cx, cy], [cx + r * 0.87, cy - r / 2], [cx + r * 0.87, cy + r / 2], [cx, cy + r]];
+      const poly = (p, c) => { g2.fillStyle = c; g2.beginPath(); p.forEach(([x, y], i) => (i ? g2.lineTo(x, y) : g2.moveTo(x, y))); g2.closePath(); g2.fill(); };
+      poly(top, '#f0d39a'); poly(left, '#d9b679'); poly(right, '#c29d62');
+      // speckle texture
+      for (let k = 0; k < 26; k++) { const u = hash3(k, cx | 0, 1), v = hash3(k, cy | 0, 2); const f = k % 3; const x = f === 0 ? cx + (u - v) * r * 0.87 : f === 1 ? cx - r * 0.87 * u : cx + r * 0.87 * u; const y = f === 0 ? cy - r / 2 + (u + v - 1) * r / 2 : f === 1 ? cy - r / 2 + r * 0.5 * u + v * r * 0.9 : cy - r / 2 * u + v * r * 0.9; g2.fillStyle = k % 2 ? 'rgba(150,110,60,0.55)' : 'rgba(255,240,200,0.5)'; g2.fillRect(x - 3, y - 3, 6, 6); }
+      g2.strokeStyle = '#14102a'; g2.lineWidth = 3; [top, left, right].forEach((p) => { g2.beginPath(); p.forEach(([x, y], i) => (i ? g2.lineTo(x, y) : g2.moveTo(x, y))); g2.closePath(); g2.stroke(); });
+    };
+    const gs = 190, gx = px + 60, gy = py + (ph - gs * 3) / 2;
+    for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) { const x = gx + i * gs, y = gy + j * gs; slot(x, y, gs - 12, false); sandBlock(x + (gs - 12) / 2, y + (gs - 12) / 2 + 4, 58); }
+    // arrow
+    const ax = gx + 3 * gs + 30, ay = py + ph / 2;
+    g2.fillStyle = '#14102a'; g2.beginPath(); g2.moveTo(ax - 6, ay - 34); g2.lineTo(ax + 96, ay - 34); g2.lineTo(ax + 96, ay - 72); g2.lineTo(ax + 176, ay); g2.lineTo(ax + 96, ay + 72); g2.lineTo(ax + 96, ay + 34); g2.lineTo(ax - 6, ay + 34); g2.closePath(); g2.fill();
+    g2.fillStyle = '#ffd23f'; g2.beginPath(); g2.moveTo(ax + 4, ay - 24); g2.lineTo(ax + 104, ay - 24); g2.lineTo(ax + 104, ay - 54); g2.lineTo(ax + 160, ay); g2.lineTo(ax + 104, ay + 54); g2.lineTo(ax + 104, ay + 24); g2.lineTo(ax + 4, ay + 24); g2.closePath(); g2.fill();
+    // output slot with a chip
+    const os = 260, ox = ax + 200, oy = ay - os / 2; slot(ox, oy, os, true);
+    const ccx = ox + os / 2, ccy = oy + os / 2, cs = 150;
+    g2.fillStyle = '#d8a83a'; for (let k = 0; k < 6; k++) { const o = -cs / 2 + 16 + k * (cs - 32) / 5; g2.fillRect(ccx + o - 6, ccy - cs / 2 - 22, 12, 18); g2.fillRect(ccx + o - 6, ccy + cs / 2 + 4, 12, 18); g2.fillRect(ccx - cs / 2 - 22, ccy + o - 6, 18, 12); g2.fillRect(ccx + cs / 2 + 4, ccy + o - 6, 18, 12); }
+    g2.fillStyle = '#0a0a14'; g2.fillRect(ccx - cs / 2 - 4, ccy - cs / 2 - 4, cs + 8, cs + 8); g2.fillStyle = '#23263a'; g2.fillRect(ccx - cs / 2, ccy - cs / 2, cs, cs);
+    const n = 6, ts = cs / n; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { const on = ((i * 7 + j * 11) % 5) < 3; g2.fillStyle = on ? (((i + j) % 4) ? '#4ff07a' : '#ffd23f') : '#34385a'; if (on) { g2.shadowColor = g2.fillStyle; g2.shadowBlur = 12; } g2.fillRect(ccx - cs / 2 + i * ts + 3, ccy - cs / 2 + j * ts + 3, ts - 6, ts - 6); g2.shadowBlur = 0; }
+    // sparkles around the output
+    for (let k = 0; k < 10; k++) { const a = k / 10 * Math.PI * 2; const rr = 175 + (k % 3) * 18; const x = ccx + Math.cos(a) * rr, y = ccy + Math.sin(a) * rr; const s = 8 + (k % 2) * 6; g2.fillStyle = k % 2 ? '#ffd23f' : '#ffffff'; g2.fillRect(x - s / 2, y - 2, s, 4); g2.fillRect(x - 2, y - s / 2, 4, s); }
+  };
+  return S;
+}
