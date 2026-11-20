@@ -798,8 +798,9 @@ def ov_letterbox(frame, t, d, o):
 
 def ov_subs(frame, t, d, o):
     """clip subtitles: kw lines=[(t0, t1, text)] in local time"""
-    for (a, b, txt) in o.kw['lines']:
-        if a <= t < b:
+    act = [(a, b, txt) for (a, b, txt) in o.kw['lines'] if a <= t < b]
+    for (a, b, txt) in act[-1:]:          # only the newest line: no overlapping subtitles
+        if True:
             key = txt
             if key not in o.cache:
                 o.cache[key] = text_rgba(txt, 'Oswald.ttf', 54, (255, 255, 255), 6, track=0)
