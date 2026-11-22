@@ -1,0 +1,5 @@
+work/
+out/*.mp4
+!out/style_test.mp4
+clips/
+engine/__pycache__/

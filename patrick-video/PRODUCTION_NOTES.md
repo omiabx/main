@@ -34,7 +34,7 @@ So when did it happen? I went back through Jellyfishing, The Secret Box, I'm wit
 [CHAPTERS GO HERE]
 
 Episodes referenced:
-Help Wanted (S1, 1999) · Jellyfishing (S1, 1999) · Valentine's Day (S1, 2000) · Big Pink Loser (S2) · The Secret Box (S3, 2001) · Sandy, SpongeBob, and the Worm (S2, 2001) · I'm with Stupid (S2) · Patrick SmartPants (S4, 2005) · That's No Lady (S4) · Pat No Pay (S5, 2007) · Pet Sitter Pat (S7, 2011) · The Patrick Star Show (2021)
+Help Wanted (S1, 1999) · Jellyfishing (S1, 1999) · Valentine's Day (S1, 2000) · Big Pink Loser (S2) · The Secret Box (S2, 2001) · Sandy, SpongeBob, and the Worm (S2, 2001) · I'm with Stupid (S2) · Patrick SmartPants (S4, 2005) · That's No Lady (S4) · Pat No Pay (S5, 2007) · Pet Sitter Pat (S8, 2011) · The Patrick Star Show (2021)
 
 Sources:
 Patrick Star (Hillenburg's "probably the dumbest guy in town", Fagerbakke's audition and "AquaDauber", Jay Lender on Valentine's Day): https://en.wikipedia.org/wiki/Patrick_Star
@@ -44,6 +44,8 @@ The Patrick Star Show (premiered July 9, 2021): https://en.wikipedia.org/wiki/Th
 Episode transcripts and air dates: https://spongebob.fandom.com
 "Study reveals the location of a starfish's head", Stanford (Nov 2023): https://news.stanford.edu/stories/2023/11/study-reveals-location-starfishs-head
 "A starfish body is just one giant head, study finds", Smithsonian: https://www.smithsonianmag.com/smart-news/a-starfish-body-is-just-one-giant-head-study-finds-180983192/
+
+Photos (Wikimedia Commons): Stephen Hillenburg by Carlos Cazurro Burgos (CC BY-SA 3.0) · Bill Fagerbakke by Michelle Nakashima (CC BY 2.0) · Pisaster ochraceus by Charles J. Sharp (CC BY-SA 4.0) · Asterias rubens by Hans Hillewaert (CC BY-SA 4.0) · Starfishes by Steven Pavlov (CC BY-SA 4.0). Document excerpts from Wikipedia (CC BY-SA 4.0) and Nature.
 
 October 21, 2005 as the turning point is my own read, not something anyone who worked on the show has said. Same for the Tibbitt connection: he co-wrote The Secret Box too, so I don't think this is one person's fault.
 

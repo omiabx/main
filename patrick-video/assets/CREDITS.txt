@@ -1,0 +1,5 @@
+fagerbakke.jpg: "Bill Fagerbakke on Comic-Con panel (2009) - Cropped.jpg" by Michelle Nakashima, CC BY 2.0, via Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Bill_Fagerbakke_on_Comic-Con_panel_(2009)_-_Cropped.jpg)
+hillenburg.jpg: "Stephen Hillenburg by Carlos Cazurro (cropped).jpg" by Carlos Cazurro Burgos (https://www.cazurro.com/), CC BY-SA 3.0, via Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Stephen_Hillenburg_by_Carlos_Cazurro_(cropped).jpg)
+starfish1.jpg: "Asterias rubens.jpg" by Hans Hillewaert, CC BY-SA 4.0, via Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Asterias_rubens.jpg)
+starfish2.jpg: "Ochre sea star (Pisaster ochraceus) Tofino.jpg" by Charles J. Sharp, CC BY-SA 4.0, via Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Ochre_sea_star_(Pisaster_ochraceus)_Tofino.jpg)
+starfish3.jpg: "Starfishes.jpg" by Steven Pavlov, CC BY-SA 4.0, via Wikimedia Commons (https://commons.wikimedia.org/wiki/File:Starfishes.jpg)
