@@ -18,6 +18,10 @@ def build(tl):
     def clip(cid, punch=None):
         s = tl.clip(cid)
         add(Clip(s["g0"], seg=s, punch=punch))
+        if not s.get("real"):
+            sfx.append((s["g0"] + 0.05, "typing", 0.5))
+            if s["dur"] > 3.0:
+                sfx.append((s["g0"] + 1.6, "typing", 0.4))
         return s
 
     def date(t, d, title, season):

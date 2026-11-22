@@ -107,9 +107,26 @@ def thumb_b():
     return t.convert("RGB")
 
 
+def thumb_c():
+    """No-screenshot fallback: a real starfish photo (CC BY-SA, credit in description) + NO BRAIN."""
+    t = bg()
+    im = Image.open(os.path.join(ROOT, "assets", "starfish2.jpg")).convert("RGB")
+    im.thumbnail((700, 620), Image.LANCZOS)
+    card = Image.new("RGBA", (im.width + 28, im.height + 28), (255, 255, 255, 255))
+    card.paste(im, (14, 14))
+    card = card.rotate(-4, expand=True, resample=Image.BICUBIC)
+    t.alpha_composite(card, (30, TH - card.height - 20))
+    w1 = word("NO", 190, (255, 255, 255))
+    w2 = word("BRAIN.", 200, RED)
+    t.alpha_composite(w1.rotate(4, expand=True, resample=Image.BICUBIC), (TW - w1.width - 120, 40))
+    t.alpha_composite(w2.rotate(4, expand=True, resample=Image.BICUBIC), (TW - w2.width - 20, 290))
+    return t.convert("RGB")
+
+
 if __name__ == "__main__":
     out = os.path.join(ROOT, "out")
     os.makedirs(out, exist_ok=True)
     thumb_a().save(os.path.join(out, "thumbnail_A.png"))
     thumb_b().save(os.path.join(out, "thumbnail_B.png"))
+    thumb_c().save(os.path.join(out, "thumbnail_C_no_screenshot.png"))
     print("wrote out/thumbnail_A.png, out/thumbnail_B.png")

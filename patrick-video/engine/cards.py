@@ -179,7 +179,23 @@ def media_frame(path, label, t, size):
 
 @lru_cache(64)
 def placeholder(label, size):
-    return gfx.placeholder_clip(size[0], size[1], label).convert("RGBA")
+    """Episode file card (paper) shown where footage would go."""
+    import re as _re
+    label = _re.sub(r"^[BC]\d\d[a-z]?\s+", "", label)
+    w, h = size
+    img = gfx.paper_texture((w, h), seed=len(label), color=(232, 220, 190)).convert("RGBA")
+    d = ImageDraw.Draw(img)
+    d.rectangle((0, 0, w, int(h * 0.16)), fill=(40, 36, 32, 255))
+    d.text((int(w * 0.04), int(h * 0.035)), "EPISODE FILE", font=font("oswald", int(h * 0.075)), fill=(235, 225, 200))
+    f = font("anton", int(h * 0.15))
+    lines = wrap(label.upper(), f, w * 0.86)
+    y = h * 0.55 - len(lines) * h * 0.09
+    for ln in lines:
+        d.text(((w - f.getlength(ln)) / 2, y), ln, font=f, fill=INK)
+        y += h * 0.18
+    for yy in range(int(h * 0.85), h, int(h * 0.05)):
+        d.line((int(w * 0.06), yy, int(w * 0.94), yy), fill=(190, 170, 130, 255), width=2)
+    return img
 
 
 # ---------------------------------------------------------------- card base
@@ -389,6 +405,8 @@ class Clip(Card):
 
     def content(self, frame, t, life):
         seg = self.kw["seg"]
+        if not seg.get("real"):
+            return self.transcript(frame, t, life, seg)
         img = media_frame(seg.get("path"), f"SHOW CLIP {seg['id']}", seg.get("src_in", 0) + life, (W, H))
         z = 1.0 + 0.04 * min(1, life / max(1, seg["dur"]))
         if self.kw.get("punch") and t >= self.kw["punch"]:
@@ -402,6 +420,42 @@ class Clip(Card):
 
     def background(self):
         return None
+
+    def transcript(self, frame, t, life, seg):
+        from timeline import TRANSCRIPT
+        head, lines = TRANSCRIPT[seg["id"]]
+        frame.paste((14, 13, 12, 255), (0, 0, W, H))
+        total = sum(len(x) for _, x in lines)
+        n = int(total * min(1.0, life / max(0.6, seg["dur"] * 0.55)))
+        key = ("tr", n)
+
+        def build():
+            img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+            d = ImageDraw.Draw(img)
+            fh = font("oswald", 34)
+            d.text((140, 150), "TRANSCRIPT  //  " + head, font=fh, fill=(200, 190, 170))
+            d.line((140, 200, W - 140, 200), fill=RED + (255,), width=4)
+            ft, fs = font("type", 66), font("oswald", 40)
+            y = 270
+            left = n
+            for who, txt in lines:
+                if left <= 0:
+                    break
+                shown = txt[:left]
+                left -= len(txt)
+                if who:
+                    d.text((140, y + 14), who, font=fs, fill=RED + (255,))
+                for ln in wrap(shown, ft, W - 560):
+                    d.text((440, y), ln, font=ft, fill=(240, 235, 222))
+                    y += 82
+                y += 30
+            return img
+        frame.alpha_composite(self.cached(key, build))
+        d = ImageDraw.Draw(frame)
+        f = font("oswald", 24)
+        d.rectangle((W - 300, 40, W - 40, 80), fill=(0, 0, 0, 150))
+        d.ellipse((W - 288, 52, W - 272, 68), fill=RED)
+        d.text((W - 262, 44), f"EXHIBIT // {seg['id']}", font=f, fill=WHITE)
 
 
 class Quote(Card):

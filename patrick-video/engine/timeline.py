@@ -16,6 +16,41 @@ CLIP_AFTER = {"VO_01": "C01", "VO_02": "C02", "VO_07": "C03", "VO_09": "C04", "V
 CLIP_EST = {"C01": 6.0, "C02": 5.0, "C03": 9.0, "C04": 8.0, "C05": 7.0, "C06": 7.0, "C07": 4.0,
             "C08": 10.0, "C09": 6.0, "C10": 9.0, "C11": 4.5, "C12": 4.5, "C13": 12.0}
 FUZZY = []
+# Used when a clip file is missing: the moment plays as a typed transcript card instead.
+TRANSCRIPT = {
+    "C01": ("HELP WANTED  //  S1  //  1999", [("PATRICK", "Where do ya think you're goin'?"),
+                                              ("PATRICK", "You're goin' to the Krusty Krab and get, that, job!")]),
+    "C02": ("PET SITTER PAT  //  S8  //  2011", [("PATRICK", "You need to work on your handwriting, SpongeBob."),
+                                                 ("", "[crumples up the list]")]),
+    "C03": ("JELLYFISHING  //  S1  //  1999", [("PATRICK", "Firmly grasp it."), ("PATRICK", "Firmly grasp it."),
+                                               ("PATRICK", "FIRMLY GRASP IT!"), ("", "[Squidward screams]")]),
+    "C04": ("THE SECRET BOX  //  S2  //  2001", [("PATRICK", "The inner machinations of my mind are an enigma.")]),
+    "C05": ("THE SECRET BOX  //  S2  //  2001", [("", "[Patrick pulls the string. A hidden compartment opens.]"),
+                                                 ("", "[Inside: SpongeBob at the Christmas party.]")]),
+    "C06": ("SANDY, SPONGEBOB, AND THE WORM  //  S2  //  2001",
+            [("PATRICK", "We should take Bikini Bottom and push it somewhere else!"),
+             ("SQUIDWARD", "That idea may just be crazy enough... to get us all killed!")]),
+    "C07": ("I'M WITH STUPID  //  S2  //  2001",
+            [("PATRICK", "SpongeBob, my parents think I'm dumber than a sack of diapers.")]),
+    "C08": ("VALENTINE'S DAY  //  S1  //  2000", [("", "[Patrick rampages across the carnival.]"),
+                                                  ("", "[He corners a crowd on the dock.]")]),
+    "C09": ("PATRICK SMARTPANTS  //  S4  //  2005", [("", "[Patrick runs off a cliff, still reading the sign:]"),
+                                                     ("SIGN", "DANGER: CLIFF")]),
+    "C10": ("PATRICK SMARTPANTS  //  S4  //  2005", [("PATRICK", "...exactly five meters due north."),
+                                                     ("SPONGEBOB", "Brain coral! No wonder you got so smart, buddy.")]),
+    "C11": ("THAT'S NO LADY  //  S4  //  2006", [("PATRICK", "Ford knee."), ("MR. KRABS", "That's a seven, Patricia.")]),
+    "C12": ("PET SITTER PAT  //  S8  //  2011",
+            [("PATRICK", "Snail Tales? I thought it was called \"Meow, meow, meow.\"")]),
+    "C13": ("BIG PINK LOSER  //  S2  //  2001", [("CALLER", "Is this the Krusty Krab?"), ("PATRICK", "No, this is Patrick."),
+                                                 ("CALLER", "Is this the Krusty Krab?"), ("PATRICK", "No! This is Patrick!")]),
+}
+
+
+def transcript_dur(cid):
+    n = sum(len(t) for _, t in TRANSCRIPT[cid][1])
+    return round(min(7.5, max(3.6, 1.4 + n * 0.045)), 2)
+
+
 LEAD_IN = 0.35
 PART_GAP = 0.45
 END_SCREEN = 14.0
@@ -47,7 +82,7 @@ def clip_info(cid):
         dur = probe(path)
         a, b = trims.get(cid, [0.5, max(0.6, dur - 0.5)])
         return dict(id=cid, path=path, src_in=a, dur=b - a, real=True)
-    return dict(id=cid, path=None, src_in=0.0, dur=CLIP_EST[cid], real=False)
+    return dict(id=cid, path=None, src_in=0.0, dur=transcript_dur(cid), real=False)
 
 
 class Timeline:
