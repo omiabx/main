@@ -1,3 +1,9 @@
+# Clip status
+
+**Already in the video (sourced from Dailymotion, cut here):** C01 (Help Wanted pep talk, an old TV recording, soft) and C13 ("No, this is Patrick").
+**Everything else** plays as a typed transcript card. YouTube and Bilibili had nothing usable from this server, and Dailymotion's other uploads were muted, sped up, LEGO remakes or someone else's commentary.
+If you send any clip below, it replaces its transcript card automatically. C13 is only 360p, so a sharper copy would help too.
+
 # Low-bandwidth clip links
 
 My server can search YouTube but not download from it (YouTube blocks it with "Sign in to confirm you're not a bot").

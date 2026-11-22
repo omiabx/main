@@ -212,9 +212,18 @@ def main():
     lst = os.path.join(WORK, "concat.txt")
     open(lst, "w").write("".join(f"file '{p}'\n" for p in paths))
     out = a.out or os.path.join(OUT, "patrick_video.mp4" if a.t1 is None and a.t0 == 0 else "preview.mp4")
+    # two-pass loudness normalisation to YouTube's -14 LUFS
+    import json as _json
+    p = subprocess.run(["ffmpeg", "-hide_banner", "-i", wav, "-af",
+                        "loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
+                       capture_output=True, text=True).stderr
+    m = _json.loads(p[p.rindex("{"):p.rindex("}") + 1])
+    ln = ("loudnorm=I=-14:TP=-1.5:LRA=11:linear=true:"
+          f"measured_I={m['input_i']}:measured_TP={m['input_tp']}:measured_LRA={m['input_lra']}:"
+          f"measured_thresh={m['input_thresh']}:offset={m['target_offset']}")
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-f", "concat", "-safe", "0", "-i", lst, "-i", wav,
                     "-map", "0:v", "-map", "1:a", "-c:v", "copy",
-                    "-af", "loudnorm=I=-14:TP=-1.5:LRA=11", "-ar", "48000", "-ac", "2",
+                    "-af", ln, "-ar", "48000", "-ac", "2",
                     "-c:a", "aac", "-b:a", "320k", "-movflags", "+faststart", "-shortest", out], check=True)
     print("wrote", out)
 
