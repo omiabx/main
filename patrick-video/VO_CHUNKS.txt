@@ -1,173 +1,133 @@
-WHEN DID PATRICK BECOME STUPID??  |  VOICEOVER CHUNKS FOR ELEVENLABS
+WHEN DID PATRICK BECOME STUPID??  |  VOICEOVER, 6 PARTS FOR ELEVENLABS
 ======================================================================
 
 HOW TO GENERATE
-- Same voice and same settings for every chunk.
-- Suggested settings (Eleven Multilingual v2): Stability 45-50, Similarity 75, Style 0-10, Speaker Boost ON, Speed 1.0.
-- Paste ONLY the text between the ----- lines. Save each one as VO_01.mp3, VO_02.mp3, and so on.
-- If a take sounds flat or rushed, regenerate just that chunk. They are cut so any one can be redone alone.
-- Pronunciation: if "Fagerbakke" comes out wrong, replace it with "Fay-ger-bah-kee" in VO_05 only.
+- 6 parts. Save them as PART_1.mp3 ... PART_6.mp3.
+- Model: Eleven Multilingual v2 (it supports the <break> tags; Eleven v3 does NOT, so don't use v3).
+- Same voice and settings for every part: Stability 45-50, Similarity 75, Style 0-10, Speaker Boost ON, Speed 1.0.
+- Paste everything between the ----- lines INCLUDING the <break time="1.5s" /> tags.
+  Each break marks the spot where a show clip goes. I find those silences in the audio and cut there,
+  so please don't remove them.
+- Pronunciation: if "Fagerbakke" (Part 1) comes out wrong, change it to "Fay-ger-bah-kee".
   If "Tibbitt" comes out wrong, use "Tibbit".
-- Character lines are NOT in here on purpose. Those play from the real show clips between chunks.
+- If one sentence comes out badly, regenerate that part. Each part is 1.5 to 3 minutes.
 
 ======================================================================
 
-VO_01
+PART_1  (The cold open + who made Patrick)  ~1.9 min
 -----
 May 1st, 1999. The very first episode of SpongeBob. SpongeBob gets all the way to the Krusty Krab, panics, and turns around to run home. And the guy who stops him... is Patrick.
------
 
-VO_02
------
+<break time="1.5s" />
+
 Patrick Star's first real scene in this entire show is a pep talk. And it works. SpongeBob gets the job. Twelve years later, Patrick is pet-sitting Gary. He picks up the care instructions, holds them upside down...
------
 
-VO_03
------
+<break time="1.5s" />
+
 So somewhere in those twelve years, something happened to this starfish, and I wanted a date. I went back through every Patrick episode I could stand. I dug up what the people who made him actually said about him. And somehow I ended up reading a 2023 science paper about starfish anatomy, which I did not plan on. This is the file on Patrick's brain.
------
 
-VO_04
------
 Okay. First, some bad news for anybody who remembers Patrick as secretly brilliant. Stephen Hillenburg, the man who created SpongeBob, described Patrick as, quote, "probably the dumbest guy in town." That's from the guy who drew him.
------
 
-VO_05
------
 Bill Fagerbakke, who voices Patrick, says that at his audition they played him a tape of Tom Kenny doing SpongeBob, because they wanted somebody to bounce off of him. And Fagerbakke's pitch for himself was, quote, "I do the big dumb stuff. That's my deal." For the first few years he even had a nickname for Patrick. AquaDauber. Dauber was the lovable meathead he played on the sitcom Coach. So Patrick was built dumb. There's paperwork.
------
 
-VO_06
------
 Which means the title of this video has a problem. But you can't tell me nothing changed. Put on a season one episode, then a season seven episode, and it feels like two different starfish. So I started with the old one.
 -----
 
-VO_07
+======================================================================
+
+PART_2  (Old Patrick: Jellyfishing, Secret Box, the Worm)  ~1.9 min
 -----
 July 1999. Jellyfishing. SpongeBob asks Patrick to get Squidward set up with a net, and for once, Patrick is the expert in the room. One problem. Squidward's hand is completely wrapped in bandages.
------
 
-VO_08
------
+<break time="1.5s" />
+
 That's stupid, obviously. But look at how sure of himself he is. He knows exactly how jellyfishing works. He just doesn't know how hands work. Early Patrick is dumb in a very specific, very personal way. He has hobbies. He has strong opinions. He calls doing nothing an art, and he's genuinely good at it.
------
 
-VO_09
------
 September 2001. The Secret Box. Patrick won't tell SpongeBob what's inside his box, and he says the most famous line he's ever had.
------
 
-VO_10
------
+<break time="1.5s" />
+
 Great joke. But the ending is better. SpongeBob literally breaks into Patrick's house at night with a stocking over his head, finally opens the box... and it's a piece of string. He goes home laughing. Patrick's the idiot, right? Then Patrick, alone, pulls the string.
------
 
-VO_11
------
+<break time="1.5s" />
+
 A hidden compartment, with an embarrassing photo of SpongeBob from a Christmas party. He played him. The dumbest guy in town kept a secret from the nosiest sponge in the ocean, and won. Oh, and one of the three writers on that episode was a storyboard guy named Paul Tibbitt. Hold on to that name.
------
 
-VO_12
------
 One month later. A giant Alaskan Bull Worm is eating Bikini Bottom. The whole town is panicking inside the Krusty Krab, and Patrick stands up with a plan.
------
 
-VO_13
------
+<break time="1.5s" />
+
 And then, the second Sandy leaves to go fight the worm, they do it. They actually push the city. That's the Patrick I grew up with. He's dumb, sure, but the whole town is about one bad day away from being just as dumb, and sometimes his idea is the one they go with.
 -----
 
-VO_14
+======================================================================
+
+PART_3  (Sack of diapers + the one-time thing)  ~2.2 min
 -----
 This is where my theory started falling apart. Season two. I'm with Stupid. Patrick gets a letter from his dad, and it says, "Please try to remember, but don't try too hard, or you'll hurt yourself like last time."
------
 
-VO_15
------
+<break time="1.5s" />
+
 So in 2001, inside the show, Patrick being stupid is already old news. His own family knows. The plan in this one is that SpongeBob acts like an idiot, so Patrick looks smart next to him. Patrick forgets it's an act. At dinner. And at the end, we find out the starfish he was trying to impress aren't even his parents. They're two strangers named Janet and Marty. So no. There was never a golden age where Patrick was smart. I checked.
------
 
-VO_16
------
 But there is something else going on in these early episodes, and one of the writers actually explained it. February 14th, 2000. Valentine's Day. SpongeBob's big gift for Patrick, a hot air balloon made of chocolate, gets held up. So all Patrick gets... is a handshake.
------
 
-VO_17
------
+<break time="1.5s" />
+
 He snaps. He tears through the whole carnival, corners a crowd of people on a dock, and it really looks like he's about to flatten every one of them. Jay Lender, who co-wrote that episode, said later that this meltdown "was supposed to be a one-time thing." And then he said this.
------
 
-VO_18
------
 "When that show came back, it felt so right that his dark side started popping up everywhere. You can plan ahead all you want, but the characters eventually tell you who they are."
------
 
-VO_19
------
 Swap "dark side" for "stupid," and I think that's the whole answer. A joke works once. The room laughs. So they do it again. And after a few years of again, the joke isn't something Patrick does anymore. It's all he is. TV Tropes calls this Flanderization, after Ned Flanders on The Simpsons, who started out as a nice guy next door and slowly turned into a man made entirely of church. Patrick went through the same machine.
 -----
 
-VO_20
+======================================================================
+
+PART_4  (Brain coral)  ~1.9 min
 -----
 And if you want the date that machine finished the job, here's my pick. In 2004, after the first movie, Stephen Hillenburg stepped down as showrunner. The guy who took over for seasons four through nine was Paul Tibbitt. Yeah. The Secret Box guy. October 21st, 2005. Season four. Patrick SmartPants.
------
 
-VO_21
------
+<break time="1.5s" />
+
 Patrick runs off a cliff while he's still reading the sign that says "danger, cliff," knocks the top of his own head off, and SpongeBob screws it back on. And suddenly, Patrick is into art. And math. And classical music. He tells Squidward to go find himself a new mentor. He talks down to Sandy about equations. He's unbearable, and he's lonely. And in the end, he uses actual physics to work out where his real forehead landed.
------
 
-VO_22
------
+<break time="1.5s" />
+
 It was brain coral. SpongeBob screwed a rock shaped like a brain onto his best friend's head. Patrick picks friendship over being smart, puts his old head back on, and they run off screaming and giggling. Happy ending. But think about what that episode is actually saying. In 2001, Patrick could outsmart SpongeBob with a piece of string. In 2005, the show needs a head injury and a chunk of coral just to make him smart for eleven minutes. Smart Patrick stopped being a side of him. Now it's an accident, and accidents get fixed before the credits.
------
 
-VO_23
------
 Quick note, so nobody gets the wrong idea. That's my read. Nobody from the show has ever said, "this is the episode where we decided his head is empty." And Tibbitt co-wrote one of the smartest Patrick episodes ever made, so I really don't think this is one guy's fault. But look at what the stupidity gets used for after this.
 -----
 
-VO_24
+======================================================================
+
+PART_5  (Fifty Krabby Patties + No, this is Patrick)  ~1.6 min
 -----
 Same season. That's No Lady. Patrick can't read a seven on Mr. Krabs' order table.
------
 
-VO_25
------
+<break time="1.5s" />
+
 August 2007. Pat No Pay. Patrick orders fifty Krabby Patties with extra cheese, eats every single one, and then it turns out he doesn't have any money. Mr. Krabs puts the entire restaurant on lockdown. September 2011. Pet Sitter Pat. The upside-down list from the start of this video. By the end, SpongeBob comes home and finds Gary reading Patrick a bedtime story.
------
 
-VO_26
------
+<break time="1.5s" />
+
 Old Patrick was dumb about stuff. Jellyfishing. Phones. The idea that a restaurant can have a name. Later Patrick is dumb about everything, all the time, and it's usually somebody else who pays for it. By this point, if an episode needs something to break, nobody writes a reason. They just send Patrick in.
------
 
-VO_27
------
 Now, about phones. Season two. Big Pink Loser. Patrick gets a job at the Krusty Krab, and SpongeBob gives him the easiest task in the building. Answer the phone.
------
 
-VO_28
------
+<break time="1.5s" />
+
 A customer in that same episode asks Patrick if he came in from Stupidtown. Fast forward to July 9th, 2021. Nickelodeon premieres a brand new series, and Patrick hosts it. It's a talk show he runs out of his parents' house, and it's called The Patrick Star Show. Twenty years after he couldn't answer a phone, he has his own show. So if you call up and ask, "is this the Krusty Krab?"... Officially, now? No. This is Patrick.
 -----
 
-VO_29
+======================================================================
+
+PART_6  (All head + the verdict)  ~2.1 min
 -----
 Okay. One last thing, and it's the reason I'm not even mad about any of this anymore. Stephen Hillenburg wasn't only a cartoonist. He studied marine biology, and he taught it at an ocean institute in California before SpongeBob ever existed. When he explained why the dumbest guy in town is a starfish, he said starfish look "dumb and slow," but in real life they're, quote, "very active and aggressive." Which, if you remember Valentine's Day... yeah.
------
 
-VO_30
------
 But there's a part he didn't live to see. Real starfish don't have a brain. Not a small one. None. Just a ring of nerves around the mouth and a nerve running down each arm. And in November 2023, a team at Stanford published a study in the journal Nature. They sliced up starfish arms, checked which genes were switched on in every slice, and found almost nothing that builds a body. The genes that build a head were in the middle of the starfish, and running down the center of every arm. The headlines pretty much everywhere said the same thing. A starfish is basically a head. Walking around.
------
 
-VO_31
------
 So Patrick Star is a giant head... with no brain in it. He was the most scientifically accurate character on the show the entire time. Science just took twenty-four years to catch up.
------
 
-VO_32
------
 So, when did Patrick become stupid? On paper, May 1st, 1999. Hillenburg made him that way on purpose. But when did he stop being Patrick, and start being a punchline with legs? I'm going with October 21st, 2005. The day the show decided that Patrick being smart was something that could only happen to him by accident. You might pick a different episode, and I want to know which one. Tell me where you think Patrick hit the point of no return. And if there's something from your childhood that deserves its own file, leave that in the comments too. I read them.
 -----

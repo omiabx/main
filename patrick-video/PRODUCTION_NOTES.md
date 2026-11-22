@@ -92,6 +92,6 @@ Mix: voiceover at -14 LUFS integrated, SFX ducked under VO, clip dialogue raised
 
 ## 7. What happens next
 
-1. You generate `VO_01.mp3` ... `VO_32.mp3` from `VO_CHUNKS.txt` and gather the clips/frames in `CLIPS_NEEDED.md`.
+1. You generate `PART_1.mp3` ... `PART_6.mp3` from `VO_CHUNKS.txt` and gather the clips/frames in `CLIPS_NEEDED.md`.
 2. I time the edit to the real audio lengths, build every graphic, mix the SFX, and render a 1080p30 MP4 (H.264, AAC 320k, YouTube-ready) plus both thumbnails at 1280x720.
 3. I fix the chapter timestamps in the description to match the final cut.

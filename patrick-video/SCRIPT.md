@@ -3,7 +3,7 @@
 **Runtime:** ~13 min (11.5 min narration + ~1.5 min show clips)
 **Format:** Sinistory "file". Dated cold open, first-person investigation, sources in the description, a clearly labelled "my own read" verdict, and a closing question.
 
-How to read this: **VO_xx** = narrator chunk (exact text is in `VO_CHUNKS.txt`). **[Cxx]** = a show clip whose own audio plays. *On screen* = text or graphics I build.
+How to read this: **VO_xx** = a narration beat. For recording they're grouped into 6 parts in `VO_CHUNKS.txt`: Part 1 = VO_01-06, Part 2 = VO_07-13, Part 3 = VO_14-19, Part 4 = VO_20-23, Part 5 = VO_24-28, Part 6 = VO_29-32. **[Cxx]** = a show clip whose own audio plays. *On screen* = text or graphics I build.
 
 ---
 
