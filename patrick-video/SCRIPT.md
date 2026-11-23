@@ -89,16 +89,16 @@ How to read this: **VO_xx** = a narration beat. For recording they're grouped in
 
 ```
 0:00 May 1, 1999
-0:55 The dumbest guy in town
-2:05 Firmly grasp it
+1:06 The dumbest guy in town
+2:04 Firmly grasp it
 3:00 An enigma
-4:15 Push it somewhere else
-5:00 Dumber than a sack of diapers
-5:55 A one-time thing
-7:30 Brain coral
-9:30 Fifty Krabby Patties
-10:55 No, this is Patrick
-11:50 All head
-13:00 So when did it happen?
+4:04 Push it somewhere else
+4:46 Dumber than a sack of diapers
+5:35 A one-time thing
+7:05 Brain coral
+9:10 Fifty Krabby Patties
+10:31 No, this is Patrick
+11:31 All head
+12:55 So when did it happen?
 ```
-*(Timestamps get corrected once the real voiceover lengths are in.)*
+*(Matches the v4 cut.)*

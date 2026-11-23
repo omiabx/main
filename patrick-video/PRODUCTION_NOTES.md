@@ -31,7 +31,18 @@ May 1, 1999: in the very first episode of SpongeBob, Patrick Star is the one giv
 
 So when did it happen? I went back through Jellyfishing, The Secret Box, I'm with Stupid, Valentine's Day, Patrick SmartPants, Pat No Pay and Pet Sitter Pat, read what Stephen Hillenburg, Bill Fagerbakke and Jay Lender said about the character, and ended up in a 2023 Nature paper about starfish anatomy.
 
-[CHAPTERS GO HERE]
+0:00 May 1, 1999
+1:06 The dumbest guy in town
+2:04 Firmly grasp it
+3:00 An enigma
+4:04 Push it somewhere else
+4:46 Dumber than a sack of diapers
+5:35 A one-time thing
+7:05 Brain coral
+9:10 Fifty Krabby Patties
+10:31 No, this is Patrick
+11:31 All head
+12:55 So when did it happen?
 
 Episodes referenced:
 Help Wanted (S1, 1999) · Jellyfishing (S1, 1999) · Valentine's Day (S1, 2000) · Big Pink Loser (S2) · The Secret Box (S2, 2001) · Sandy, SpongeBob, and the Worm (S2, 2001) · I'm with Stupid (S2) · Patrick SmartPants (S4, 2005) · That's No Lady (S4) · Pat No Pay (S5, 2007) · Pet Sitter Pat (S8, 2011) · The Patrick Star Show (2021)
