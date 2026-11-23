@@ -3,3 +3,5 @@ out/*.mp4
 !out/style_test.mp4
 clips/
 engine/__pycache__/
+frames/
+out/thumbnail_*.png

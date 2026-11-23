@@ -59,7 +59,12 @@ def subject(name, box):
         im = Image.open(raw).convert("RGB")
     else:
         im = gfx.placeholder_clip(w, h, f"{name}.png").convert("RGB")
-    im = im.resize((w - 28, h - 28), Image.LANCZOS) if im.size != (w - 28, h - 28) else im
+    tw, th = w - 28, h - 28
+    cx = {"T1": 0.5, "T2": 0.66}.get(name, 0.5)  # where the subject sits horizontally in the grab
+    s = max(tw / im.width, th / im.height)
+    im = im.resize((int(im.width * s), int(im.height * s)), Image.LANCZOS)
+    x0 = int(min(max(0, im.width * cx - tw / 2), im.width - tw))
+    im = im.crop((x0, (im.height - th) // 2, x0 + tw, (im.height - th) // 2 + th))
     card = Image.new("RGBA", (w, h), (255, 255, 255, 255))
     card.paste(im, (14, 14))
     return card.rotate(-3, expand=True, resample=Image.BICUBIC)
