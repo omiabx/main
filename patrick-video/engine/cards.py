@@ -802,3 +802,122 @@ def monitor_overlay(frame, t, state):
     mon = gfx.brain_monitor(t, level, label, flat)
     mon = mon.resize((int(mon.width * 0.8), int(mon.height * 0.8)), Image.BILINEAR)
     frame.alpha_composite(mon, (W - mon.width - 36, H - mon.height - 36))
+
+
+# ---------------------------------------------------------------- footage-first cards (v6)
+@lru_cache(256)
+def still(path, t):
+    """One frame of a clip at time t (RGBA, 1920x1080)."""
+    out = subprocess.run(["ffmpeg", "-loglevel", "error", "-ss", f"{t:.3f}", "-i", os.path.join(ROOT, path),
+                          "-frames:v", "1", "-vf", f"scale={W}:{H}:force_original_aspect_ratio=decrease,"
+                                                   f"pad={W}:{H}:(ow-iw)/2:(oh-ih)/2",
+                          "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], capture_output=True).stdout
+    if len(out) < W * H * 3:
+        return Image.new("RGBA", (W, H), (0, 0, 0, 255))
+    return Image.frombytes("RGB", (W, H), out[:W * H * 3]).convert("RGBA")
+
+
+def zoom_on(img, z, fx, fy):
+    """Crop around focus (fx, fy in 0..1 of the frame) at zoom z and scale back to full frame."""
+    if z <= 1.001:
+        return img
+    cw, ch = W / z, H / z
+    cx = min(max(fx * W, cw / 2), W - cw / 2)
+    cy = min(max(fy * H, ch / 2), H - ch / 2)
+    box = (int(cx - cw / 2), int(cy - ch / 2), int(cx + cw / 2), int(cy + ch / 2))
+    return img.crop(box).resize((W, H), Image.BILINEAR)
+
+
+class Footage(Card):
+    """Full-screen show footage (muted; narration plays over it) with a slow push-in on a focus point,
+    optional freeze-frame and a punch-in zoom at a given time."""
+    enter = "cut"
+
+    def background(self):
+        return None
+
+    def content(self, frame, t, life):
+        k = self.kw
+        path = k["path"]
+        if k.get("freeze") is not None and t >= k["freeze"]:
+            src_t = k.get("src_in", 0.0) + (k["freeze"] - self.t0) * k.get("speed", 1.0)
+            img = still(path, round(src_t, 2))
+        elif k.get("hold"):
+            img = still(path, round(k.get("src_in", 0.0), 2))
+        else:
+            img = ClipReader.get(os.path.join(ROOT, path)).frame(k.get("src_in", 0.0) + life * k.get("speed", 1.0))
+        z0, z1 = k.get("z0", 1.0), k.get("z1", 1.12)
+        z = z0 + (z1 - z0) * ease_out(life / k.get("ztime", 6.0))
+        fx, fy = k.get("fx", 0.5), k.get("fy", 0.5)
+        p = k.get("punch")
+        if p and t >= p[0]:
+            u = ease_out((t - p[0]) / 0.14)
+            z = z + (p[1] - z) * u
+            fx = fx + (p[2] - fx) * u
+            fy = fy + (p[3] - fy) * u
+        frame.paste(zoom_on(img, z, fx, fy).convert("RGBA"), (0, 0))
+        if k.get("flip_at") and t >= k["flip_at"]:
+            u = ease_out((t - k["flip_at"]) / 0.35)
+            rot = frame.rotate(180 * u, resample=Image.BILINEAR)
+            frame.paste(rot, (0, 0))
+        if k.get("freeze") is not None and t >= k["freeze"]:
+            d = ImageDraw.Draw(frame)
+            d.rectangle((0, 0, W - 1, H - 1), outline=WHITE + (255,), width=14)
+
+
+class Montage(Card):
+    """Quick cuts between stills from several clips. items: (path, src_t, fx, fy)."""
+    enter = "cut"
+
+    def background(self):
+        return None
+
+    def content(self, frame, t, life):
+        items = self.kw["items"]
+        step = self.kw.get("step", 0.42)
+        i = min(len(items) - 1, int(life / step)) if not self.kw.get("loop") else int(life / step) % len(items)
+        path, st, fx, fy = items[i]
+        local = life - i * step
+        z = 1.08 + 0.12 * ease_out(local / step)
+        frame.paste(zoom_on(still(path, st), z, fx, fy), (0, 0))
+
+
+class Grid(Card):
+    """Frames from many clips multiplying across the screen: 1 -> 4 -> 9 -> 16 tiles."""
+    enter = "cut"
+
+    def background(self):
+        return None
+
+    def content(self, frame, t, life):
+        items = self.kw["items"]
+        steps = self.kw.get("steps", [(0.0, 1), (0.6, 2), (1.2, 3), (1.8, 4)])
+        times = [self.t0 + a for a, _ in steps] if not self.kw.get("times") else self.kw["times"]
+        n = 1
+        for (a, nn), tt in zip(steps, times):
+            if t >= tt:
+                n = nn
+        frame.paste((0, 0, 0, 255), (0, 0, W, H))
+        tw, th = W // n, H // n
+        idx = 0
+        for r in range(n):
+            for c in range(n):
+                path, st, fx, fy = items[idx % len(items)]
+                idx += 1
+                tile = zoom_on(still(path, st), 1.25, fx, fy).resize((tw - 6, th - 6), Image.BILINEAR)
+                frame.paste(tile, (c * tw + 3, r * th + 3))
+
+
+class SplitFootage(Card):
+    """Two stills side by side in evidence frames. panels: (path, src_t, tag, t_appear, fx, fy)."""
+
+    def content(self, frame, t, life):
+        for i, (path, st, tag, ta, fx, fy) in enumerate(self.kw["panels"]):
+            if t < ta:
+                continue
+            k = ease_out((t - ta) / 0.3)
+            key = ("sp", i)
+            ev = self.cached(key, lambda: gfx.evidence_frame(
+                zoom_on(still(path, st), 1.3, fx, fy).convert("RGB").resize((800, 450), Image.LANCZOS),
+                tag, tilt=-2 if i == 0 else 2))
+            place(frame, ev, 500 + 920 * i, H / 2 + (1 - k) * 700, 0.98)

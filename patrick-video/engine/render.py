@@ -109,10 +109,12 @@ def render_range(args):
 
 
 # ------------------------------------------------------------------ audio
-def decode(path, start=0.0, dur=None):
+def decode(path, start=0.0, dur=None, af=None):
     cmd = ["ffmpeg", "-loglevel", "error", "-ss", f"{start:.3f}", "-i", path]
     if dur:
         cmd += ["-t", f"{dur:.3f}"]
+    if af:
+        cmd += ["-af", af]
     cmd += ["-vn", "-ac", "1", "-ar", str(SR), "-f", "f32le", "-"]
     return np.frombuffer(subprocess.run(cmd, capture_output=True).stdout, np.float32).astype(np.float64)
 
@@ -139,7 +141,8 @@ def mix_audio(show, t0, t1, path):
         if b > a:
             buf[a:b] += x[a - i:b - i]
 
-    parts = {p: decode(os.path.join(ROOT, "vo", f"PART_{p}.mp3")) for p in range(1, 7)}
+    parts = {p: decode(os.path.join(ROOT, "vo", f"PART_{p}.mp3"), af="afftdn=nr=12:nf=-50")
+             for p in range(1, 7)}
     for s in tl.segments:
         if s["kind"] == "vo":
             x = parts[s["part"]][int(s["a0"] * SR):int(s["a1"] * SR)].copy()
@@ -167,9 +170,7 @@ def mix_audio(show, t0, t1, path):
     env = np.sqrt(np.convolve(vo ** 2, np.ones(win) / win, mode="same"))
     duck = 1 - 0.45 * np.clip(env / 0.05, 0, 1)
     fx *= duck
-    room = load_sfx("room_tone")
-    tone = np.tile(room, n // len(room) + 1)[:n] * 0.5
-    mix = vo + clips + fx + tone
+    mix = vo + clips + fx  # no room tone: the user wants silence between lines
     peak = np.max(np.abs(mix))
     if peak > 0.98:
         mix *= 0.98 / peak

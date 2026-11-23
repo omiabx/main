@@ -1,10 +1,26 @@
-"""The edit: every card, stamp, date card and sound effect, anchored to phrases in the voiceover."""
-from cards import (Board, Black, Checklist, Clip, Copies, Counter, Dictionary, Doc, EndScreen, Folder,
-                   Letter, Media, Photo, Quote, Receipt, Split, Starfish, TextSlam)
-from gfx import RED, WHITE
+"""The edit (v6, footage-first). Rule: on-screen text never repeats what the narrator is saying.
+Text only appears where it adds something: dates/episode tags, sources, document highlights, diagram labels.
+Show footage comes from the user's clips in clips/ (muted under narration; dialogue clips keep their audio)."""
+from cards import (Black, Board, Clip, Dictionary, Doc, EndScreen, Folder, Footage, Grid, Montage, Photo, Quote,
+                   SplitFootage, Starfish)
 
-YEL = (255, 214, 64)
-W2, H2 = 960, 540
+C = lambda n: f"clips/{n}.mp4"
+# focus points (fx, fy) and good source times picked from contact sheets
+PAT_C03 = (C("C03"), 2.5, 0.66, 0.33)
+PAT_C04_STARE = (C("C04"), 8.3, 0.64, 0.28)
+PAT_C04_GRIN = (C("C04"), 5.0, 0.62, 0.30)
+PAT_C06 = (C("C06"), 1.9, 0.42, 0.30)
+PAT_C07 = (C("C07"), 1.0, 0.45, 0.40)
+PAT_C08_ANGRY = (C("C08"), 9.8, 0.50, 0.40)
+PAT_C08_RAMPAGE = (C("C08"), 0.3, 0.32, 0.62)
+PAT_C09_HEAD = (C("C09"), 4.4, 0.50, 0.35)
+PAT_B07_SMART = (C("B07"), 0.3, 0.55, 0.25)
+PAT_C11 = (C("C11"), 8.6, 0.50, 0.35)
+PAT_C12_BED = (C("C12"), 11.0, 0.50, 0.40)
+PAT_C13 = (C("C13"), 2.7, 0.60, 0.35)
+DUMB = [PAT_C04_STARE, PAT_C13, PAT_C11, PAT_C12_BED, PAT_C08_ANGRY, PAT_C03, PAT_C06, PAT_C07, PAT_C09_HEAD,
+        (C("C03"), 4.8, 0.55, 0.62), (C("C13"), 15.0, 0.6, 0.35), (C("C11"), 11.9, 0.5, 0.35),
+        PAT_C08_RAMPAGE, PAT_C04_GRIN, (C("C12"), 4.1, 0.5, 0.45), (C("B07"), 4.9, 0.55, 0.55)]
 
 
 def build(tl):
@@ -15,72 +31,66 @@ def build(tl):
         cards.append(card)
         return card
 
-    def clip(cid, punch=None):
+    def foot(t, src, z0=1.05, z1=1.2, punch=None, hold=True, **kw):
+        """Footage card from a (path, src_t, fx, fy) tuple. punch=(t, zoom) zooms onto the focus point."""
+        path, st, fx, fy = src
+        p = (punch[0], punch[1], fx, fy) if punch else None
+        return add(Footage(t, path=path, src_in=st, fx=fx, fy=fy, z0=z0, z1=z1, punch=p, hold=hold, **kw))
+
+    def clip(cid):
         s = tl.clip(cid)
-        add(Clip(s["g0"], seg=s, punch=punch))
+        add(Clip(s["g0"], seg=s))
         if not s.get("real"):
             sfx.append((s["g0"] + 0.05, "typing", 0.5))
-            if s["dur"] > 3.0:
-                sfx.append((s["g0"] + 1.6, "typing", 0.4))
         return s
 
     def date(t, d, title, season):
         dates.append((t, d, title, season))
-        sfx.append((t + 0.05, "typing", 0.45))
-        sfx.append((t + 1.45, "typewriter_bell", 0.25))
+        sfx.append((t + 0.05, "typing", 0.35))
 
-    def chapter(t, n, title):
-        chapters.append((t, n, title))
+    def hit(t, name="impact", g=0.6):
+        sfx.append((t, name, g))
 
-    def mon(t, level=1.0, label="BRAIN ACTIVITY", flat=False):
-        monitor.append((t, level, label, flat))
+    chapter = lambda t, n, title: chapters.append((t, n, title))
+    mon = lambda t, level=1.0, label="BRAIN ACTIVITY", flat=False: monitor.append((t, level, label, flat))
 
     # ------------------------------------------------------------ COLD OPEN
-    add(Black(0.0, text="MAY 1, 1999", type_time=0.9))
-    sfx.append((0.05, "typing", 0.6))
-    add(Media(at("VO_01", "the very first episode"), label="B01  HELP WANTED", path="clips/B01.mp4",
-              tag="EXHIBIT 00  //  HELP WANTED  //  S1"))
-    date(at("VO_01", "the very first episode"), "05.01.1999", "HELP WANTED", "S1")
-    add(Media(at("VO_01", "panics"), label="B01  HELP WANTED", path="clips/B01.mp4", src_in=3.0,
-              tag="EXHIBIT 00  //  HELP WANTED  //  S1", enter="cut")).caption(at("VO_01", "panics"), "HE PANICS")
-    add(TextSlam(at("VO_01", "is patrick"), lines=[("...IS PATRICK.", WHITE)], size=210))
-    sfx.append((at("VO_01", "is patrick"), "impact", 0.7))
+    add(Footage(0.0, path=C("B01"), src_in=4.3, fx=0.6, fy=0.5, z0=1.0, z1=1.25, ztime=9,
+                punch=(at("VO_01", "panics"), 1.9, 0.6, 0.5)))
+    date(0.4, "05.01.1999", "HELP WANTED", "S1")
+    hit(at("VO_01", "panics"), "whoosh_short", 0.5)
+    ip = at("VO_01", "is patrick")
+    foot(ip - 0.05, (C("C01"), 0.3, 0.30, 0.24), z0=1.0, z1=1.05, punch=(ip + 0.1, 1.8))
+    hit(ip + 0.1, "impact", 0.7)
     clip("C01")
 
-    add(TextSlam(at("VO_02", "pep talk"), lines=[("A PEP TALK.", WHITE)]))
-    sfx.append((at("VO_02", "pep talk"), "thud", 0.7))
-    add(TextSlam(at("VO_02", "and it works"), lines=[("A PEP TALK.", WHITE), ("THAT WORKED.", YEL)],
-                 times=[at("VO_02", "and it works") - 5, at("VO_02", "and it works")]))
+    foot(at("VO_02", "first real scene"), (C("C01"), 5.3, 0.36, 0.28), z0=1.1, z1=1.35, ztime=8)
     ty = at("VO_02", "twelve years later")
-    add(Counter(ty, range=(1999, 2011), t_start=ty + 0.1, t_end=ty + 1.3, label="TWELVE YEARS LATER"))
-    sfx.append((ty + 0.1, "riser", 0.35))
-    sfx.append((ty + 1.3, "thud", 0.6))
-    ps = at("VO_02", "pet")
-    add(Media(ps, label="B10  PET SITTER PAT", path="clips/B10.mp4", tag="EXHIBIT 00b  //  PET SITTER PAT  //  S8",
-              flip_at=at("VO_02", "upside down")))
-    date(ps, "09.16.2011", "PET SITTER PAT", "S8")
-    sfx.append((at("VO_02", "upside down"), "whoosh_rev", 0.5))
+    add(Footage(ty, path=C("C12"), src_in=8.5, fx=0.5, fy=0.45, z0=1.05, z1=1.25, hold=False,
+                flip_at=at("VO_02", "upside down")))
+    date(ty + 0.1, "09.16.2011", "PET SITTER PAT", "S8")
+    hit(ty, "glitch", 0.5)
+    hit(at("VO_02", "upside down"), "whoosh_rev", 0.5)
     clip("C02")
-    sfx.append((tl.clip("C02")["g0"] + 2.5, "paper_slide", 0.5))
 
-    # ------------------------------------------------------------ INTRO / FILE OPEN
+    # ------------------------------------------------------------ INTRO
     t = at("VO_03", "something happened")
-    board1 = dict(c99=(560, 460, ["05.01.1999", "HELP WANTED", "the pep talk"], t),
-                  c11=(1380, 460, ["09.16.2011", "PET SITTER PAT", "list upside down"], t + 0.4),
-                  q=(970, 760, ["WHEN?"], at("VO_03", "i wanted a date")))
+    board1 = dict(c99=(560, 460, ["05.01.1999", "HELP WANTED"], t),
+                  c11=(1380, 460, ["09.16.2011", "PET SITTER PAT"], t + 0.4),
+                  q=(970, 760, ["?"], at("VO_03", "i wanted a date")))
     add(Board(t, items=board1, strings=[("c99", "q", at("VO_03", "i wanted a date") + 0.2),
                                         ("c11", "q", at("VO_03", "i wanted a date") + 0.5)]))
     sfx += [(t, "pin", 0.5), (t + 0.4, "pin", 0.5), (at("VO_03", "i wanted a date"), "pin", 0.6)]
-    eps = ["JELLYFISHING", "THE SECRET BOX", "I'M WITH STUPID", "VALENTINE'S DAY", "PATRICK SMARTPANTS",
-           "PAT NO PAY", "BIG PINK LOSER", "THAT'S NO LADY"]
-    t = at("VO_03", "went back through")
-    add(Copies(t, lines=["EPISODE LOG", "re-watched: 47", "regretted: 12"], t_copy=t + 0.3, rate=7))
+    wb = at("VO_03", "went back through")
+    add(Montage(wb, items=DUMB, step=0.32))
+    for i in range(8):
+        sfx.append((wb + i * 0.32, "shutter", 0.25))
     add(Doc(at("VO_03", "i dug up"), file="doc_dumbest.png", focus=(0.5, 0.2), zoom=0.1)).source(
         "Wikipedia, \"Patrick Star\"")
     add(Doc(at("VO_03", "2023"), file="doc_nature.png", focus=(0.4, 0.35), zoom=0.12, w=1100)).source(
-        "Nature 623, 555-561 (2023)").note(at("VO_03", "did not plan on"), "??", 1500, 820, 140)
+        "Nature 623, 555-561 (2023)")
     ft = at("VO_03", "this is the file")
-    add(Folder(ft, label=["FILE NO. 0047", "SUBJECT: PATRICK STAR", "RE: THE BRAIN"])).stamp(
+    add(Folder(ft, label=["FILE NO. 0047", "SUBJECT: PATRICK STAR", "OPENED: 2026"])).stamp(
         at("VO_03", "brain") + 0.15, "CASE OPEN", 1180, 760, -10, 120)
     sfx += [(ft, "whoosh", 0.6), (ft + 0.3, "folder_slam", 0.9), (at("VO_03", "brain") + 0.15, "stamp", 0.9)]
     mon(at("VO_03", "brain") + 0.6)
@@ -88,349 +98,272 @@ def build(tl):
     # ------------------------------------------------------------ 01 DUMBEST GUY IN TOWN
     t = at("VO_04", "okay")
     chapter(t, 1, "The dumbest guy in town")
-    add(TextSlam(t, lines=[("SECRETLY BRILLIANT?", WHITE)], size=150)).stamp(
-        at("VO_04", "bad news") + 0.3, "DENIED", 1450, 760)
-    sfx.append((at("VO_04", "bad news") + 0.3, "stamp", 0.8))
-    add(Photo(at("VO_04", "steven hillenburg"), file="hillenburg.jpg", caption="Stephen Hillenburg, creator",
+    foot(t, PAT_B07_SMART, z0=1.05, z1=1.25).stamp(at("VO_04", "bad news") + 0.3, "DENIED", 1450, 760)
+    hit(at("VO_04", "bad news") + 0.3, "stamp", 0.8)
+    add(Photo(at("VO_04", "steven hillenburg"), file="hillenburg.jpg", caption="Stephen Hillenburg, 2011",
               credit="Photo: Carlos Cazurro Burgos, CC BY-SA 3.0", w=640, h=680))
-    sfx.append((at("VO_04", "steven hillenburg"), "shutter", 0.5))
+    hit(at("VO_04", "steven hillenburg"), "shutter", 0.5)
     add(Doc(at("VO_04", "described patrick"), file="doc_dumbest.png", focus=(0.55, 0.12), zoom=0.28,
-            zoom_time=3.5)).source("Hillenburg, SpongeBob Movie DVD featurette (via Wikipedia)").stamp(
-        at("VO_04", "drew him"), "FROM THE CREATOR", 1350, 820, -7, 80)
-    sfx.append((at("VO_04", "drew him"), "stamp", 0.8))
+            zoom_time=3.5)).source("Hillenburg, SpongeBob Movie DVD featurette (via Wikipedia)")
 
-    add(Photo(at("VO_05", "bill"), file="fagerbakke.jpg", caption="Bill Fagerbakke, voice of Patrick",
+    add(Photo(at("VO_05", "bill"), file="fagerbakke.jpg", caption="Bill Fagerbakke, Comic-Con 2009",
               credit="Photo: Michelle Nakashima, CC BY 2.0", w=760, h=640, rot=3))
-    sfx.append((at("VO_05", "bill"), "shutter", 0.5))
-    add(Media(at("VO_05", "tape of tom kenny"), label="AUDITION, 1997", tag="AUDITION TAPE  //  1997"))
-    q0 = at("VO_05", "i do the big")
-    add(Quote(q0 - 0.3, text="I do the big dumb stuff. That's my deal.", who="BILL FAGERBAKKE, ON HIS AUDITION",
-              words=tl.words_between(q0, at("VO_05", "my deal", end=True)), size=80))
-    ad = at("VO_05", "aqua dauber")
-    add(TextSlam(ad - 0.1, lines=[("AQUA", (120, 200, 255)), ("DAUBER", WHITE)], size=200,
-                 times=[ad - 0.1, ad + 0.35]))
-    sfx += [(ad - 0.1, "thud", 0.6), (ad + 0.35, "thud", 0.7)]
-    add(Doc(at("VO_05", "dauber was"), file="doc_aquadauber.png", focus=(0.3, 0.1), zoom=0.3,
+    hit(at("VO_05", "bill"), "shutter", 0.5)
+    foot(at("VO_05", "i do the big"), PAT_C06, z0=1.15, z1=1.35)
+    add(Doc(at("VO_05", "aqua dauber") - 0.2, file="doc_aquadauber.png", focus=(0.3, 0.1), zoom=0.3,
             zoom_time=3)).source("Wikipedia, \"Patrick Star\"")
     bd = at("VO_05", "built dumb")
-    add(Folder(bd - 0.4, label=["FILE NO. 0047", "SUBJECT: PATRICK STAR", "STATUS: BUILT DUMB"], enter="cut")
-        ).stamp(at("VO_05", "paperwork"), "ON PAPER", 1180, 760, -10, 120)
-    sfx.append((at("VO_05", "paperwork"), "stamp", 0.9))
+    foot(bd - 0.3, PAT_C04_STARE, z0=1.1, z1=1.2, punch=(at("VO_05", "paperwork"), 1.7))
+    hit(at("VO_05", "paperwork"), "thud", 0.7)
 
     t = at("VO_06", "which means")
     add(Black(t, text="WHEN DID PATRICK BECOME STUPID??", size=74, type_time=0.9)).strike(
         at("VO_06", "problem"), 640, 560, 1010, 545)
     sfx += [(t, "typing", 0.5), (at("VO_06", "problem"), "record_scratch", 0.6)]
     s1 = at("VO_06", "season one")
-    add(Split(s1, panels=[("SEASON 1", "1999", s1), ("SEASON 7", "2010", at("VO_06", "season seven"))],
-              mid=("?", at("VO_06", "two different"))))
-    sfx += [(at("VO_06", "season seven"), "whoosh_short", 0.4), (at("VO_06", "two different"), "thud", 0.6)]
+    add(SplitFootage(s1, panels=[(C("C03"), 2.5, "JELLYFISHING  //  1999", s1, 0.6, 0.4),
+                                 (C("C12"), 11.0, "PET SITTER PAT  //  2011", at("VO_06", "season seven"), 0.5, 0.42)]))
+    hit(at("VO_06", "season seven"), "whoosh_short", 0.4)
 
     # ------------------------------------------------------------ 02 FIRMLY GRASP IT
     t = at("VO_07", "july")
     chapter(t, 2, "Firmly grasp it")
-    add(Media(t, label="EXHIBIT A", path="clips/C03.mp4", tag="EXHIBIT A  //  JELLYFISHING  //  S1"))
-    date(t, "07.31.1999", "JELLYFISHING", "S1")
-    add(TextSlam(at("VO_07", "expert in the room"), lines=[("THE EXPERT", YEL)], size=200))
-    sfx.append((at("VO_07", "expert in the room"), "thud", 0.6))
-    add(Media(at("VO_07", "one problem"), label="EXHIBIT A", path="clips/C03.mp4", src_in=2.0,
-              tag="EXHIBIT A  //  JELLYFISHING  //  S1", enter="cut")).circle(at("VO_07", "bandages"), 1180, 560, 380, 300)
+    add(Footage(t, path=C("C03"), src_in=0.3, fx=0.55, fy=0.45, z0=1.0, z1=1.1, hold=False, speed=0.5))
+    date(t + 0.1, "07.31.1999", "JELLYFISHING", "S1")
+    foot(at("VO_07", "expert in the room"), PAT_C03, z0=1.35, z1=1.5)
+    hit(at("VO_07", "expert in the room"), "whoosh_short", 0.4)
+    foot(at("VO_07", "one problem"), (C("C03"), 9.2, 0.33, 0.62), z0=1.2, z1=1.45).circle(
+        at("VO_07", "bandages"), 960, 560, 460, 340)
     clip("C03")
     mon(tl.clip("C03")["g1"], 0.8)
 
-    t = at("VO_08", "thats stupid")
-    rows = [(at("VO_08", "how jellyfishing works"), "HOW JELLYFISHING WORKS", "y"),
-            (at("VO_08", "how hands work"), "HOW HANDS WORK", "n"),
-            (at("VO_08", "he has hobbies"), "HOBBIES", "y"),
-            (at("VO_08", "strong opinions"), "STRONG OPINIONS", "y"),
-            (at("VO_08", "doing nothing"), "DOING NOTHING (EXPERT)", "y")]
-    add(Media(t, label="B02  UNDER THE ROCK", path="clips/B02.mp4", tag="EXHIBIT A2  //  S1"))
-    add(Checklist(rows[0][0] - 0.4, title="WHAT EARLY PATRICK KNOWS", rows=rows))
-    for r in rows:
-        sfx.append((r[0], "type_key", 0.6))
-        sfx.append((r[0] + 0.35, "pop", 0.4))
+    foot(at("VO_08", "thats stupid"), (C("C03"), 4.8, 0.52, 0.6), z0=1.1, z1=1.25)
+    foot(at("VO_08", "how jellyfishing works"), (C("C03"), 11.4, 0.66, 0.35), z0=1.15, z1=1.3)
+    foot(at("VO_08", "how hands work"), (C("C03"), 4.8, 0.40, 0.66), z0=1.2, z1=1.25,
+         punch=(at("VO_08", "how hands work") + 0.3, 1.8))
+    hit(at("VO_08", "how hands work") + 0.3, "thud", 0.6)
+    foot(at("VO_08", "early patrick"), (C("C09"), 9.0, 0.6, 0.45), z0=1.05, z1=1.2)
+    foot(at("VO_08", "doing nothing"), PAT_C12_BED, z0=1.1, z1=1.3)
 
     # ------------------------------------------------------------ 03 AN ENIGMA
     t = at("VO_09", "september")
     chapter(t, 3, "An enigma")
-    add(Media(t, label="B03  THE SECRET BOX", path="clips/B03.mp4", tag="EXHIBIT B  //  THE SECRET BOX  //  S2"))
-    date(t, "09.07.2001", "THE SECRET BOX", "S2")
-    add(TextSlam(at("VO_09", "most famous line"), lines=[("HIS MOST FAMOUS LINE", WHITE)], size=140))
+    foot(t, (C("C04"), 0.3, 0.55, 0.45), z0=1.0, z1=1.12)
+    date(t + 0.1, "09.07.2001", "THE SECRET BOX", "S2")
+    foot(at("VO_09", "most famous line"), (C("C04"), 3.0, 0.62, 0.30), z0=1.2, z1=1.3,
+         punch=(at("VO_09", "most famous line") + 0.2, 1.6))
     clip("C04")
 
-    add(TextSlam(at("VO_10", "great joke"), lines=[("GREAT JOKE.", WHITE)]))
-    add(Media(at("VO_10", "the ending is better"), label="B03  THE SECRET BOX", path="clips/B03.mp4", src_in=2,
-              tag="EXHIBIT B  //  NIGHT, PATRICK'S ROCK")).caption(at("VO_10", "stocking"), "STOCKING MASK")
-    add(TextSlam(at("VO_10", "a piece of string"), lines=[("IT'S A STRING.", WHITE)], size=190))
-    sfx.append((at("VO_10", "a piece of string"), "record_scratch", 0.5))
-    add(TextSlam(at("VO_10", "the idiot right"), lines=[("IT'S A STRING.", WHITE), ("PATRICK = IDIOT?", RED)],
-                 times=[0, at("VO_10", "the idiot right")], size=170))
-    add(TextSlam(at("VO_10", "then patrick alone"), lines=[("...THEN HE PULLS IT.", YEL)], size=160))
+    foot(at("VO_10", "great joke"), (C("C04"), 4.3, 0.6, 0.45), z0=1.05, z1=1.15)
+    foot(at("VO_10", "the ending is better"), (C("C04"), 0.3, 0.60, 0.62), z0=1.3, z1=1.9, ztime=11)
+    ps = at("VO_10", "a piece of string")
+    foot(ps, (C("C04"), 0.3, 0.60, 0.62), z0=2.0, z1=2.2)
+    hit(ps, "record_scratch", 0.5)
+    foot(at("VO_10", "the idiot right"), PAT_C04_STARE, z0=1.2, z1=1.3, punch=(at("VO_10", "the idiot right") + 0.2, 1.7))
+    foot(at("VO_10", "then patrick alone"), PAT_C04_GRIN, z0=1.15, z1=1.3)
     clip("C05")
 
-    t = at("VO_11", "a hidden compartment")
-    add(Media(t, label="C05  THE PHOTO", path="clips/C05.mp4", src_in=4.0, tag="EXHIBIT B2  //  THE PHOTO")
-        ).circle(at("VO_11", "embarrassing"), 1150, 560, 420, 320)
+    foot(at("VO_11", "a hidden compartment"), PAT_C04_GRIN, z0=1.25, z1=1.45)
     hp = at("VO_11", "he played him")
-    add(TextSlam(hp, lines=[("HE PLAYED HIM.", WHITE)], size=210))
-    sfx.append((hp, "impact", 0.6))
-    add(TextSlam(at("VO_11", "kept a secret"), lines=[("PATRICK  1", YEL), ("SPONGEBOB  0", WHITE)],
-                 times=[at("VO_11", "kept a secret"), at("VO_11", "and won")], size=170))
-    sfx.append((at("VO_11", "and won"), "monitor_beep", 0.5))
+    foot(hp, PAT_C04_GRIN, z0=1.45, z1=1.5, punch=(hp + 0.1, 2.0))
+    hit(hp + 0.1, "impact", 0.6)
+    foot(at("VO_11", "kept a secret"), (C("C04"), 1.6, 0.30, 0.45), z0=1.3, z1=1.5)
     tb = at("VO_11", "paul tibbitt")
-    board2 = dict(sb=(620, 430, ["09.07.2001", "THE SECRET BOX", "Patrick wins"], at("VO_11", "one of the three")),
-                  pt=(1300, 560, ["PAUL TIBBITT", "co-writer, The Secret Box"], tb))
-    add(Board(at("VO_11", "one of the three"), items=board2, strings=[("sb", "pt", tb + 0.3)])).note(
-        at("VO_11", "hold on"), "remember this name", 1300, 820, 70)
+    board2 = dict(sb=(620, 430, ["09.07.2001", "THE SECRET BOX", "written by: Walt Dohrn,", "Paul Tibbitt,",
+                                 "Merriwether Williams"], at("VO_11", "one of the three")),
+                  pt=(1300, 640, ["PAUL TIBBITT", "storyboard director, 1999-2004"], tb))
+    add(Board(at("VO_11", "one of the three"), items=board2, strings=[("sb", "pt", tb + 0.3)])).circle(
+        at("VO_11", "hold on"), 1300, 650, 640, 220)
     sfx += [(at("VO_11", "one of the three"), "pin", 0.5), (tb, "pin", 0.7)]
 
     # ------------------------------------------------------------ 04 PUSH IT SOMEWHERE ELSE
     t = at("VO_12", "one month later")
     chapter(t, 4, "Push it somewhere else")
-    add(TextSlam(at("VO_12", "alaskan"), lines=[("ALASKAN BULL WORM", RED)], size=170))
-    sfx.append((at("VO_12", "alaskan"), "impact", 0.7))
-    add(Media(at("VO_12", "the whole town"), label="B04  THE WORM", path="clips/B04.mp4",
-              tag="EXHIBIT C  //  SANDY, SPONGEBOB & THE WORM  //  S2"))
-    date(at("VO_12", "the whole town"), "10.12.2001", "SANDY, SPONGEBOB, AND THE WORM", "S2")
-    add(TextSlam(at("VO_12", "with a plan"), lines=[("PATRICK HAS A PLAN.", YEL)], size=170))
+    add(Footage(t, path=C("B04"), src_in=0.5, fx=0.5, fy=0.45, z0=1.0, z1=1.15, hold=False))
+    date(at("VO_12", "alaskan"), "10.12.2001", "SANDY, SPONGEBOB, AND THE WORM", "S2")
+    foot(at("VO_12", "with a plan") - 0.3, PAT_C06, z0=1.2, z1=1.3, punch=(at("VO_12", "with a plan"), 1.7))
     clip("C06")
 
-    t = at("VO_13", "and then")
-    add(Media(at("VO_13", "they do it"), label="B04  THEY PUSH THE CITY", path="clips/B04.mp4", src_in=3,
-              tag="EXHIBIT C2  //  THEY ACTUALLY DID IT")).caption(at("VO_13", "push the city"), "THEY PUSHED THE CITY")
-    add(TextSlam(at("VO_13", "grew up with"), lines=[("THE PATRICK", WHITE), ("I GREW UP WITH", YEL)], size=150))
-    add(TextSlam(at("VO_13", "one bad day"), lines=[("THE WHOLE TOWN:", WHITE), ("ONE BAD DAY AWAY", RED)], size=150))
-    add(TextSlam(at("VO_13", "sometimes his idea"), lines=[("PATRICK'S PLAN", WHITE)], size=170)).stamp(
-        at("VO_13", "they go with"), "APPROVED", 1300, 760, -8, 110)
-    sfx.append((at("VO_13", "they go with"), "stamp", 0.9))
+    add(Footage(at("VO_13", "they do it"), path=C("B04"), src_in=6.0, fx=0.5, fy=0.5, z0=1.05, z1=1.2, hold=False))
+    foot(at("VO_13", "grew up with"), (C("C03"), 7.0, 0.68, 0.35), z0=1.2, z1=1.35)
+    foot(at("VO_13", "one bad day"), (C("C06"), 6.9, 0.5, 0.5), z0=1.05, z1=1.2)
+    foot(at("VO_13", "sometimes his idea"), (C("C06"), 3.6, 0.45, 0.40), z0=1.15, z1=1.3).stamp(
+        at("VO_13", "they go with"), "APPROVED", 1450, 780, -8, 110)
+    hit(at("VO_13", "they go with"), "stamp", 0.9)
 
     # ------------------------------------------------------------ 05 SACK OF DIAPERS
     t = at("VO_14", "this is where")
     chapter(t, 5, "Dumber than a sack of diapers")
-    add(Board(t, items=dict(th=(960, 520, ["THEORY:", "Patrick used to be smart"], t))).stamp(
-        at("VO_14", "falling apart"), "COLLAPSING", 1300, 760, -10, 100))
-    sfx += [(at("VO_14", "falling apart"), "glitch", 0.5), (at("VO_14", "falling apart"), "stamp", 0.8)]
+    add(Board(t, items=dict(th=(960, 520, ["THEORY:", "Patrick used to be smart"], t))))
+    hit(at("VO_14", "falling apart"), "glitch", 0.6)
+    hit(at("VO_14", "falling apart"), "thud", 0.6)
     s2 = at("VO_14", "im with stupid")
-    add(Media(s2, label="B05  I'M WITH STUPID", path="clips/B05.mp4", tag="EXHIBIT D  //  I'M WITH STUPID  //  S2"))
-    date(s2, "10.19.2001", "I'M WITH STUPID", "S2")
-    lt = at("VO_14", "please try")
-    add(Letter(at("VO_14", "a letter"), text="Please try to remember, but don't try too hard, or you'll hurt "
-                                             "yourself like last time.",
-               words=tl.words_between(lt, at("VO_14", "last time", end=True))))
-    sfx.append((at("VO_14", "a letter"), "paper_slide", 0.6))
+    add(Footage(s2, path=C("B05"), src_in=0.5, fx=0.5, fy=0.45, z0=1.0, z1=1.12, hold=False))
+    date(s2 + 0.1, "10.19.2001", "I'M WITH STUPID", "S2")
+    add(Footage(at("VO_14", "a letter"), path=C("B05"), src_in=12.5, fx=0.5, fy=0.45, z0=1.1, z1=1.25, hold=False))
     clip("C07")
 
-    t = at("VO_15", "so in")
-    add(TextSlam(at("VO_15", "old news"), lines=[("ALREADY", WHITE), ("OLD NEWS", YEL)], size=170))
-    add(TextSlam(at("VO_15", "his own family"), lines=[("HIS OWN FAMILY KNOWS.", WHITE)], size=150))
-    add(Media(at("VO_15", "the plan"), label="B05  DINNER", path="clips/B05.mp4", src_in=2,
-              tag="EXHIBIT D2  //  THE PLAN")).stamp(at("VO_15", "at dinner"), "FORGOT IT WAS AN ACT", 1250, 800, -7, 70)
-    sfx.append((at("VO_15", "at dinner"), "stamp", 0.8))
+    foot(at("VO_15", "so in"), PAT_C07, z0=1.1, z1=1.3)
+    add(Footage(at("VO_15", "the plan"), path=C("B05"), src_in=2.0, fx=0.5, fy=0.45, z0=1.05, z1=1.2, hold=False))
     jm = at("VO_15", "janet")
     add(Board(at("VO_15", "and at the end"), items=dict(
-        p=(960, 300, ["\"PATRICK'S PARENTS\""], at("VO_15", "and at the end")),
-        j=(640, 640, ["JANET", "stranger"], jm), m=(1280, 640, ["MARTY", "stranger"], jm + 0.3)),
-        strings=[("p", "j", jm + 0.1), ("p", "m", jm + 0.4)])).stamp(jm + 0.9, "NOT HIS PARENTS", 960, 900, -6, 90)
-    sfx += [(jm, "pin", 0.6), (jm + 0.3, "pin", 0.6), (jm + 0.9, "stamp", 0.8)]
-    ga = at("VO_15", "golden age")
-    add(TextSlam(at("VO_15", "so no"), lines=[("A GOLDEN AGE?", WHITE)], size=180)).stamp(
-        at("VO_15", "i checked"), "CHECKED: NONE", 1300, 780, -8, 100)
-    sfx.append((at("VO_15", "i checked"), "stamp", 0.9))
-    mon(ga, 0.8, "RESULT: NO CHANGE")
+        p=(960, 300, ["THE STARFISH AT DINNER"], at("VO_15", "and at the end")),
+        j=(640, 640, ["JANET"], jm), m=(1280, 640, ["MARTY"], jm + 0.3)),
+        strings=[("p", "j", jm + 0.1), ("p", "m", jm + 0.4)]))
+    sfx += [(jm, "pin", 0.6), (jm + 0.3, "pin", 0.6)]
+    foot(at("VO_15", "so no"), PAT_C04_STARE, z0=1.15, z1=1.35, punch=(at("VO_15", "i checked"), 1.9))
+    hit(at("VO_15", "i checked"), "thud", 0.7)
+    mon(at("VO_15", "golden age"), 0.8, "RESULT: NO CHANGE")
 
     # ------------------------------------------------------------ 06 A ONE-TIME THING
     t = at("VO_16", "but there is")
     chapter(t, 6, "A one-time thing")
     mon(t, 1.0)
+    add(Doc(t, file="doc_lender.png", focus=(0.5, 0.2), zoom=0.12)).source("Wikipedia, \"Patrick Star\"")
     vd = at("VO_16", "february")
-    add(Media(vd, label="B06  VALENTINE'S DAY", path="clips/B06.mp4", tag="EXHIBIT E  //  VALENTINE'S DAY  //  S1"))
-    date(vd, "02.14.2000", "VALENTINE'S DAY", "S1")
-    add(Media(at("VO_16", "hot air balloon"), label="B06  CHOCOLATE BALLOON", path="clips/B06.mp4", src_in=2,
-              tag="EXHIBIT E2  //  THE GIFT", enter="cut")).caption(at("VO_16", "chocolate"), "MADE OF CHOCOLATE")
-    hs = at("VO_16", "handshake")
-    add(TextSlam(hs - 0.2, lines=[("1 X HANDSHAKE", WHITE)], size=190))
-    sfx.append((hs - 0.2, "thud", 0.6))
+    add(Footage(vd, path=C("B06"), src_in=3.0, fx=0.5, fy=0.45, z0=1.0, z1=1.15, hold=False, speed=0.6))
+    date(vd + 0.1, "02.14.2000", "VALENTINE'S DAY", "S1")
     clip("C08")
 
-    add(TextSlam(at("VO_17", "he snaps"), lines=[("HE SNAPS.", RED)], size=230))
-    sfx.append((at("VO_17", "he snaps"), "impact", 0.8))
-    add(Media(at("VO_17", "tears through"), label="C08  THE RAMPAGE", path="clips/C08.mp4", src_in=3,
-              tag="EXHIBIT E3  //  THE DOCK"))
-    jl = at("VO_17", "jay lender")
-    add(Doc(jl, file="doc_lender.png", focus=(0.6, 0.35), zoom=0.35, zoom_time=3.5)).source(
+    sn = at("VO_17", "he snaps")
+    foot(sn, PAT_C08_ANGRY, z0=1.05, z1=1.1, punch=(sn + 0.05, 1.6))
+    hit(sn + 0.05, "impact", 0.8)
+    add(Footage(at("VO_17", "tears through"), path=C("B06"), src_in=3.0, fx=0.5, fy=0.5, z0=1.05, z1=1.2,
+                hold=False))
+    add(Doc(at("VO_17", "jay lender"), file="doc_lender.png", focus=(0.6, 0.35), zoom=0.35, zoom_time=3.5)).source(
         "Jay Lender, The Oral History of SpongeBob, Hogan's Alley #17 (2010)")
-    add(TextSlam(at("VO_17", "and then he said"), lines=[("AND THEN:", YEL)], size=160))
-    sfx.append((at("VO_17", "and then he said"), "riser", 0.3))
 
     q0, q1 = tl.beat_g("VO_18")
+    add(Doc(q0 - 0.2, file="doc_lender.png", focus=(0.55, 0.75), zoom=0.45, zoom_time=9, enter="cut")).source(
+        "Hogan's Alley #17 (2010), via Wikipedia")
     lender = ("When that show came back, it felt so right that his dark side started popping up everywhere. "
               "You can plan ahead all you want, but the characters eventually tell you who they are.")
-    add(Quote(q0 - 0.2, text=lender, who="JAY LENDER, WRITER, VALENTINE'S DAY", words=tl.words_between(q0, q1),
-              size=58)).source("Hogan's Alley #17 (2010)")
     sw = at("VO_19", "swap")
-    add(Quote(sw - 0.1, text=lender, who="JAY LENDER, WRITER, VALENTINE'S DAY", enter="cut", size=58)
-        ).strike(at("VO_19", "dark side"), 1090, 437, 1420, 437).note(at("VO_19", "for stupid"), "stupid", 1260, 370, 80)
-    sfx.append((at("VO_19", "for stupid"), "pop", 0.5))
+    add(Quote(sw - 0.1, text=lender, who="JAY LENDER", enter="cut", size=58)).strike(
+        at("VO_19", "dark side"), 1090, 437, 1420, 437).note(at("VO_19", "for stupid"), "stupid", 1260, 370, 80)
+    hit(at("VO_19", "for stupid"), "pop", 0.5)
     jw = at("VO_19", "a joke works once")
-    add(Copies(jw, lines=["JOKE #1", "Patrick is dumb.", "(audience laughs)"], t_copy=at("VO_19", "do it again"),
-               rate=6))
-    sfx.append((at("VO_19", "do it again"), "receipt_printer", 0.35))
-    add(TextSlam(at("VO_19", "its all he is"), lines=[("IT'S ALL HE IS.", WHITE)], size=200))
-    sfx.append((at("VO_19", "its all he is"), "impact", 0.6))
+    ag = at("VO_19", "do it again")
+    add(Grid(jw, items=DUMB, steps=[(0, 1), (0, 2), (0, 3), (0, 4), (0, 6)],
+             times=[jw, ag, ag + 0.7, at("VO_19", "after a few years"), at("VO_19", "its all he is")]))
+    for tt in (ag, ag + 0.7, at("VO_19", "after a few years"), at("VO_19", "its all he is")):
+        hit(tt, "shutter", 0.4)
     fl = at("VO_19", "flanderization")
     add(Dictionary(fl - 0.3, word="Flan·der·i·za·tion", pron="(noun)  //  TV Tropes",
                    definition="When one trait of a character gets exaggerated, episode after episode, until it "
                               "becomes the whole character.", t_def=fl + 0.3))
-    add(TextSlam(at("VO_19", "made entirely of church"), lines=[("NICE NEIGHBOR", WHITE), ("↓", RED),
-                                                                 ("100% CHURCH", YEL)], size=140,
-                 times=[at("VO_19", "nice guy"), at("VO_19", "slowly"), at("VO_19", "made entirely of church")]))
+    add(Grid(at("VO_19", "patrick went through"), items=DUMB[::-1], steps=[(0, 6)],
+             times=[at("VO_19", "patrick went through")]))
 
     # ------------------------------------------------------------ 07 BRAIN CORAL
     t = at("VO_20", "and if you want")
     chapter(t, 7, "Brain coral")
-    add(TextSlam(at("VO_20", "heres my pick"), lines=[("MY PICK:", YEL)], size=200))
+    foot(at("VO_20", "heres my pick"), PAT_C09_HEAD, z0=1.0, z1=1.1)
     add(Doc(at("VO_20", "in 2004"), file="doc_tibbitt.png", focus=(0.4, 0.6), zoom=0.35, zoom_time=4)).source(
         "Wikipedia, \"Paul Tibbitt\"")
     pt = at("VO_20", "paul tibbitt")
-    board3 = dict(sb=(620, 430, ["09.07.2001", "THE SECRET BOX", "Patrick wins"], pt - 5),
-                  pt=(1300, 560, ["PAUL TIBBITT", "co-writer, The Secret Box", "showrunner, S4-S9"], pt - 5))
-    add(Board(pt, items=board3, strings=[("sb", "pt", pt - 5)], focus=(1300, 560, 1.6), pullback=True)).note(
-        at("VO_20", "the secret box guy"), "same guy", 1260, 860, 80)
-    sfx.append((pt, "pin", 0.7))
+    board3 = dict(sb=(620, 430, ["09.07.2001", "THE SECRET BOX"], pt - 5),
+                  pt=(1300, 600, ["PAUL TIBBITT", "showrunner, seasons 4-9", "(2005-2015)"], pt - 5))
+    add(Board(pt, items=board3, strings=[("sb", "pt", at("VO_20", "the secret box guy"))],
+              focus=(1300, 600, 1.6), pullback=True))
+    hit(pt, "pin", 0.7)
     sp = at("VO_20", "october")
-    add(Media(sp, label="C09  PATRICK SMARTPANTS", path="clips/C09.mp4", tag="EXHIBIT F  //  PATRICK SMARTPANTS  //  S4"
-              ).stamp(at("VO_20", "patrick smartpants") + 0.2, "PRIME SUSPECT", 1350, 830, -8, 100))
-    date(sp, "10.21.2005", "PATRICK SMARTPANTS", "S4")
-    sfx += [(at("VO_20", "patrick smartpants") + 0.2, "stamp", 1.0), (at("VO_20", "patrick smartpants") + 0.25, "impact", 0.5)]
+    add(Footage(sp, path=C("C09"), src_in=0.0, fx=0.45, fy=0.5, z0=1.0, z1=1.12, hold=False, speed=0.5)).stamp(
+        at("VO_20", "patrick smartpants") + 0.2, "PRIME SUSPECT", 1450, 830, -8, 100)
+    date(sp + 0.1, "10.21.2005", "PATRICK SMARTPANTS", "S4")
+    hit(at("VO_20", "patrick smartpants") + 0.2, "stamp", 1.0)
     clip("C09")
 
-    add(TextSlam(at("VO_21", "danger"), lines=[("DANGER: CLIFF", RED)], size=200))
-    sfx.append((at("VO_21", "knocks the top"), "impact", 0.6))
-    add(TextSlam(at("VO_21", "knocks the top"), lines=[("HEAD: OFF", WHITE)], size=210))
-    add(TextSlam(at("VO_21", "into art"), lines=[("ART", YEL), ("MATH", WHITE), ("CLASSICAL MUSIC", (120, 200, 255))],
-                 times=[at("VO_21", "into art"), at("VO_21", "and math"), at("VO_21", "classical music")], size=170))
-    sfx += [(at("VO_21", "into art"), "pop", 0.6), (at("VO_21", "and math"), "pop", 0.6),
-            (at("VO_21", "classical music"), "pop", 0.6)]
+    foot(at("VO_21", "danger"), (C("C09"), 1.7, 0.40, 0.45), z0=1.15, z1=1.3)
+    kt = at("VO_21", "knocks the top")
+    foot(kt, PAT_C09_HEAD, z0=1.2, z1=1.3, punch=(kt + 0.3, 1.7))
+    hit(kt + 0.3, "impact", 0.6)
+    add(Footage(at("VO_21", "into art"), path=C("B07"), src_in=0.3, fx=0.55, fy=0.25, z0=1.1, z1=1.25, hold=False,
+                speed=0.6))
     mon(at("VO_21", "into art"), 2.4, "BRAIN ACTIVITY ?!")
-    add(Media(at("VO_21", "he tells squidward"), label="B07  SMART PATRICK", path="clips/B07.mp4",
-              tag="EXHIBIT F2  //  SMART PATRICK"))
-    add(TextSlam(at("VO_21", "hes unbearable"), lines=[("UNBEARABLE", RED), ("& LONELY", WHITE)],
-                 times=[at("VO_21", "hes unbearable"), at("VO_21", "lonely")], size=190))
-    add(TextSlam(at("VO_21", "actual physics"), lines=[("ACTUAL PHYSICS", (120, 200, 255))], size=200))
-    sfx.append((at("VO_21", "actual physics"), "typing", 0.4))
+    foot(at("VO_21", "he tells squidward"), (C("B07"), 2.1, 0.55, 0.25), z0=1.2, z1=1.35)
+    foot(at("VO_21", "hes unbearable"), (C("B07"), 4.9, 0.55, 0.55), z0=1.1, z1=1.3)
+    foot(at("VO_21", "actual physics"), (C("B07"), 3.1, 0.55, 0.25), z0=1.25, z1=1.3,
+         punch=(at("VO_21", "actual physics") + 0.2, 1.6))
     clip("C10")
 
     bc = at("VO_22", "brain coral")
-    add(TextSlam(bc - 0.15, lines=[("BRAIN CORAL.", (255, 140, 160))], size=230))
-    sfx.append((bc - 0.15, "impact", 0.7))
+    foot(bc - 0.15, (C("C09"), 4.4, 0.5, 0.22), z0=1.3, z1=1.4, punch=(bc + 0.1, 2.1))
+    hit(bc + 0.1, "impact", 0.7)
     mon(bc, 0.8)
-    add(TextSlam(at("VO_22", "screwed a rock"), lines=[("A ROCK", WHITE), ("SHAPED LIKE A BRAIN", YEL)], size=150))
-    add(Media(at("VO_22", "picks friendship"), label="B08  OLD HEAD BACK ON", path="clips/B08.mp4",
-              tag="EXHIBIT F3  //  HAPPY ENDING")).caption(at("VO_22", "happy ending"), "HAPPY ENDING")
+    foot(at("VO_22", "screwed a rock"), (C("C09"), 4.4, 0.5, 0.25), z0=1.6, z1=1.75)
+    add(Footage(at("VO_22", "picks friendship"), path=C("C09"), src_in=5.8, fx=0.5, fy=0.45, z0=1.05, z1=1.2,
+                hold=False, speed=0.7))
     s01 = at("VO_22", "in 2001")
-    add(Split(s01, panels=[("2001: A PIECE OF STRING", "OUTSMARTS SPONGEBOB", s01),
-                           ("2005: A HEAD INJURY", "SMART FOR 11 MINUTES", at("VO_22", "in 2005"))]))
-    sfx.append((at("VO_22", "in 2005"), "whoosh_short", 0.4))
-    acc = at("VO_22", "now its an accident")
-    add(TextSlam(acc, lines=[("SMART PATRICK", WHITE)], size=190)).stamp(at("VO_22", "accident"), "ACCIDENT",
-                                                                         1250, 760, -10, 120).note(
-        at("VO_22", "before the credits"), "fixed before the credits", 960, 880, 64)
-    sfx.append((at("VO_22", "accident"), "stamp", 0.9))
+    add(SplitFootage(s01, panels=[(C("C04"), 5.0, "THE SECRET BOX  //  2001", s01, 0.62, 0.32),
+                                  (C("C09"), 4.4, "PATRICK SMARTPANTS  //  2005", at("VO_22", "in 2005"), 0.5, 0.35)]))
+    hit(at("VO_22", "in 2005"), "whoosh_short", 0.4)
+    foot(at("VO_22", "now its an accident"), (C("B07"), 1.2, 0.55, 0.25), z0=1.2, z1=1.4)
 
     qn = at("VO_23", "quick note")
-    add(Media(qn, label="C09  PATRICK SMARTPANTS", path="clips/C09.mp4",
-              tag="EXHIBIT F  //  PATRICK SMARTPANTS  //  S4", enter="cut").stamp(
-        qn, "PRIME SUSPECT", 1350, 830, -8, 100).strike(at("VO_23", "thats my read"), 1130, 820, 1580, 800,
-                                                        (20, 20, 20)).note(
-        at("VO_23", "thats my read") + 0.3, "my read", 1350, 950, 90))
-    sfx.append((at("VO_23", "thats my read"), "paper_slide", 0.5))
-    add(TextSlam(at("VO_23", "nobody from the show"), lines=[("OFFICIAL STATEMENT:", WHITE), ("NONE", RED)],
-                 times=[at("VO_23", "nobody from the show"), at("VO_23", "his head is empty")], size=170))
-    tb2 = at("VO_23", "co-wrote")
-    add(Board(at("VO_23", "and tibbitt"), items=board3, strings=[("sb", "pt", 0)])).note(
-        tb2 + 0.4, "not one guy's fault", 960, 880, 70)
-    add(TextSlam(at("VO_23", "but look at"), lines=[("WHAT THE STUPIDITY", WHITE), ("GETS USED FOR", YEL)], size=150))
+    foot(qn, PAT_C09_HEAD, z0=1.05, z1=1.15).stamp(qn, "PRIME SUSPECT", 1450, 830, -8, 100).strike(
+        at("VO_23", "thats my read"), 1230, 820, 1680, 800, (20, 20, 20))
+    hit(at("VO_23", "thats my read"), "paper_slide", 0.5)
+    add(Board(at("VO_23", "and tibbitt"), items=board3, strings=[("sb", "pt", 0)]))
+    foot(at("VO_23", "but look at"), PAT_C12_BED, z0=1.05, z1=1.25)
 
     # ------------------------------------------------------------ 08 FIFTY KRABBY PATTIES
     t = at("VO_24", "same season")
     chapter(t, 8, "Fifty Krabby Patties")
-    add(Media(t, label="C11  THAT'S NO LADY", path="clips/C11.mp4", tag="EXHIBIT G  //  THAT'S NO LADY  //  S4"))
-    date(t, "11.25.2006", "THAT'S NO LADY", "S4")
+    foot(t, PAT_C11, z0=1.05, z1=1.2)
+    date(t + 0.1, "11.25.2006", "THAT'S NO LADY", "S4")
     clip("C11")
 
     pn = at("VO_25", "august")
-    add(Media(pn, label="B09  PAT NO PAY", path="clips/B09.mp4", tag="EXHIBIT H  //  PAT NO PAY  //  S5"))
-    date(pn, "08.02.2007", "PAT NO PAY", "S5")
-    f50 = at("VO_25", "fifty")
-    add(Receipt(f50, head="THE KRUSTY KRAB", rows=[(f50 + 0.1, "50 x KRABBY PATTY", "$$$"),
-                                                   (f50 + 0.6, "   + EXTRA CHEESE", "$$"),
-                                                   (at("VO_25", "eats every"), "EATEN:", "50/50"),
-                                                   (at("VO_25", "any money"), "PAID:", "$0.00")])
-        ).stamp(at("VO_25", "lockdown"), "LOCKDOWN", 1350, 700, -10, 120)
-    sfx += [(f50 + 0.1, "receipt_printer", 0.5), (at("VO_25", "any money"), "record_scratch", 0.5),
-            (at("VO_25", "lockdown"), "impact", 0.7), (at("VO_25", "lockdown"), "stamp", 0.8)]
+    foot(pn, (C("C11"), 2.0, 0.62, 0.5), z0=1.1, z1=1.3, punch=(at("VO_25", "lockdown"), 1.7))
+    date(pn + 0.1, "08.02.2007", "PAT NO PAY", "S5")
+    hit(at("VO_25", "lockdown"), "impact", 0.7)
     s11 = at("VO_25", "september")
-    add(Media(s11, label="B10  PET SITTER PAT", path="clips/B10.mp4", tag="EXHIBIT I  //  PET SITTER PAT  //  S8",
-              flip_at=at("VO_25", "upside"), enter="cut"))
-    date(s11, "09.16.2011", "PET SITTER PAT", "S8")
-    add(Media(at("VO_25", "by the end"), label="B10  BEDTIME STORY", path="clips/B10.mp4", src_in=3,
-              tag="EXHIBIT I2  //  WHO'S READING TO WHOM")).caption(at("VO_25", "bedtime story"),
-                                                                     "THE SNAIL IS READING TO HIM")
+    add(Footage(s11, path=C("C12"), src_in=8.5, fx=0.5, fy=0.45, z0=1.05, z1=1.2, hold=False,
+                flip_at=at("VO_25", "upside")))
+    date(s11 + 0.1, "09.16.2011", "PET SITTER PAT", "S8")
+    foot(at("VO_25", "by the end"), (C("C12"), 4.1, 0.5, 0.45), z0=1.1, z1=1.35)
     clip("C12")
 
-    t = at("VO_26", "old patrick")
-    add(Checklist(t, title="OLD PATRICK: DUMB ABOUT...", rows=[
-        (at("VO_26", "jellyfishing"), "JELLYFISHING", None), (at("VO_26", "phones"), "PHONES", None),
-        (at("VO_26", "the idea"), "RESTAURANT NAMES", None)]))
-    sfx += [(at("VO_26", "jellyfishing"), "type_key", 0.6), (at("VO_26", "phones"), "type_key", 0.6),
-            (at("VO_26", "the idea"), "type_key", 0.6)]
+    foot(at("VO_26", "old patrick"), PAT_C03, z0=1.1, z1=1.2)
+    foot(at("VO_26", "phones"), PAT_C13, z0=1.2, z1=1.3)
+    foot(at("VO_26", "the idea"), (C("C13"), 15.0, 0.6, 0.35), z0=1.2, z1=1.35)
     ev = at("VO_26", "everything")
-    add(Copies(ev - 0.2, lines=["LATER PATRICK: DUMB ABOUT", "EVERYTHING"], t_copy=ev, rate=14))
-    add(Receipt(at("VO_26", "somebody else pays"), head="WHO PAYS FOR IT",
-                rows=[(at("VO_26", "somebody else pays") + 0.1, "SQUIDWARD", "billed"),
-                      (at("VO_26", "somebody else pays") + 0.4, "MR. KRABS", "billed"),
-                      (at("VO_26", "somebody else pays") + 0.7, "GARY", "billed"),
-                      (at("VO_26", "somebody else pays") + 1.0, "PATRICK", "$0.00")]))
-    sfx.append((at("VO_26", "somebody else pays") + 0.1, "receipt_printer", 0.5))
-    add(TextSlam(at("VO_26", "needs something to break"), lines=[("NEED SOMETHING", WHITE), ("TO BREAK?", WHITE)],
-                 size=170))
-    sp2 = at("VO_26", "send patrick in")
-    add(TextSlam(at("VO_26", "they just"), lines=[("SEND PATRICK IN.", RED)], size=200))
-    mon(sp2 + 0.2, 0.0, "FLATLINE", True)
-    sfx.append((sp2 + 0.2, "flatline", 0.45))
+    add(Grid(ev - 0.1, items=DUMB, steps=[(0, 2), (0, 3), (0, 4), (0, 6)],
+             times=[ev - 0.1, ev + 0.35, ev + 0.7, ev + 1.05]))
+    for k in range(4):
+        hit(ev - 0.1 + 0.35 * k, "shutter", 0.35)
+    sp2 = at("VO_26", "somebody else pays")
+    add(Montage(sp2, items=[(C("C03"), 9.2, 0.33, 0.45), (C("C11"), 2.0, 0.62, 0.5), (C("C12"), 4.1, 0.5, 0.45)],
+                step=0.75))
+    foot(at("VO_26", "needs something to break"), PAT_C08_RAMPAGE, z0=1.15, z1=1.35)
+    sp3 = at("VO_26", "send patrick in")
+    foot(at("VO_26", "they just"), PAT_C04_STARE, z0=1.2, z1=1.3, punch=(sp3, 2.0))
+    mon(sp3 + 0.2, 0.0, "FLATLINE", True)
+    hit(sp3 + 0.2, "flatline", 0.45)
 
     # ------------------------------------------------------------ 09 NO, THIS IS PATRICK
     t = at("VO_27", "now about phones")
     chapter(t, 9, "No, this is Patrick")
     mon(t, 0.5)
-    bp = at("VO_27", "big pink loser")
-    add(Media(bp, label="B12  BIG PINK LOSER", path="clips/B12.mp4", tag="EXHIBIT J  //  BIG PINK LOSER  //  S2"))
-    date(bp, "02.03.2001", "BIG PINK LOSER", "S2")
-    ap = at("VO_27", "answer the phone")
-    add(TextSlam(ap - 0.2, lines=[("TASK #1:", WHITE), ("ANSWER THE PHONE", YEL)], size=160))
-    sfx.append((ap + 0.4, "phone_ring", 0.5))
+    add(Footage(t, path=C("B12"), src_in=0.3, fx=0.6, fy=0.4, z0=1.0, z1=1.12, hold=False, speed=0.5))
+    date(at("VO_27", "big pink loser"), "02.03.2001", "BIG PINK LOSER", "S2")
+    hit(at("VO_27", "answer the phone") + 0.4, "phone_ring", 0.5)
     clip("C13")
 
-    st = at("VO_28", "stupid town")
-    add(Media(at("VO_28", "a customer"), label="B12  STUPIDTOWN", path="clips/B12.mp4", src_in=3,
-              tag="EXHIBIT J2  //  THE CUSTOMER")).caption(st, "\"DID YOU COME IN FROM STUPIDTOWN?\"")
+    foot(at("VO_28", "a customer"), (C("B12"), 25.0, 0.55, 0.4), z0=1.05, z1=1.2)
     ff = at("VO_28", "fast forward")
-    add(Counter(ff, range=(2001, 2021), t_start=ff + 0.1, t_end=ff + 1.1, label="FAST FORWARD"))
-    sfx += [(ff + 0.1, "riser", 0.3)]
-    pr = at("VO_28", "nickelodeon premieres")
-    add(Doc(pr, file="doc_pss.png", focus=(0.5, 0.3), zoom=0.3, zoom_time=3)).source("Wikipedia, \"The Patrick Star Show\"")
-    date(pr, "07.09.2021", "THE PATRICK STAR SHOW", "S1")
-    add(Media(at("VO_28", "talk show"), label="B11  THE PATRICK STAR SHOW", path="clips/B11.mp4",
-              tag="EXHIBIT K  //  THE PATRICK STAR SHOW  //  2021"))
-    add(TextSlam(at("VO_28", "twenty years after"), lines=[("CAN'T ANSWER A PHONE", WHITE), ("↓", RED),
-                                                            ("HAS HIS OWN SHOW", YEL)], size=140,
-                 times=[at("VO_28", "twenty years after"), at("VO_28", "he has his own"), at("VO_28", "he has his own") + 0.1]))
+    add(Doc(ff, file="doc_pss.png", focus=(0.5, 0.3), zoom=0.3, zoom_time=4)).source(
+        "Wikipedia, \"The Patrick Star Show\"")
+    hit(ff, "whoosh", 0.5)
+    date(at("VO_28", "nickelodeon premieres"), "07.09.2021", "THE PATRICK STAR SHOW", "S1")
+    foot(at("VO_28", "twenty years after"), (C("B12"), 12.5, 0.6, 0.35), z0=1.1, z1=1.3)
     kk = at("VO_28", "is this the")
-    add(TextSlam(kk - 0.3, lines=[("\"IS THIS THE", WHITE), ("KRUSTY KRAB?\"", WHITE)], size=170))
-    sfx.append((kk - 0.6, "phone_ring", 0.45))
+    add(Footage(kk - 0.3, path=C("B12"), src_in=2.5, fx=0.6, fy=0.35, z0=1.15, z1=1.25, hold=False))
+    hit(kk - 0.6, "phone_ring", 0.45)
     tp = at("VO_28", "this is patrick")
-    add(TextSlam(tp, lines=[("NO.", RED), ("THIS IS PATRICK.", WHITE)], size=190))
-    sfx.append((tp + 0.9, "hangup", 0.8))
+    foot(tp, PAT_C13, z0=1.25, z1=1.3, punch=(tp + 0.1, 1.9))
+    hit(tp + 0.9, "hangup", 0.8)
 
     # ------------------------------------------------------------ 10 ALL HEAD
     t = at("VO_29", "okay one last thing")
@@ -438,57 +371,45 @@ def build(tl):
     add(Folder(t, label=["FILE NO. 0047", "SUBJECT: PATRICK STAR", "APPENDIX: BIOLOGY"]))
     sfx += [(t, "whoosh", 0.5), (t + 0.3, "folder_slam", 0.8)]
     add(Photo(at("VO_29", "steven hillenburg"), file="hillenburg.jpg", caption="Stephen Hillenburg",
-              credit="Photo: Carlos Cazurro Burgos, CC BY-SA 3.0", w=640, h=680)).stamp(
-        at("VO_29", "marine biology"), "MARINE BIOLOGIST", 1350, 820, -8, 80)
-    sfx.append((at("VO_29", "marine biology"), "stamp", 0.8))
+              credit="Photo: Carlos Cazurro Burgos, CC BY-SA 3.0", w=640, h=680))
     add(Doc(at("VO_29", "when he explained"), file="doc_dumbest.png", focus=(0.65, 0.33), zoom=0.3,
             zoom_time=4)).source("Hillenburg, SpongeBob Movie DVD featurette (via Wikipedia)")
-    add(Media(at("VO_29", "if you remember"), label="C08  THE RAMPAGE", path="clips/C08.mp4", src_in=2,
-              tag="EXHIBIT E3  //  \"VERY ACTIVE AND AGGRESSIVE\""))
+    foot(at("VO_29", "if you remember"), PAT_C08_ANGRY, z0=1.2, z1=1.45)
 
     rs = at("VO_30", "real starfish")
-    add(Photo(rs, file="starfish2.jpg", caption="A real starfish (Pisaster ochraceus)",
+    add(Photo(rs, file="starfish2.jpg", caption="Pisaster ochraceus",
               credit="Photo: Charles J. Sharp, CC BY-SA 4.0", w=860, h=600, rot=-2))
-    sfx.append((rs, "shutter", 0.5))
+    hit(rs, "shutter", 0.5)
     nb = at("VO_30", "none")
-    add(TextSlam(nb, lines=[("BRAIN:", WHITE), ("NONE", RED)], size=220))
-    sfx.append((nb, "impact", 0.7))
+    hit(nb, "thud", 0.7)
     mon(nb, 0.0, "BRAIN: NOT FOUND", True)
     rn = at("VO_30", "just a ring")
-    sf = add(Starfish(rn - 0.2, t_nerves=rn + 0.2, t_head=at("VO_30", "the genes that build a head"),
-                      labels=[(rn + 0.3, "NERVE RING", (255, 245, 120), 380),
-                              (at("VO_30", "down each arm"), "+ 5 RADIAL NERVES", (255, 245, 120), 440)]))
+    add(Starfish(rn - 0.2, t_nerves=rn + 0.2, t_head=1e9,
+                 labels=[(rn + 0.3, "NERVE RING", (255, 245, 120), 380),
+                         (at("VO_30", "down each arm"), "RADIAL NERVES x5", (255, 245, 120), 440)]))
     nt = at("VO_30", "in november")
     add(Doc(nt, file="doc_nature.png", focus=(0.4, 0.3), zoom=0.2, w=1150)).source(
         "Formery et al., Nature 623 (2023); Stanford University")
     date(nt, "11.01.2023", "NATURE, VOL. 623", "STANFORD")
     sl = at("VO_30", "they sliced")
-    add(Starfish(sl, t_nerves=sl, labels=[(sl + 0.2, "SLICED + GENE-MAPPED", WHITE, 380),
-                                          (at("VO_30", "nothing that builds a body"), "BODY GENES: ~NONE", (255, 120, 120), 440)]))
+    add(Starfish(sl, t_nerves=sl, labels=[(sl + 0.2, "RNA TOMOGRAPHY", (230, 230, 230), 380),
+                                          (at("VO_30", "nothing that builds a body"), "TRUNK GENES: ~0",
+                                           (255, 120, 120), 440)]))
     hd = at("VO_30", "the genes that build a head")
-    add(Starfish(hd, t_head=hd + 0.1, labels=[(hd + 0.4, "HEAD GENES:", (80, 200, 255), 380),
-                                              (hd + 1.2, "CENTER + EVERY ARM", (80, 200, 255), 440)]))
-    sfx.append((hd + 0.1, "riser", 0.3))
-    sh = at("VO_30", "the headlines")
-    add(Photo(sh, file="starfish1.jpg", caption="Basically a head.", credit="Photo: Hans Hillewaert, CC BY-SA 4.0",
-              w=860, h=600, rot=2))
-    wa = at("VO_30", "a starfish is basically")
-    add(TextSlam(wa, lines=[("A STARFISH", WHITE), ("IS A HEAD.", YEL)], size=200,
-                 times=[wa, at("VO_30", "a head")]))
-    sfx.append((at("VO_30", "a head"), "impact", 0.7))
-    add(Photo(at("VO_30", "walking around"), file="starfish3.jpg", caption="walking around",
+    add(Starfish(hd, t_head=hd + 0.1, labels=[(hd + 0.4, "HEAD-PATTERNING GENES", (80, 200, 255), 380)]))
+    hit(hd + 0.1, "riser", 0.3)
+    add(Photo(at("VO_30", "the headlines"), file="starfish1.jpg", caption="Asterias rubens",
+              credit="Photo: Hans Hillewaert, CC BY-SA 4.0", w=860, h=600, rot=2))
+    add(Photo(at("VO_30", "walking around"), file="starfish3.jpg", caption="",
               credit="Photo: Steven Pavlov, CC BY-SA 4.0", w=860, h=600, rot=-3, enter="cut"))
 
     gh = at("VO_31", "giant head")
-    add(TextSlam(gh - 0.2, lines=[("GIANT HEAD", WHITE), ("NO BRAIN", RED)], size=200,
-                 times=[gh - 0.2, at("VO_31", "no brain")]))
-    sfx.append((at("VO_31", "no brain"), "thud", 0.7))
-    add(Folder(at("VO_31", "he was the most"), label=["FILE NO. 0047", "SUBJECT: PATRICK STAR", "FINDING:"],
-               enter="cut")).stamp(at("VO_31", "scientifically accurate"), "SCIENTIFICALLY ACCURATE", 1100, 760, -8, 90)
-    sfx.append((at("VO_31", "scientifically accurate"), "stamp", 1.0))
-    ct = at("VO_31", "science just took")
-    add(Counter(ct, range=(1999, 2023), t_start=ct + 0.2, t_end=at("VO_31", "catch up", end=True),
-                label="SCIENCE CATCHING UP"))
+    foot(gh - 0.2, (C("C09"), 4.4, 0.5, 0.3), z0=1.0, z1=1.6, ztime=4.5)
+    foot(at("VO_31", "he was the most"), (C("C09"), 4.4, 0.5, 0.35), z0=1.6, z1=1.7,
+         punch=(at("VO_31", "scientifically accurate"), 2.0))
+    hit(at("VO_31", "scientifically accurate"), "thud", 0.6)
+    add(Photo(at("VO_31", "science just took"), file="starfish2.jpg", caption="",
+              credit="Photo: Charles J. Sharp, CC BY-SA 4.0", w=860, h=600, rot=-2, enter="cut"))
 
     # ------------------------------------------------------------ VERDICT
     t = at("VO_32", "so when did")
@@ -500,35 +421,25 @@ def build(tl):
         e=(360, 700, ["10.12.2001", "THE WORM"], t), f=(820, 640, ["10.21.2005", "PATRICK SMARTPANTS"], t),
         g=(1260, 720, ["08.02.2007", "PAT NO PAY"], t), h=(1660, 660, ["09.16.2011", "PET SITTER PAT"], t),
         p=(1000, 930, ["PAUL TIBBITT"], t))
-    strings = [("a", "b", t), ("b", "c", t), ("c", "d", t), ("d", "p", t), ("p", "f", t), ("f", "g", t), ("g", "h", t),
-               ("e", "f", t)]
+    strings = [("a", "b", t), ("b", "c", t), ("c", "d", t), ("d", "p", t), ("p", "f", t), ("f", "g", t),
+               ("g", "h", t), ("e", "f", t)]
     add(Board(t, items=items, strings=strings, focus=(960, 540, 1.5), pullback=True))
     op = at("VO_32", "on paper")
-    add(Board(op, items=items, strings=strings, enter="cut").circle(op + 0.2, 330, 300, 470, 260).note(
-        op + 0.5, "on paper", 330, 470, 64))
-    sfx.append((op + 0.5, "pop", 0.4))
-    pl = at("VO_32", "punchline with legs")
-    add(TextSlam(at("VO_32", "but when did"), lines=[("A PUNCHLINE", WHITE), ("WITH LEGS", YEL)], size=180,
-                 times=[at("VO_32", "punchline"), at("VO_32", "with legs")]))
+    add(Board(op, items=items, strings=strings, enter="cut").circle(op + 0.2, 330, 300, 470, 260))
+    hit(op + 0.2, "pop", 0.4)
+    foot(at("VO_32", "but when did"), PAT_C11, z0=1.1, z1=1.3)
     o21 = at("VO_32", "im going with")
-    add(Board(o21, items=items, strings=strings, enter="cut", focus=(820, 640, 1.0)).circle(
-        at("VO_32", "october") + 0.1, 330, 300, 470, 260).circle(at("VO_32", "october") + 0.2, 820, 640, 520, 280).note(
-        at("VO_32", "october") + 0.6, "my pick", 820, 820, 70))
-    sfx += [(at("VO_32", "october") + 0.2, "impact", 0.5)]
-    add(TextSlam(at("VO_32", "by accident"), lines=[("SMART = ACCIDENT", WHITE)], size=180))
-    yp = at("VO_32", "you might pick")
-    add(TextSlam(yp, lines=[("YOUR PICK?", YEL), ("↓ COMMENTS ↓", WHITE)], size=170,
-                 times=[yp, at("VO_32", "tell me")]))
+    add(Board(o21, items=items, strings=strings, enter="cut").circle(at("VO_32", "october") + 0.2, 820, 640, 520, 280))
+    hit(at("VO_32", "october") + 0.2, "impact", 0.5)
+    foot(at("VO_32", "by accident"), PAT_C09_HEAD, z0=1.1, z1=1.35)
+    add(Montage(at("VO_32", "you might pick"), items=DUMB, step=0.55, loop=True))
     fi = at("VO_32", "and if theres")
     add(Folder(fi, label=["FILE NO. 0048", "SUBJECT: ???", "SUBMITTED BY: YOU"]))
     sfx += [(fi, "whoosh", 0.5), (fi + 0.3, "folder_slam", 0.7)]
-    rt = at("VO_32", "i read them")
-    add(Black(rt + 0.7, text="I READ THEM.", size=90, type_time=0.6))
-    sfx.append((rt + 0.7, "typing", 0.5))
 
     end = next(s for s in tl.segments if s["kind"] == "end")
     add(EndScreen(end["g0"]))
-    sfx.append((end["g0"], "stamp", 0.8))
+    hit(end["g0"], "stamp", 0.8)
     mon(end["g0"] - 3, 0, None)
     cards.sort(key=lambda c: c.t0)
     return cards, dates, chapters, sfx, monitor
