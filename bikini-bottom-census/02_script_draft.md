@@ -10,7 +10,7 @@ Voice: **Jeremy (Friendly Guy Next Door)**, same settings you used.
 | 2 | ✅ **Keep your take.** |
 | 2B | 🎙️ **NEW, short.** Record. |
 | 3 | ✅ **Keep your take.** |
-| 4 | ⏳ Keep your take *if* Mrs. Puff's line checks out (still verifying). |
+| 4 | 🎙️ **Re-record.** The quote is real, but the setup was wrong: she says it on a runaway ship heading for town. |
 | 5 | 🎙️ **Rewritten.** Record. |
 | 6 | 🎙️ **Rewritten.** Record. |
 | 7 | 🎙️ Record. |
@@ -26,6 +26,17 @@ Paste only the text inside each box.
 And it's so small that SpongeBob was sure nobody would even notice he was gone. His goodbye note literally says, if you're reading this, it's been about a year since I left town, and nobody noticed until now.
 
 In a town of five hundred and thirty-eight people.
+```
+
+### CHUNK 4: The witness (re-record)
+```
+And if anyone would know, it's Mrs. Puff. Nobody alive has spent more time staring at Bikini Bottom traffic in pure terror.
+
+In Nautical Novice, she and SpongeBob end up on the biggest ship ever built, and it's heading straight for town. Here's how many people she thinks are about to get flattened.
+
+Millions. Now, she's panicking, she's a pufferfish, I'm not treating that like an official government document. But she lives there. And she didn't say hundreds.
+
+So now we've got three numbers. A village, a city, and something closer to a country. Time to stop listening to people and start counting them.
 ```
 
 ### CHUNK 5: The stadium
@@ -109,7 +120,7 @@ If you want to know what's actually sitting at the bottom of the real Bikini, I 
 
 ## Already recorded (for reference, don't re-record)
 
-<details><summary>Chunks 1–4 text</summary>
+<details><summary>Chunks 1–3 text</summary>
 
 **1.** This sign is on the road out of Bikini Bottom. Population... five hundred and thirty-eight. In one episode, SpongeBob decides the town doesn't need him anymore. He packs a bag, walks out, stops at this sign... and crosses out the eight. Five hundred and thirty-seven. He updated the census on his way out of town, ~~with a marker~~. Which would be totally fine, except seven years earlier, forty-six thousand, eight hundred and fifty-three people stood in line for a burger. That's eighty-seven Bikini Bottoms standing in one line for a pink hamburger. So somebody's lying. And I spent way too long going through this show, pausing crowd shots and counting fish one by one, to find out who. I got an answer. It's not the one on the sign. And the last part of it is a lot darker than a population count has any right to be.
 
@@ -117,7 +128,7 @@ If you want to know what's actually sitting at the bottom of the real Bikini, I 
 
 **3.** Patty Hype, season two... Or there's a much bigger town hiding behind that sign.
 
-**4.** And if anyone would know, it's Mrs. Puff... Time to stop listening to people and start counting them.
+**4.** (old take, replaced above)
 </details>
 
 ---
@@ -139,7 +150,8 @@ If you want to know what's actually sitting at the bottom of the real Bikini, I 
 | ~77 fish in *Patty Hype*'s biggest crowd shot | ✅ (my count, ±3) | head-by-head count of the frame |
 | Same fish design repeated in that shot | ✅ | two identical small blue fish; same lavender fish in two outfits |
 | Background fish numbered by crew, not named | ✅ | Encyclopedia SpongeBobia (incidental model numbers) |
-| Mrs. Puff "millions of innocent lives" (*Nautical Novice*) | ⏳ | transcribing now |
+| Mrs. Puff "millions of innocent lives" (*Nautical Novice*) | ✅ | "In a few minutes we'll be flattening millions of innocent lives!" said aboard the giant ship heading for Bikini Bottom |
+| Mrs. Puff hands SpongeBob a license in that episode | ✅ | "I never thought I'd say this, but here's your driver's license." |
 | 167 people moved in 1946; resettled ~1969–78, evacuated again; ~5 caretakers today | ✅ | Wikipedia "Bikini Atoll", bikiniatoll.com |
 | King Juda: "in the hands of God" | ✅ (secondary sources) | US Navy History & Heritage Command profile + histories |
 | Bikini Bottom sits beneath Bikini Atoll | ✅ | Wikipedia "SpongeBob SquarePants" |
