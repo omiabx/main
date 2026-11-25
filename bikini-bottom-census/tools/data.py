@@ -14,7 +14,7 @@ WORDS = json.load(open(os.path.join(SCR, "vo", "words.json")))
 def word_t(chunk, idx_or_text, nth=0):
     ws = WORDS[chunk]["words"]
     if isinstance(idx_or_text, int): return ws[idx_or_text]["s"]
-    hits = [w for w in ws if w["w"].lower().strip(".,?!\"") == idx_or_text.lower()]
+    q = idx_or_text.lower().strip(".,?!\""); hits = [w for w in ws if w["w"].lower().strip(".,?!\"") == q]
     return hits[nth]["s"]
 
 # Patty Hype crowd frame (s2_d1 @ 6768.0), head positions counted by hand in 718x480 frame coords.

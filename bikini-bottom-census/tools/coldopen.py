@@ -40,7 +40,7 @@ def polaroid_shot(t0, t1, src_img, caption, rot=-3.0, notes=None, zoom_through=0
 def build_coldopen(T0=0.0):
     shots, ovs, aud = [], [], []
     V = VO["1"]
-    A_end = 15.75; INS = 4.3
+    A_end = 15.75; INS = 4.15
     B_src = (16.90, 20.78); C_src = (21.90, WORDS["1"]["dur"])
     tB = T0 + A_end + INS
     tC = tB + (B_src[1] - B_src[0]) + 0.15
@@ -51,7 +51,6 @@ def build_coldopen(T0=0.0):
     vC = lambda v: v + off
     WEHTS = "WHAT EVER HAPPENED TO SPONGEBOB? · 2008"; PH = "PATTY HYPE · 2001"
 
-    aud.append(("sfx", "wind", T0, 0.15))
     # --- "This sign is on the road out of Bikini Bottom." polaroid -> zoom through into footage
     shots.append(polaroid_shot(vA(0), vA(1.7), grab(S5, 2978.6), "WHAT EVER HAPPENED TO SPONGEBOB? (2008)", rot=-2.5, zoom_through=0.3))
     aud.append(("sfx", "whoosh_short", vA(1.45), 0.3))
@@ -60,8 +59,7 @@ def build_coldopen(T0=0.0):
     shots.append(still_shot(vA(3.3), vA(4.85), S5, 2982.2, zoom=(1.3, 1.4), cx=(0.62, 0.7), cy=(0.83, 0.83), ymax=400))
     t538 = vA(4.85)
     shots.append(still_shot(t538, vA(6.2), S5, 2982.2, zoom=(1.75, 1.85), cx=(0.766, 0.766), cy=(0.83, 0.83), ymax=400))
-    aud.append(("sfx", "hit", t538, 0.45)); aud.append(("sfx", "scribble", t538 + 0.05, 0.25))
-    ovs.append({"t0": t538 + 0.05, "t1": vA(6.2), "draw": lambda img, tl, tg: marker_circle(ImageDraw.Draw(img), (560, 560, 1360, 990), progress=clamp(tl / 0.4), width=14, seed=4)})
+    aud.append(("sfx", "hit", t538, 0.45))
     # --- "decides the town doesn't need him anymore" (3 quick cuts)
     shots.append(clip_shot(vA(6.2), vA(7.6), S5, 2917.4, zoom=(1.1, 1.15), ymax=CAP))
     shots.append(clip_shot(vA(7.6), vA(8.7), S5, 2921.5, zoom=(1.1, 1.15), ymax=CAP))
@@ -186,7 +184,7 @@ def build_coldopen(T0=0.0):
     # --- "darker..." island drains to B&W
     tK = vC(49.0); tK_end = vC(C_src[1]) + 0.25
     shots.append(still_shot(tK, tK_end, S2, 6775.5, zoom=(1.0, 1.5), cx=(0.5, 0.47), cy=(0.6, 0.62), gray=(0.0, 1.0), ease=lambda x: x))
-    aud.append(("sfx", "ocean_rumble", tK, 0.5)); aud.append(("sfx", "heartbeat", tK + 2.6, 0.45))
+    aud.append(("sfx", "heartbeat", tK + 2.6, 0.45))
     # --- title card
     tT = tK_end
     title = text_layer("HOW MANY PEOPLE\nACTUALLY LIVE IN\nBIKINI BOTTOM?", font("anton", 140), stroke=0, shadow=8, spacing=16)

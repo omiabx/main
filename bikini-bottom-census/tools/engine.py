@@ -28,9 +28,9 @@ def lerp(a, b, x): return a + (b - a) * x
 # ---------------- video sources ----------------
 class ClipReader:
     """Sequential frame reader for a source range, display-corrected to 640x480 (4:3)."""
-    def __init__(self, path, start, dur, speed=1.0):
+    def __init__(self, path, start, dur, speed=1.0, pre=None):
         self.w, self.h = 640, 480
-        vf = f"setpts=PTS/{speed},scale={self.w}:{self.h}:flags=lanczos,setsar=1,fps={FPS}"
+        vf = (pre + "," if pre else "") + f"setpts=PTS/{speed},scale={self.w}:{self.h}:flags=lanczos,setsar=1,fps={FPS}"
         self.p = subprocess.Popen(["ffmpeg", "-v", "error", "-ss", f"{start:.3f}", "-i", path,
                                    "-t", f"{dur * speed + 0.5:.3f}", "-vf", vf, "-an",
                                    "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE)
@@ -45,12 +45,14 @@ class ClipReader:
         except Exception: pass
 
 _still_cache = {}
-def grab(path, t):
+PRE = {"natives.mp4": "crop=1440:1080:240:0", "baker_hq.mp4": "crop=960:720:160:0"}
+def grab(path, t, pre=None):
     """Single display-corrected 640x480 frame."""
+    pre = pre or PRE.get(os.path.basename(path))
     k = (path, round(t, 3))
     if k not in _still_cache:
         b = subprocess.run(["ffmpeg", "-v", "error", "-ss", f"{t:.3f}", "-i", path, "-frames:v", "1",
-                            "-vf", "scale=640:480:flags=lanczos,setsar=1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
+                            "-vf", (pre + "," if pre else "") + "scale=640:480:flags=lanczos,setsar=1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"],
                            capture_output=True).stdout
         _still_cache[k] = Image.frombuffer("RGB", (640, 480), b, "raw", "RGB", 0, 1).copy()
     return _still_cache[k]
@@ -205,7 +207,7 @@ def render(shots, overlays, mixer, out_path, dur, post=None):
 def clip_shot(t0, t1, path, src_t, speed=1.0, zoom=(1.0, 1.0), cx=(0.5, 0.5), cy=(0.5, 0.5), ymax=480,
               gray=(0.0, 0.0), ease=ease_in_out, shake=0.0):
     dur = t1 - t0; st = {}
-    def op(): st["r"] = ClipReader(path, src_t, dur, speed)
+    def op(): st["r"] = ClipReader(path, src_t, dur, speed, PRE.get(os.path.basename(path)))
     def cl(): st["r"].close()
     def fr(tl, tg):
         src = st["r"].next(); k = ease(tl / dur) if dur > 0 else 1

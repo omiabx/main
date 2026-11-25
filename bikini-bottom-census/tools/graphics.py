@@ -34,13 +34,13 @@ def big_number(txt, size=200, fill=WHITE, stroke=14):
 def label(txt, size=70, fill=WHITE, fnt="anton", stroke=8):
     return text_layer(txt, font(fnt, size), fill=fill, stroke=stroke, shadow=6)
 
-def census_form(lines, stamp=None, stamp_p=1.0, typed_p=1.0):
+def census_form(lines, stamp=None, stamp_p=1.0, typed_p=1.0, title="BIKINI BOTTOM", sub="OFFICIAL CENSUS RECORD"):
     """A typed government form. lines: list of (label, value, strike_value_or_None)."""
     fw, fh = 1100, 820
     im = paper_texture(fw, fh).convert("RGBA"); d = ImageDraw.Draw(im)
     d.rectangle([20, 20, fw - 20, fh - 20], outline=INK, width=4)
-    d.text((fw / 2, 85), "BIKINI BOTTOM", font=font("type", 64), fill=INK, anchor="mm")
-    d.text((fw / 2, 150), "OFFICIAL CENSUS RECORD", font=font("type", 40), fill=INK, anchor="mm")
+    d.text((fw / 2, 85), title, font=font("type", 64), fill=INK, anchor="mm")
+    d.text((fw / 2, 150), sub, font=font("type", 40), fill=INK, anchor="mm")
     d.line([60, 195, fw - 60, 195], fill=INK, width=3)
     total = sum(len(a) + len(b) for a, b, _ in lines); shown = int(total * typed_p); used = 0
     y = 260
