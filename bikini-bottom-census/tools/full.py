@@ -319,9 +319,9 @@ def build_all():
 
     # ================= CHUNK 6: SAME GUY =================
     c = "6"
-    vt6, ins, end6 = tl.place_vo(c, T, [("vo", 0.0, 13.42), ("vo", 15.55, WORDS[c]["dur"]), ("ins", S2, 6604.8, 6608.1, 1.0, 0.25)])
+    vt6, ins, end6 = tl.place_vo(c, T, [("vo", 0.0, 13.42), ("ins", S2, 6604.8, 6604.8, 0.0, 0.6), ("vo", 15.55, WORDS[c]["dur"]), ("ins", S2, 6604.8, 6608.1, 1.0, 0.25)])
     tl.pill(vt6(0.0), "EXHIBIT E · SAME GUY")
-    iL = ins[0][0]
+    iL = ins[1][0]
     A, B = REPEATS["smallblue"]; L, R = REPEATS["yellow"]
     def zoom_on(pt, z):
         x, y = pt

@@ -1,7 +1,7 @@
 # Upload kit: "How Many People Actually Live in Bikini Bottom?"
 
 ## Video file
-`bikini_bottom_census_final.mp4`: 1920×1080, 30 fps, H.264, AAC 256k, loudness −14 LUFS (YouTube's target), 8:09.
+`bikini_bottom_census_final.mp4`: 1920×1080, 30 fps, H.264, AAC 256k, loudness −14 LUFS (YouTube's target), 8:10.
 No outro or call to action. It ends on the last line, holds briefly, then cuts to black. If you add YouTube end-screen elements, they will sit over the final Bikini Atoll shot.
 
 ## Thumbnail
@@ -24,9 +24,9 @@ The sign says 538. The Pretty Patty line says 46,853. Mrs. Puff says millions. I
 2:50 Exhibit C: The Witness
 3:36 Exhibit D: The Stadium
 4:30 Exhibit E: Same Guy
-5:23 Exhibit F: The Stuff
-6:03 The Verdict
-6:58 One More Bikini
+5:24 Exhibit F: The Stuff
+6:04 The Verdict
+6:59 One More Bikini
 
 Episodes referenced: What Ever Happened to SpongeBob? (2008), Patty Hype (2001), Nautical Novice (2008), Band Geeks (2001).
 Historical footage: U.S. Navy / National Archives, Operation Crossroads (1946), public domain.
