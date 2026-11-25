@@ -132,38 +132,38 @@ def build_all():
 
     # ================= CHUNK 2 (+2B inserted before "The problem is") =================
     c = "2"; split = 39.95
-    vt, _, _ = tl.place_vo(c, T, [("vo", 0.0, split)], gap_after=0)
-    t2b = vt(split) + 0.25
+    vt2, _, _ = tl.place_vo(c, T, [("vo", 0.0, split)], gap_after=0)
+    t2b = vt2(split) + 0.25
     vb, _, _ = tl.place_vo("2b", t2b, [("vo", 0.0, WORDS["2b"]["dur"])], gap_after=0)
     tr = vb(WORDS["2b"]["dur"]) + 0.3
     vr, _, end2 = tl.place_vo(c, tr, [("vo", 40.05, WORDS[c]["dur"])])
-    tl.pill(vt(0.0), "EXHIBIT A · THE SIGN")
+    tl.pill(vt2(0.0), "EXHIBIT A · THE SIGN")
     names = ["SpongeBob", "Patrick", "Squidward", "Mr. Krabs", "Sandy", "Plankton", "Karen", "Mrs. Puff", "Pearl", "Gary",
              "Larry", "Mermaid Man", "Barnacle Boy", "Flying Dutchman", "\"MY LEG!\" guy"]
     ntimes = [W_(c, "SpongeBob,"), W_(c, "Patrick,"), W_(c, "Squidward,"), W_(c, "Mr."), W_(c, "Sandy,"), W_(c, "Plankton,"),
               W_(c, "Karen,"), W_(c, "Mrs."), W_(c, "Pearl."), W_(c, "Gary,"), W_(c, "Larry,"), W_(c, "Mermaid"), W_(c, "Barnacle"),
               W_(c, "Flying"), W_(c, "my")]
-    cards = [paper_card(n, 420, 104, 40) for n in names]; cardsc = [paper_card(n, 420, 104, 40, check=True) for n in names]
-    g0 = vt(12.5)
+    cards = [paper_card(n, 420, 104, 33) for n in names]; cardsc = [paper_card(n, 420, 104, 33, check=True) for n in names]
+    g0 = vt2(12.5)
     def namegrid(im, t):
         tg = g0 + t; cols = 4
         for i, n in enumerate(names):
-            ti = vt(ntimes[i]) if i < 10 else vt(ntimes[i])
+            ti = vt2(ntimes[i]) if i < 10 else vt2(ntimes[i])
             if tg < ti - 0.05: continue
             r, cc = divmod(i, cols); x = 300 + cc * 440; y = 250 + r * 150
             paste_scaled(im, cardsc[i] if tg > ti + 0.25 else cards[i], x, y, rot=(-1.5 if (i % 3) else 1.2), alpha=clamp((tg - ti + 0.05) / 0.1))
-        cnt = sum(1 for i in range(len(names)) if tg >= vt(ntimes[i]))
+        cnt = sum(1 for i in range(len(names)) if tg >= vt2(ntimes[i]))
         paste_scaled(im, label_box(f"{cnt} / 538", 80), 1640, 960, rot=-2)
     tl.cuts([
-        (vt(0.0), St(S5, 2978.6, zoom=(1.1, 1.25), cx=(0.55, 0.6), cy=(0.4, 0.38), ymax=CAP)),
-        (vt(3.4), Navy(lambda im, t: (paste_scaled(im, label_box("538 PEOPLE", 120), W / 2, 420, scale=pop_in(t, 0.2)),
-                                       paste_scaled(im, marker_text("= not a town", 90), W / 2, 640, alpha=clamp((t - (vt(5.84) - vt(3.4))) / 0.15)),
-                                       paste_scaled(im, marker_text("a village.", 110), W / 2, 820, alpha=clamp((t - (vt(7.4) - vt(3.4))) / 0.15), rot=-3)))),
-        (vt(8.4), C(S5, 2744.0, zoom=(1.1, 1.2), ymax=CAP)),
-        (vt(10.25), C(S5, 2745.5, zoom=(2.0, 2.1), cx=(0.68, 0.68), cy=(0.62, 0.62), ymax=CAP)),
-        (vt(12.4), Navy(namegrid)),
-        (vt(37.2), Navy(lambda im, t: (paste_scaled(im, label_box("523 TO GO", 140), W / 2, 460, scale=pop_in(t, 0.2)),
-                                        paste_scaled(im, marker_text("very doable", 96), W / 2, 700, rot=-4, alpha=clamp((t - (vt(38.82) - vt(37.2))) / 0.15))))),
+        (vt2(0.0), St(S5, 2978.6, zoom=(1.1, 1.25), cx=(0.55, 0.6), cy=(0.4, 0.38), ymax=CAP)),
+        (vt2(3.4), Navy(lambda im, t: (paste_scaled(im, label_box("538 PEOPLE", 120), W / 2, 420, scale=pop_in(t, 0.2)),
+                                       paste_scaled(im, marker_text("= not a town", 90), W / 2, 640, alpha=clamp((t - (vt2(5.84) - vt2(3.4))) / 0.15)),
+                                       paste_scaled(im, marker_text("a village.", 110), W / 2, 820, alpha=clamp((t - (vt2(7.4) - vt2(3.4))) / 0.15), rot=-3)))),
+        (vt2(8.4), C(S5, 2744.0, zoom=(1.1, 1.2), ymax=CAP)),
+        (vt2(10.25), C(S5, 2745.5, zoom=(2.0, 2.1), cx=(0.68, 0.68), cy=(0.62, 0.62), ymax=CAP)),
+        (vt2(12.4), Navy(namegrid)),
+        (vt2(37.2), Navy(lambda im, t: (paste_scaled(im, label_box("523 TO GO", 140), W / 2, 460, scale=pop_in(t, 0.2)),
+                                        paste_scaled(im, marker_text("very doable", 96), W / 2, 700, rot=-4, alpha=clamp((t - (vt2(38.82) - vt2(37.2))) / 0.15))))),
         # 2B
         (vb(0.0), C(S5, 2974.6, zoom=(1.0, 1.15), ymax=CAP)),
         (vb(2.6), C(S5, 2958.6, zoom=(1.1, 1.2), ymax=CAP)),
@@ -176,53 +176,53 @@ def build_all():
         (vr(42.4), St(S2, 6792.0, zoom=(1.0, 1.1))),
         (vr(43.6), C(N6, 3774.0, zoom=(1.0, 1.1), ymax=CAP)),
     ], end2)
-    tl.tag(vt(8.4), "WEHTS"); tl.tag(vb(5.3), "WEHTS")
-    for k in [vt(3.4), vt(8.4), vt(12.4), vt(37.2), vb(0.0), vr(40.1)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
-    for i in range(len(names)): tl.sfx("typekey", vt(ntimes[i]), 0.35)
-    tl.sfx("stamp", vt(3.45), 0.4); tl.sfx("pop", vt(37.25), 0.3); tl.sfx("shutter", vb(13.5), 0.4)
+    tl.tag(vt2(8.4), "WEHTS"); tl.tag(vb(5.3), "WEHTS")
+    for k in [vt2(3.4), vt2(8.4), vt2(12.4), vt2(37.2), vb(0.0), vr(40.1)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
+    for i in range(len(names)): tl.sfx("typekey", vt2(ntimes[i]), 0.35)
+    tl.sfx("stamp", vt2(3.45), 0.4); tl.sfx("pop", vt2(37.25), 0.3); tl.sfx("shutter", vb(13.5), 0.4)
     tl.aud.append(("clip", S5, vb(5.3), 3076.0, 2.0, 0.0))
     T = end2
 
     # ================= CHUNK 3: THE LINE =================
     c = "3"
-    vt, ins, end3 = tl.place_vo(c, T, [("vo", 0.0, 16.9), ("ins", S2, 6624.8, 6627.6, 1.0, 0.1), ("ins", S2, 6631.9, 6636.9, 1.0, 0.1),
+    vt3, ins, end3 = tl.place_vo(c, T, [("vo", 0.0, 16.9), ("ins", S2, 6624.8, 6627.6, 1.0, 0.1), ("ins", S2, 6631.9, 6636.9, 1.0, 0.1),
                                         ("vo", 17.3, WORDS[c]["dur"])])
-    tl.pill(vt(0.0), "EXHIBIT B · THE LINE")
+    tl.pill(vt3(0.0), "EXHIBIT B · THE LINE")
     i1, i2 = ins[0][0], ins[1][0]
     tk = ticket()
     tl.cuts([
-        (vt(0.0), Pol(grab(S2, 6450.0), "PATTY HYPE (2001)", rot=2.0)),
-        (vt(2.55), C(S2, 6337.0, zoom=(1.05, 1.15))),
-        (vt(4.6), St(S2, 6363.0, zoom=(1.1, 1.3))),
-        (vt(6.75), C(S2, 6362.0, zoom=(1.0, 1.1))),
-        (vt(8.25), C(S2, 6392.6, zoom=(1.2, 1.3))),
-        (vt(10.15), C(S2, 6446.5, zoom=(1.0, 1.08))),
-        (vt(11.9), C(S2, 6450.0, zoom=(1.3, 1.4), cx=(0.35, 0.35))),
-        (vt(13.1), C(S2, 6609.6, zoom=(1.0, 1.1))),
-        (vt(15.45), St(S2, 6629.0, zoom=(1.6, 1.15), ease=lambda x: x)),
+        (vt3(0.0), Pol(grab(S2, 6450.0), "PATTY HYPE (2001)", rot=2.0)),
+        (vt3(2.55), C(S2, 6337.0, zoom=(1.05, 1.15))),
+        (vt3(4.6), St(S2, 6363.0, zoom=(1.1, 1.3))),
+        (vt3(6.75), C(S2, 6362.0, zoom=(1.0, 1.1))),
+        (vt3(8.25), C(S2, 6392.6, zoom=(1.2, 1.3))),
+        (vt3(10.15), C(S2, 6446.5, zoom=(1.0, 1.08))),
+        (vt3(11.9), C(S2, 6450.0, zoom=(1.3, 1.4), cx=(0.35, 0.35))),
+        (vt3(13.1), C(S2, 6609.6, zoom=(1.0, 1.1))),
+        (vt3(15.45), St(S2, 6629.0, zoom=(1.6, 1.15), ease=lambda x: x)),
         (i1, C(S2, 6624.8, zoom=(1.1, 1.15))),
         (i2, C(S2, 6631.9, zoom=(1.0, 1.06))),
-        (vt(17.3), Navy(lambda im, t: paste_scaled(im, text_layer("46,853", font("anton", 300), stroke=0, shadow=10), W / 2, H / 2, scale=pop_in(t, 0.2)))),
-        (vt(20.4), C(S2, 6450.2, zoom=(1.4, 1.5), cx=(0.3, 0.3), cy=(0.45, 0.45))),
-        (vt(24.05), Navy(lambda im, t: paste_scaled(im, tk, W / 2, lerp(H + 300, H / 2, ease_out(t / 0.3)), rot=-3))),
-        (vt(26.35), Navy(lambda im, t: (
+        (vt3(17.3), Navy(lambda im, t: paste_scaled(im, text_layer("46,853", font("anton", 300), stroke=0, shadow=10), W / 2, H / 2, scale=pop_in(t, 0.2)))),
+        (vt3(20.4), C(S2, 6450.2, zoom=(1.4, 1.5), cx=(0.3, 0.3), cy=(0.45, 0.45))),
+        (vt3(24.05), Navy(lambda im, t: paste_scaled(im, tk, W / 2, lerp(H + 300, H / 2, ease_out(t / 0.3)), rot=-3))),
+        (vt3(26.35), Navy(lambda im, t: (
             paste_scaled(im, label_box("538 PEOPLE", 96), 520, 480, scale=pop_in(t, 0.2)),
-            paste_scaled(im, marker_text("x 87 trips", 100), W / 2 + 40, 480, alpha=clamp((t - (vt(31.32) - vt(26.35))) / 0.15), rot=-3),
-            paste_scaled(im, label_box("46,853", 96), 1460, 480, scale=pop_in(t - (vt(31.32) - vt(26.35)) - 0.3, 0.2))))),
-        (vt(33.25), St(S2, 6363.0, zoom=(1.6, 1.8), cx=(0.68, 0.7), cy=(0.35, 0.35))),
-        (vt(35.3), C(S2, 6658.5, zoom=(1.1, 1.2))),
-        (vt(37.1), St(S5, 2978.6, zoom=(1.05, 1.4), cx=(0.55, 0.62), cy=(0.4, 0.35), ymax=CAP, gray=(0, 0.6))),
+            paste_scaled(im, marker_text("x 87 trips", 100), W / 2 + 40, 480, alpha=clamp((t - (vt3(31.32) - vt3(26.35))) / 0.15), rot=-3),
+            paste_scaled(im, label_box("46,853", 96), 1460, 480, scale=pop_in(t - (vt3(31.32) - vt3(26.35)) - 0.3, 0.2))))),
+        (vt3(33.25), St(S2, 6363.0, zoom=(1.6, 1.8), cx=(0.68, 0.7), cy=(0.35, 0.35))),
+        (vt3(35.3), C(S2, 6658.5, zoom=(1.1, 1.2))),
+        (vt3(37.1), St(S5, 2978.6, zoom=(1.05, 1.4), cx=(0.55, 0.62), cy=(0.4, 0.35), ymax=CAP, gray=(0, 0.6))),
     ], end3)
-    tl.tag(vt(2.55), "PH")
-    for k in [vt(2.55), vt(17.3), vt(24.05), vt(26.35), vt(37.1)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
-    tl.sfx("hit", vt(17.3), 0.4); tl.sfx("stamp", vt(24.35), 0.4); tl.sfx("pop", vt(31.32), 0.3); tl.sfx("pop", vt(31.32) + 0.3, 0.3)
-    tl.aud.append(("clip", S2, vt(15.45), 6620.0, 1.2, 0.25))
+    tl.tag(vt3(2.55), "PH")
+    for k in [vt3(2.55), vt3(17.3), vt3(24.05), vt3(26.35), vt3(37.1)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
+    tl.sfx("hit", vt3(17.3), 0.4); tl.sfx("stamp", vt3(24.35), 0.4); tl.sfx("pop", vt3(31.32), 0.3); tl.sfx("pop", vt3(31.32) + 0.3, 0.3)
+    tl.aud.append(("clip", S2, vt3(15.45), 6620.0, 1.2, 0.25))
     T = end3
 
     # ================= CHUNK 4: THE WITNESS =================
     c = "4"
-    vt, ins, end4 = tl.place_vo(c, T, [("vo", 0.0, 19.4), ("ins", N6, 3796.7, 3802.5, 1.0, 0.1), ("vo", 19.6, WORDS[c]["dur"])])
-    tl.pill(vt(0.0), "EXHIBIT C · THE WITNESS")
+    vt4, ins, end4 = tl.place_vo(c, T, [("vo", 0.0, 19.4), ("ins", N6, 3796.7, 3802.5, 1.0, 0.1), ("vo", 19.6, WORDS[c]["dur"])])
+    tl.pill(vt4(0.0), "EXHIBIT C · THE WITNESS")
     iM = ins[0][0]
     form_m = [("POPULATION:", "MILLIONS?", None), ("SOURCE:", "MRS. PUFF", None), ("CONDITION:", "INFLATED", None)]
     def millions_form(im, t):
@@ -232,42 +232,42 @@ def build_all():
     tts = [W_(c, "village,"), W_(c, "city,"), W_(c, "country.")]
     boxes = [label_box(a, 110, 520) for a, _ in three]; notes3 = [marker_text(b.lower(), 76) for _, b in three]
     def threeboxes(im, t):
-        t0 = vt(30.0)
+        t0 = vt4(30.0)
         for i in range(3):
-            ti = vt(tts[i]) - t0 - 0.35
+            ti = vt4(tts[i]) - t0 - 0.35
             if t < ti: continue
             x = 360 + i * 600; paste_scaled(im, boxes[i], x, 470, scale=pop_in(t - ti, 0.2), rot=[-2, 1.5, -1][i])
             if t > ti + 0.25: paste_scaled(im, notes3[i], x, 680, rot=-4)
     tl.cuts([
-        (vt(0.0), Pol(grab(N6, 3470.0), "NAUTICAL NOVICE (2008)", rot=-2.0)),
-        (vt(3.0), C(N6, 3600.0, zoom=(1.1, 1.2), ymax=CAP)),
-        (vt(5.15), C(N6, 3781.5, zoom=(1.3, 1.45), ymax=CAP)),
-        (vt(8.85), C(N6, 3700.0, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(11.85), C(N6, 3745.0, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(14.0), C(N6, 3773.6, zoom=(1.1, 1.2), ymax=CAP)),
-        (vt(16.3), C(N6, 3793.2, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt4(0.0), Pol(grab(N6, 3470.0), "NAUTICAL NOVICE (2008)", rot=-2.0)),
+        (vt4(3.0), C(N6, 3600.0, zoom=(1.1, 1.2), ymax=CAP)),
+        (vt4(5.15), C(N6, 3781.5, zoom=(1.3, 1.45), ymax=CAP)),
+        (vt4(8.85), C(N6, 3700.0, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt4(11.85), C(N6, 3745.0, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt4(14.0), C(N6, 3773.6, zoom=(1.1, 1.2), ymax=CAP)),
+        (vt4(16.3), C(N6, 3793.2, zoom=(1.0, 1.1), ymax=CAP)),
         (iM, C(N6, 3796.7, zoom=(1.05, 1.12), ymax=CAP)),
         (iM + 4.2, C(N6, 3800.9, zoom=(1.2, 1.25), ymax=CAP)),
-        (vt(19.65), St(N6, 3798.5, zoom=(1.6, 1.7), cx=(0.68, 0.68), cy=(0.4, 0.4), ymax=CAP, gray=(1, 1))),
-        (vt(20.8), C(N6, 3781.0, zoom=(1.6, 1.7), cx=(0.3, 0.3), cy=(0.45, 0.45), ymax=CAP)),
-        (vt(22.3), C(N6, 3797.5, zoom=(1.4, 1.5), cx=(0.7, 0.7), cy=(0.4, 0.4), ymax=CAP)),
-        (vt(23.5), Navy(millions_form)),
-        (vt(26.35), C(N6, 3905.5, zoom=(1.1, 1.2), ymax=CAP)),
-        (vt(30.0), Navy(threeboxes)),
-        (vt(36.15), St(S2, CROWD_T, zoom=(1.0, 1.2), gray=(0, 0))),
+        (vt4(19.65), St(N6, 3798.5, zoom=(1.6, 1.7), cx=(0.68, 0.68), cy=(0.4, 0.4), ymax=CAP, gray=(1, 1))),
+        (vt4(20.8), C(N6, 3781.0, zoom=(1.6, 1.7), cx=(0.3, 0.3), cy=(0.45, 0.45), ymax=CAP)),
+        (vt4(22.3), C(N6, 3797.5, zoom=(1.4, 1.5), cx=(0.7, 0.7), cy=(0.4, 0.4), ymax=CAP)),
+        (vt4(23.5), Navy(millions_form)),
+        (vt4(26.35), C(N6, 3905.5, zoom=(1.1, 1.2), ymax=CAP)),
+        (vt4(30.0), Navy(threeboxes)),
+        (vt4(36.15), St(S2, CROWD_T, zoom=(1.0, 1.2), gray=(0, 0))),
     ], end4)
-    tl.tag(vt(3.0), "NN")
-    for k in [vt(3.0), vt(8.85), vt(23.5), vt(30.0), vt(36.15)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
-    tl.sfx("shutter", vt(19.65), 0.45); tl.sfx("stamp", vt(24.5), 0.5); tl.sfx("shutter", vt(36.15), 0.4)
+    tl.tag(vt4(3.0), "NN")
+    for k in [vt4(3.0), vt4(8.85), vt4(23.5), vt4(30.0), vt4(36.15)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
+    tl.sfx("shutter", vt4(19.65), 0.45); tl.sfx("stamp", vt4(24.5), 0.5); tl.sfx("shutter", vt4(36.15), 0.4)
     ov_m = text_layer("MILLIONS", font("anton", 220), stroke=0, shadow=12)
-    tl.ov(vt(19.7), vt(20.8), lambda img, t, tg: paste_scaled(img, ov_m, W / 2, 820, scale=pop_in(t, 0.2)))
-    for k, tt in enumerate(tts): tl.sfx("pop", vt(tt) - 0.35, 0.3)
+    tl.ov(vt4(19.7), vt4(20.8), lambda img, t, tg: paste_scaled(img, ov_m, W / 2, 820, scale=pop_in(t, 0.2)))
+    for k, tt in enumerate(tts): tl.sfx("pop", vt4(tt) - 0.35, 0.3)
     T = end4
 
     # ================= CHUNK 5: THE STADIUM =================
     c = "5"
-    vt, ins, end5 = tl.place_vo(c, T, [("vo", 0.0, 29.3), ("ins", D05, 4373.4, 4378.1, 1.0, 0.15), ("vo", 29.9, WORDS[c]["dur"])])
-    tl.pill(vt(0.0), "EXHIBIT D · THE STADIUM")
+    vt5, ins, end5 = tl.place_vo(c, T, [("vo", 0.0, 29.3), ("ins", D05, 4373.4, 4378.1, 1.0, 0.15), ("vo", 29.9, WORDS[c]["dur"])])
+    tl.pill(vt5(0.0), "EXHIBIT D · THE STADIUM")
     iB = ins[0][0]
     n = len(HEADS); crowdP = pillar(crowd_img())
     def counting_fast(t0v):
@@ -288,39 +288,39 @@ def build_all():
         ImageDraw.Draw(im).rectangle([x0, 740, x0 + max(3, int(full * 77 / 46853)), 820], fill=(200, 40, 40))
         if t > 0.9: paste_scaled(im, marker_text("~ 1/600th", 110), 1180, 780, rot=-4, alpha=clamp((t - 0.9) / 0.15))
     tl.cuts([
-        (vt(0.0), Pol(grab(D05, 4311.0), "BAND GEEKS (2001)", rot=2.5)),
-        (vt(1.5), C(D05, 3861.0, zoom=(1.1, 1.2), ymax=CAP)),
-        (vt(4.85), C(D05, 4310.0, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(7.55), C(D05, 4368.5, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(10.1), St(D05, 4371.3, zoom=(1.0, 1.15), ymax=CAP, ease=lambda x: x)),
-        (vt(17.1), St(D05, 4373.0, zoom=(1.6, 1.7), cx=(0.45, 0.45), cy=(0.35, 0.35), ymax=CAP)),
-        (vt(18.9), C(D05, 4370.5, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(22.0), C(D05, 4372.0, zoom=(1.2, 1.3), ymax=CAP)),
-        (vt(26.7), C(D05, 4373.0, zoom=(1.0, 1.05), ymax=CAP)),
+        (vt5(0.0), Pol(grab(D05, 4311.0), "BAND GEEKS (2001)", rot=2.5)),
+        (vt5(1.5), C(D05, 3861.0, zoom=(1.1, 1.2), ymax=CAP)),
+        (vt5(4.85), C(D05, 4310.0, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt5(7.55), C(D05, 4368.5, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt5(10.1), St(D05, 4371.3, zoom=(1.0, 1.15), ymax=CAP, ease=lambda x: x)),
+        (vt5(17.1), St(D05, 4373.0, zoom=(1.6, 1.7), cx=(0.45, 0.45), cy=(0.35, 0.35), ymax=CAP)),
+        (vt5(18.9), C(D05, 4370.5, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt5(22.0), C(D05, 4372.0, zoom=(1.2, 1.3), ymax=CAP)),
+        (vt5(26.7), C(D05, 4373.0, zoom=(1.0, 1.05), ymax=CAP)),
         (iB, C(D05, 4373.4, zoom=(1.0, 1.05), ymax=CAP)),
         (iB + 2.6, C(D05, 4376.0, zoom=(1.35, 1.4), cx=(0.55, 0.55), cy=(0.45, 0.45), ymax=CAP)),
-        (vt(29.9), St(D05, 4377.0, zoom=(1.4, 1.5), cx=(0.55, 0.55), cy=(0.45, 0.45), ymax=CAP, gray=(1, 1))),
-        (vt(33.5), St(D05, 4371.3, zoom=(1.0, 1.1), ymax=CAP, gray=(1, 1))),
-        (vt(35.75), Pol(crowd_img(), "PATTY HYPE (2001)", rot=-2.0)),
-        (vt(40.2), Fn(lambda t_, tg: pillar(crowd_img()))),
-        (vt(42.3), Fn(counting_fast(0))),
-        (vt(45.45), Navy(bars)),
+        (vt5(29.9), St(D05, 4377.0, zoom=(1.4, 1.5), cx=(0.55, 0.55), cy=(0.45, 0.45), ymax=CAP, gray=(1, 1))),
+        (vt5(33.5), St(D05, 4371.3, zoom=(1.0, 1.1), ymax=CAP, gray=(1, 1))),
+        (vt5(35.75), Pol(crowd_img(), "PATTY HYPE (2001)", rot=-2.0)),
+        (vt5(40.2), Fn(lambda t_, tg: pillar(crowd_img()))),
+        (vt5(42.3), Fn(counting_fast(0))),
+        (vt5(45.45), Navy(bars)),
     ], end5)
-    tl.tag(vt(1.5), "BG")
+    tl.tag(vt5(1.5), "BG")
     note = marker_text("remember this one", 80)
-    tl.ov(vt(30.0), vt(33.5), lambda img, t, tg: paste_scaled(img, note, 1300, 200, rot=-5, scale=pop_in(t, 0.2)))
-    tl.ov(vt(33.6), vt(35.75), lambda img, t, tg: paste_scaled(img, label_box("HUMANS: 0", 100), W / 2, H / 2, scale=pop_in(t, 0.2), rot=-2))
-    tl.sfx("shutter", vt(10.1), 0.45); tl.sfx("scratch", vt(17.1) - 0.05, 0.45)
-    tl.aud.append(("clip", D05, vt(18.9), 4370.5, (vt(26.7) - vt(18.9)), 0.35))
-    for k in [vt(1.5), vt(30.0), vt(35.75), vt(45.45)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
-    for i in range(0, n, 3): tl.sfx("tick", vt(42.3) + 1.75 * (i / n) ** 0.8, 0.18)
-    tl.sfx("ding", vt(44.15), 0.35); tl.sfx("pop", vt(30.0), 0.3); tl.sfx("stamp", vt(33.6), 0.35)
+    tl.ov(vt5(30.0), vt5(33.5), lambda img, t, tg: paste_scaled(img, note, 1300, 200, rot=-5, scale=pop_in(t, 0.2)))
+    tl.ov(vt5(33.6), vt5(35.75), lambda img, t, tg: paste_scaled(img, label_box("HUMANS: 0", 100), W / 2, H / 2, scale=pop_in(t, 0.2), rot=-2))
+    tl.sfx("shutter", vt5(10.1), 0.45); tl.sfx("scratch", vt5(17.1) - 0.05, 0.45)
+    tl.aud.append(("clip", D05, vt5(18.9), 4370.5, (vt5(26.7) - vt5(18.9)), 0.35))
+    for k in [vt5(1.5), vt5(30.0), vt5(35.75), vt5(45.45)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
+    for i in range(0, n, 3): tl.sfx("tick", vt5(42.3) + 1.75 * (i / n) ** 0.8, 0.18)
+    tl.sfx("ding", vt5(44.15), 0.35); tl.sfx("pop", vt5(30.0), 0.3); tl.sfx("stamp", vt5(33.6), 0.35)
     T = end5
 
     # ================= CHUNK 6: SAME GUY =================
     c = "6"
-    vt, ins, end6 = tl.place_vo(c, T, [("vo", 0.0, WORDS[c]["dur"]), ("ins", S2, 6604.8, 6608.1, 1.0, 0.25)])
-    tl.pill(vt(0.0), "EXHIBIT E · SAME GUY")
+    vt6, ins, end6 = tl.place_vo(c, T, [("vo", 0.0, WORDS[c]["dur"]), ("ins", S2, 6604.8, 6608.1, 1.0, 0.25)])
+    tl.pill(vt6(0.0), "EXHIBIT E · SAME GUY")
     iL = ins[0][0]
     A, B = REPEATS["smallblue"]; L, R = REPEATS["lavender"]
     def zoom_on(pt, z):
@@ -343,104 +343,104 @@ def build_all():
             paste_scaled(im, card, x, y, scale=pop_in(t - ti, 0.15), rot=((k * 37) % 9) - 4)
         paste_scaled(im, label_box("40 RESIDENTS?", 80), W / 2, 980, rot=-1.5)
     tl.cuts([
-        (vt(0.0), Fn(lambda t_, tg: pillar(crowd_img()))),
-        (vt(1.8), St(S2, CROWD_T, zoom=(1.0, 1.5), ease=lambda x: x)),
-        (vt(3.8), zoom_on(A, 3.2)),
-        (vt(7.85), zoom_on(B, 3.2)),
-        (vt(10.3), zoom_on(L, 2.8)),
-        (vt(11.9), zoom_on(R, 2.8)),
-        (vt(13.55), Navy(lambda im, t: (paste_scaled(im, pa, 560, 540, rot=-3, scale=pop_in(t, 0.2)), paste_scaled(im, pb, 1360, 540, rot=3, scale=pop_in(t - 0.25, 0.2))))),
-        (vt(15.6), Navy(modelsheet)),
-        (vt(25.9), Navy(lambda im, t: paste_scaled(im, marker_text("theory #2:", 120), W / 2, 420, rot=-3, scale=pop_in(t, 0.2)) or
-                         paste_scaled(im, label_box("BIKINI BOTTOM IS TINY", 100), W / 2, 640, scale=pop_in(t - (vt(27.99) - vt(25.9)), 0.2)))),
-        (vt(30.9), Navy(forty)),
-        (vt(34.85), St(S2, 6629.0, zoom=(1.4, 1.55))),
-        (vt(35.85), C(S2, 6280.0, zoom=(1.0, 1.08))),
-        (vt(37.35), C(D05, 4371.0, zoom=(1.1, 1.2), ymax=CAP)),
-        (vt(38.75), St(D05, 4373.0, zoom=(1.7, 1.8), cx=(0.4, 0.4), cy=(0.35, 0.35), ymax=CAP)),
-        (vt(40.4), C(S5, 4775.0, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(41.7), St(S2, 6629.0, zoom=(1.5, 1.7))),
-        (vt(44.2), C(S2, 6767.0, zoom=(1.0, 1.1), speed=0.8)),
-        (vt(47.3), C(S2, 6606.0, zoom=(1.0, 1.05))),
+        (vt6(0.0), Fn(lambda t_, tg: pillar(crowd_img()))),
+        (vt6(1.8), St(S2, CROWD_T, zoom=(1.0, 1.5), ease=lambda x: x)),
+        (vt6(3.8), zoom_on(A, 3.2)),
+        (vt6(7.85), zoom_on(B, 3.2)),
+        (vt6(10.3), zoom_on(L, 2.8)),
+        (vt6(11.9), zoom_on(R, 2.8)),
+        (vt6(13.55), Navy(lambda im, t: (paste_scaled(im, pa, 560, 540, rot=-3, scale=pop_in(t, 0.2)), paste_scaled(im, pb, 1360, 540, rot=3, scale=pop_in(t - 0.25, 0.2))))),
+        (vt6(15.6), Navy(modelsheet)),
+        (vt6(25.9), Navy(lambda im, t: paste_scaled(im, marker_text("theory #2:", 120), W / 2, 420, rot=-3, scale=pop_in(t, 0.2)) or
+                         paste_scaled(im, label_box("BIKINI BOTTOM IS TINY", 100), W / 2, 640, scale=pop_in(t - (vt6(27.99) - vt6(25.9)), 0.2)))),
+        (vt6(30.9), Navy(forty)),
+        (vt6(34.85), St(S2, 6629.0, zoom=(1.4, 1.55))),
+        (vt6(35.85), C(S2, 6280.0, zoom=(1.0, 1.08))),
+        (vt6(37.35), C(D05, 4371.0, zoom=(1.1, 1.2), ymax=CAP)),
+        (vt6(38.75), St(D05, 4373.0, zoom=(1.7, 1.8), cx=(0.4, 0.4), cy=(0.35, 0.35), ymax=CAP)),
+        (vt6(40.4), C(S5, 4775.0, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt6(41.7), St(S2, 6629.0, zoom=(1.5, 1.7))),
+        (vt6(44.2), C(S2, 6767.0, zoom=(1.0, 1.1), speed=0.8)),
+        (vt6(47.3), C(S2, 6606.0, zoom=(1.0, 1.05))),
         (iL, C(S2, 6604.8, zoom=(1.0, 1.05))),
         (iL + 1.5, C(S2, 6606.3, zoom=(1.45, 1.5), cx=(0.35, 0.35), cy=(0.5, 0.5))),
     ], end6)
-    for k in [vt(3.8), vt(7.85), vt(10.3), vt(11.9)]: tl.sfx("whoosh_short", k - 0.05, 0.3)
-    for k in [vt(13.55), vt(15.6), vt(25.9), vt(30.9), vt(34.85)]: tl.sfx("swish", k - 0.04, 0.25)
-    for k in range(5): tl.sfx("pop", vt(15.6) + 0.15 + k * 0.35, 0.25)
-    for k in range(0, 40, 3): tl.sfx("pop_hi", vt(30.9) + 0.05 + k * 0.03, 0.12)
+    for k in [vt6(3.8), vt6(7.85), vt6(10.3), vt6(11.9)]: tl.sfx("whoosh_short", k - 0.05, 0.3)
+    for k in [vt6(13.55), vt6(15.6), vt6(25.9), vt6(30.9), vt6(34.85)]: tl.sfx("swish", k - 0.04, 0.25)
+    for k in range(5): tl.sfx("pop", vt6(15.6) + 0.15 + k * 0.35, 0.25)
+    for k in range(0, 40, 3): tl.sfx("pop_hi", vt6(30.9) + 0.05 + k * 0.03, 0.12)
     T = end6
 
     # ================= CHUNK 7: THE STUFF =================
     c = "7"
-    vt, _, end7 = tl.place_vo(c, T, [("vo", 0.0, WORDS[c]["dur"])])
-    tl.pill(vt(0.0), "EXHIBIT F · THE STUFF")
+    vt7, _, end7 = tl.place_vo(c, T, [("vo", 0.0, WORDS[c]["dur"])])
+    tl.pill(vt7(0.0), "EXHIBIT F · THE STUFF")
     items = ["Hospital", "Police force", "Stadium", "Mall", "Glove-themed theme park", "Boating school", "Two restaurants at war"]
     it_t = [W_(c, "hospital."), W_(c, "police"), W_(c, "stadium."), W_(c, "mall."), W_(c, "entire"), W_(c, "boating"), W_(c, "two")]
-    base = vt(3.6)
-    ck = checklist_draw(items, [vt(x) - base - 0.1 for x in it_t], [vt(x) - base + 0.35 for x in it_t], cols=2, w=740, h=112, y0=190)
+    base = vt7(3.6)
+    ck = checklist_draw(items, [vt7(x) - base - 0.1 for x in it_t], [vt7(x) - base + 0.35 for x in it_t], cols=2, w=740, h=112, y0=190)
     gs = gas_station(); dale = marker_text("est. population: Dale", 70)
     tl.cuts([
-        (vt(0.0), Navy(forty)),
-        (vt(3.6), Navy(ck)),
-        (vt(8.45), C(D05, 4368.5, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(9.45), Navy(lambda im, t: ck(im, t + vt(9.45) - base))),
-        (vt(13.5), C(N6, 3455.0, zoom=(1.0, 1.08), ymax=CAP)),
-        (vt(14.95), C(S2, 6280.0, zoom=(1.0, 1.08))),
-        (vt(16.5), C(S5, 4082.0, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(18.3), Navy(lambda im, t: ck(im, t + vt(18.3) - base))),
-        (vt(20.6), Navy(lambda im, t: (paste_scaled(im, gs, W / 2, 560, scale=pop_in(t, 0.25)),
-                                        paste_scaled(im, dale, 1500, 200, rot=-5, alpha=clamp((t - (vt(24.4) - vt(20.6))) / 0.15))))),
-        (vt(26.8), C(D05, 4368.5, zoom=(1.0, 1.1), ymax=CAP)),
-        (vt(28.45), C(D05, 4371.0, zoom=(1.1, 1.2), ymax=CAP)),
-        (vt(31.45), C(S5, 4082.0, zoom=(1.2, 1.3), ymax=CAP)),
-        (vt(35.75), St(S5, 4083.5, zoom=(1.5, 1.6), cy=(0.4, 0.4), ymax=CAP, gray=(1, 1))),
+        (vt7(0.0), Navy(forty)),
+        (vt7(3.6), Navy(ck)),
+        (vt7(8.45), C(D05, 4368.5, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt7(9.45), Navy(lambda im, t: ck(im, t + vt7(9.45) - base))),
+        (vt7(13.5), C(N6, 3455.0, zoom=(1.0, 1.08), ymax=CAP)),
+        (vt7(14.95), C(S2, 6280.0, zoom=(1.0, 1.08))),
+        (vt7(16.5), C(S5, 4082.0, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt7(18.3), Navy(lambda im, t: ck(im, t + vt7(18.3) - base))),
+        (vt7(20.6), Navy(lambda im, t: (paste_scaled(im, gs, W / 2, 560, scale=pop_in(t, 0.25)),
+                                        paste_scaled(im, dale, 1500, 200, rot=-5, alpha=clamp((t - (vt7(24.4) - vt7(20.6))) / 0.15))))),
+        (vt7(26.8), C(D05, 4368.5, zoom=(1.0, 1.1), ymax=CAP)),
+        (vt7(28.45), C(D05, 4371.0, zoom=(1.1, 1.2), ymax=CAP)),
+        (vt7(31.45), C(S5, 4082.0, zoom=(1.2, 1.3), ymax=CAP)),
+        (vt7(35.75), St(S5, 4083.5, zoom=(1.5, 1.6), cy=(0.4, 0.4), ymax=CAP, gray=(1, 1))),
     ], end7)
-    tl.tag(vt(13.5), "NN", 1.4)
-    tl.ov(vt(35.8), end7, lambda img, t, tg: paste_scaled(img, label_box("25+ YEARS", 110), 1450, 860, scale=pop_in(t, 0.2), rot=-3))
-    for x in it_t: tl.sfx("tick", vt(x) + 0.35, 0.35)
-    tl.sfx("cricket", vt(24.3), 0.3); tl.sfx("stamp", vt(35.85), 0.35)
-    for k in [vt(3.6), vt(20.6)]: tl.sfx("swish", k - 0.04, 0.25)
+    tl.tag(vt7(13.5), "NN", 1.4)
+    tl.ov(vt7(35.8), end7, lambda img, t, tg: paste_scaled(img, label_box("25+ YEARS", 110), 1450, 860, scale=pop_in(t, 0.2), rot=-3))
+    for x in it_t: tl.sfx("tick", vt7(x) + 0.35, 0.35)
+    tl.sfx("cricket", vt7(24.3), 0.3); tl.sfx("stamp", vt7(35.85), 0.35)
+    for k in [vt7(3.6), vt7(20.6)]: tl.sfx("swish", k - 0.04, 0.25)
     T = end7
 
     # ================= CHUNK 8: THE VERDICT =================
     c = "8"
-    vt, _, end8 = tl.place_vo(c, T, [("vo", 0.0, WORDS[c]["dur"])])
-    tl.pill(vt(0.0), "THE VERDICT", 3.0)
+    vt8, _, end8 = tl.place_vo(c, T, [("vo", 0.0, WORDS[c]["dur"])])
+    tl.pill(vt8(0.0), "THE VERDICT", 3.0)
     form_v = [("POPULATION:", "~50,000", "538"), ("SOURCE:", "THE PATTY LINE", None), ("METHOD:", "ACTUAL COUNTING", None)]
     def verdict_form(im, t):
         f = drop_shadow(census_form(form_v, stamp="CORRECTED", stamp_p=clamp((t - 1.4) / 0.5), typed_p=clamp(t / 1.2)))
         paste_scaled(im, f, W / 2, lerp(H + 500, H / 2, ease_out(t / 0.3)), scale=1.12, rot=1.5)
     allck = checklist_draw(items, [0] * 7, [0.1 + k * 0.12 for k in range(7)], cols=2, w=740, h=112, y0=190)
     tl.cuts([
-        (vt(0.0), Navy(lambda im, t: None)),
-        (vt(2.05), St(S5, 2978.6, zoom=(1.1, 1.2), cx=(0.55, 0.6), cy=(0.4, 0.38), ymax=CAP, gray=(0.9, 0.9))),
-        (vt(5.1), St(S5, 2982.2, zoom=(1.3, 1.45), cx=(0.62, 0.7), cy=(0.83, 0.83), ymax=400, gray=(0.9, 0.9))),
-        (vt(10.7), C(S5, 2985.9, zoom=(1.35, 1.4), cx=(0.62, 0.62), ymax=CAP)),
-        (vt(12.6), St(S2, 6629.0, zoom=(1.3, 1.6), ease=lambda x: x)),
-        (vt(19.05), Navy(lambda im, t: paste_scaled(im, tk, W / 2, lerp(H + 300, H / 2, ease_out(t / 0.3)), rot=2))),
-        (vt(21.2), St(S2, 6363.0, zoom=(1.1, 1.25))),
-        (vt(24.4), C(S2, 6730.0, zoom=(1.0, 1.1))),
-        (vt(28.15), St(S2, CROWD_T, zoom=(1.2, 1.0))),
-        (vt(30.75), Navy(lambda im, t: (paste_scaled(im, text_layer("~50,000", font("anton", 300), stroke=0, shadow=12), W / 2, 470, scale=pop_in(t, 0.22)),
+        (vt8(0.0), Navy(lambda im, t: None)),
+        (vt8(2.05), St(S5, 2978.6, zoom=(1.1, 1.2), cx=(0.55, 0.6), cy=(0.4, 0.38), ymax=CAP, gray=(0.9, 0.9))),
+        (vt8(5.1), St(S5, 2982.2, zoom=(1.3, 1.45), cx=(0.62, 0.7), cy=(0.83, 0.83), ymax=400, gray=(0.9, 0.9))),
+        (vt8(10.7), C(S5, 2985.9, zoom=(1.35, 1.4), cx=(0.62, 0.62), ymax=CAP)),
+        (vt8(12.6), St(S2, 6629.0, zoom=(1.3, 1.6), ease=lambda x: x)),
+        (vt8(19.05), Navy(lambda im, t: paste_scaled(im, tk, W / 2, lerp(H + 300, H / 2, ease_out(t / 0.3)), rot=2))),
+        (vt8(21.2), St(S2, 6363.0, zoom=(1.1, 1.25))),
+        (vt8(24.4), C(S2, 6730.0, zoom=(1.0, 1.1))),
+        (vt8(28.15), St(S2, CROWD_T, zoom=(1.2, 1.0))),
+        (vt8(30.75), Navy(lambda im, t: (paste_scaled(im, text_layer("~50,000", font("anton", 300), stroke=0, shadow=12), W / 2, 470, scale=pop_in(t, 0.22)),
                                          paste_scaled(im, paper_card("our estimate", 520, 120, 52), W / 2, 760, rot=-2, alpha=clamp((t - 0.4) / 0.15))))),
-        (vt(34.2), Navy(allck)),
-        (vt(42.05), Navy(verdict_form)),
-        (vt(46.35), C(N6, 3781.5, zoom=(1.3, 1.4), ymax=CAP)),
-        (vt(50.7), C(N6, 3700.5, zoom=(1.1, 1.2), ymax=CAP)),
-        (vt(53.0), St(N6, 3798.5, zoom=(1.6, 1.65), cx=(0.68, 0.68), cy=(0.4, 0.4), ymax=CAP)),
+        (vt8(34.2), Navy(allck)),
+        (vt8(42.05), Navy(verdict_form)),
+        (vt8(46.35), C(N6, 3781.5, zoom=(1.3, 1.4), ymax=CAP)),
+        (vt8(50.7), C(N6, 3700.5, zoom=(1.1, 1.2), ymax=CAP)),
+        (vt8(53.0), St(N6, 3798.5, zoom=(1.6, 1.65), cx=(0.68, 0.68), cy=(0.4, 0.4), ymax=CAP)),
     ], end8 + 0.4)
-    tl.sfx("hit", vt(30.75), 0.5); tl.sfx("stamp", vt(43.5), 0.55)
-    for k in range(7): tl.sfx("tick", vt(34.2) + 0.1 + k * 0.12, 0.3)
-    for k in [vt(2.05), vt(12.6), vt(19.05), vt(30.75), vt(34.2), vt(42.05)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
-    tl.sfx("typekey", vt(42.3), 0.3); tl.sfx("typekey", vt(42.5), 0.3); tl.sfx("typekey", vt(42.7), 0.3)
+    tl.sfx("hit", vt8(30.75), 0.5); tl.sfx("stamp", vt8(43.5), 0.55)
+    for k in range(7): tl.sfx("tick", vt8(34.2) + 0.1 + k * 0.12, 0.3)
+    for k in [vt8(2.05), vt8(12.6), vt8(19.05), vt8(30.75), vt8(34.2), vt8(42.05)]: tl.sfx("whoosh_short", k - 0.05, 0.22)
+    tl.sfx("typekey", vt8(42.3), 0.3); tl.sfx("typekey", vt8(42.5), 0.3); tl.sfx("typekey", vt8(42.7), 0.3)
     T = end8 + 0.4
 
     # ================= CHUNK 9: THE OTHER BIKINI =================
     c = "9"
-    vt, ins, end9 = tl.place_vo(c, T, [("vo", 0.0, 44.75), ("ins", D05, 4376.0, 4378.1, 1.0, 0.15), ("vo", 47.75, WORDS[c]["dur"])], gap_after=0.0)
+    vt9, ins, end9 = tl.place_vo(c, T, [("vo", 0.0, 44.75), ("ins", D05, 4376.0, 4378.1, 1.0, 0.15), ("vo", 47.75, WORDS[c]["dur"])], gap_after=0.0)
     iS = ins[0][0]
-    tl.pill(vt(0.4), "ONE MORE BIKINI", 3.0)
+    tl.pill(vt9(0.4), "ONE MORE BIKINI", 3.0)
     form_b = [("POPULATION:", "5", "167"), ("REASON:", "ATOMIC TESTING", None), ("SINCE:", "1946", None)]
     def bikini_form(im, t):
         f = drop_shadow(census_form(form_b, typed_p=clamp(t / 1.5), title="BIKINI ATOLL", sub="MARSHALL ISLANDS"))
@@ -450,7 +450,7 @@ def build_all():
         for k, cd in enumerate(timeline_cards):
             ti = [0.0, 1.0, 2.4][k]
             if t >= ti: paste_scaled(im, cd, W / 2, 330 + k * 200, rot=[-1.5, 1, -1][k], alpha=clamp((t - ti) / 0.15))
-    mp = map_draw(lambda t: clamp(t / 0.8) * 1 + clamp((t - 1.6) / 0.8) + clamp((t - 2.6) / 0.6))
+    mp = map_draw(lambda t: clamp(t / 0.5) + clamp((t - 0.7) / 0.5) + clamp((t - 1.4) / 0.5))
     def boardmap(t_, tg):
         im = board_bg().convert("RGBA"); mp(im, t_); return im.convert("RGB")
     def big(txt):
@@ -458,38 +458,38 @@ def build_all():
         return Navy(lambda im, t: paste_scaled(im, L, W / 2, H / 2, alpha=clamp(t / 0.4)))
     endcard_title = text_layer("THE BIKINI BOTTOM CENSUS", font("anton", 60), stroke=0, shadow=6)
     tl.cuts([
-        (vt(0.0), Navy(lambda im, t: None)),
-        (vt(3.6), St(S2, 6775.5, zoom=(1.0, 1.15))),
-        (vt(6.8), C(NAT, 20.0, zoom=(1.0, 1.1))),
-        (vt(8.4), C(NAT, 330.0, zoom=(1.0, 1.08))),
-        (vt(11.7), C(NAT, 280.0, zoom=(1.0, 1.08))),
-        (vt(13.7), C(NAT, 300.0, zoom=(1.05, 1.12))),
-        (vt(16.0), big("167")),
-        (vt(17.95), C(NAT, 258.0, zoom=(1.0, 1.08))),
-        (vt(19.75), C(NAT, 56.0, zoom=(1.0, 1.08))),
-        (vt(22.9), C(BAK, 2.0, zoom=(1.0, 1.15), speed=0.85)),
-        (vt(24.6), C(NAT, 392.0, zoom=(1.0, 1.08))),
-        (vt(27.0), C(NAT, 312.0, zoom=(1.0, 1.08))),
-        (vt(29.7), C(NAT, 376.0, zoom=(1.0, 1.08))),
-        (vt(31.45), C(NAT, 484.0, zoom=(1.0, 1.08))),
-        (vt(33.3), Fn(boardmap)),
-        (vt(36.0), Navy(tlcards)),
-        (vt(40.1), C(BAK, 62.0, zoom=(1.0, 1.1))),
-        (vt(43.2), Pol(grab(D05, 4311.0), "BAND GEEKS (2001)", rot=2.0, zt=0.25)),
+        (vt9(0.0), Navy(lambda im, t: None)),
+        (vt9(3.6), St(S2, 6775.5, zoom=(1.0, 1.15))),
+        (vt9(6.8), C(NAT, 20.0, zoom=(1.0, 1.1))),
+        (vt9(8.4), C(NAT, 290.0, zoom=(1.0, 1.08))),
+        (vt9(11.7), C(NAT, 280.0, zoom=(1.0, 1.08))),
+        (vt9(13.7), C(NAT, 300.0, zoom=(1.05, 1.12))),
+        (vt9(16.0), big("167")),
+        (vt9(17.95), C(NAT, 258.0, zoom=(1.0, 1.08))),
+        (vt9(19.75), C(NAT, 56.0, zoom=(1.0, 1.08))),
+        (vt9(22.9), C(BAK, 2.0, zoom=(1.0, 1.15), speed=0.85)),
+        (vt9(24.6), C(NAT, 392.0, zoom=(1.0, 1.08))),
+        (vt9(27.0), C(NAT, 312.0, zoom=(1.0, 1.08))),
+        (vt9(29.7), C(NAT, 376.0, zoom=(1.0, 1.08))),
+        (vt9(31.45), C(NAT, 484.0, zoom=(1.0, 1.08))),
+        (vt9(33.3), Fn(boardmap)),
+        (vt9(36.0), Navy(tlcards)),
+        (vt9(40.1), C(BAK, 62.0, zoom=(1.0, 1.1))),
+        (vt9(43.2), Pol(grab(D05, 4311.0), "BAND GEEKS (2001)", rot=2.0, zt=0.25)),
         (iS, C(D05, 4376.0, zoom=(1.3, 1.35), cx=(0.55, 0.55), cy=(0.45, 0.45), ymax=CAP)),
-        (vt(47.8), St(D05, 4377.6, zoom=(1.5, 1.7), cx=(0.55, 0.55), cy=(0.45, 0.45), ymax=CAP, gray=(0, 1))),
-        (vt(50.1), C(BAK, 4.0, zoom=(1.0, 1.1), speed=0.7)),
-        (vt(51.95), C(NAT, 16.0, zoom=(1.0, 1.1))),
-        (vt(55.0), big("5")),
-        (vt(57.6), C(S5, 2985.9, zoom=(1.35, 1.4), cx=(0.62, 0.62), ymax=CAP, gray=(1, 1))),
-        (vt(62.2), Navy(bikini_form)),
-        (vt(68.4), Navy(lambda im, t: paste_scaled(im, endcard_title, W / 2, 120, alpha=clamp(t / 0.5)))),
-    ], vt(WORDS[c]["dur"]) + 12.0)
-    tl.tag(vt(6.8), "NAVY", 3.0); tl.tag(vt(22.9), "BAKER", 1.6); tl.tag(vt(50.1), "BAKER", 1.8)
-    tl.sfx("hit", vt(0.0), 0.35); tl.sfx("boom", vt(22.9), 0.55); tl.sfx("boom", vt(50.1), 0.45)
-    tl.sfx("whoosh_down", vt(3.55), 0.25); tl.sfx("swish", vt(33.3), 0.25); tl.sfx("swish", vt(36.0), 0.25); tl.sfx("swish", vt(62.2), 0.25)
-    for k in range(3): tl.sfx("typekey", vt(62.3) + k * 0.25, 0.3)
-    total = vt(WORDS[c]["dur"]) + 12.0
+        (vt9(47.8), St(D05, 4377.6, zoom=(1.5, 1.7), cx=(0.55, 0.55), cy=(0.45, 0.45), ymax=CAP, gray=(0, 1))),
+        (vt9(50.1), C(BAK, 4.0, zoom=(1.0, 1.1), speed=0.7)),
+        (vt9(51.95), C(NAT, 16.0, zoom=(1.0, 1.1))),
+        (vt9(55.0), big("5")),
+        (vt9(57.6), C(S5, 2985.9, zoom=(1.35, 1.4), cx=(0.62, 0.62), ymax=CAP, gray=(1, 1))),
+        (vt9(62.2), Navy(bikini_form)),
+        (vt9(68.4), Navy(lambda im, t: paste_scaled(im, endcard_title, W / 2, 120, alpha=clamp(t / 0.5)))),
+    ], vt9(WORDS[c]["dur"]) + 12.0)
+    tl.tag(vt9(6.8), "NAVY", 3.0); tl.tag(vt9(22.9), "BAKER", 1.6); tl.tag(vt9(50.1), "BAKER", 1.8)
+    tl.sfx("hit", vt9(0.0), 0.35); tl.sfx("boom", vt9(22.9), 0.55); tl.sfx("boom", vt9(50.1), 0.45)
+    tl.sfx("whoosh_down", vt9(3.55), 0.25); tl.sfx("swish", vt9(33.3), 0.25); tl.sfx("swish", vt9(36.0), 0.25); tl.sfx("swish", vt9(62.2), 0.25)
+    for k in range(3): tl.sfx("typekey", vt9(62.3) + k * 0.25, 0.3)
+    total = vt9(WORDS[c]["dur"]) + 12.0
     return tl, total
 
 if __name__ == "__main__":
