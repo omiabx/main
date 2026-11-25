@@ -85,17 +85,17 @@ def led(W=660, H=250):
     return im
 
 # ---------- C: split-flap board ----------
-def flap(w, h, digit, blur):
-    strip = Image.new("RGBA", (w, h * 3), (36, 38, 44, 255)); d = ImageDraw.Draw(strip)
+def flap(w, h, digit, blur, bg=(36, 38, 44), fg=(245, 245, 240), flapc=(70, 72, 80, 150)):
+    strip = Image.new("RGBA", (w, h * 3), bg + (255,)); d = ImageDraw.Draw(strip)
     f = font("oswald", int(h * 0.8))
     for k, dd in enumerate([(digit + 3) % 10, digit, (digit + 7) % 10]):
-        d.text((w / 2, h * k + h / 2), str(dd), font=f, fill=(245, 245, 240), anchor="mm")
+        d.text((w / 2, h * k + h / 2), str(dd), font=f, fill=fg, anchor="mm")
     strip = vblur(strip, blur); win = strip.crop((0, h, w, 2 * h)); d = ImageDraw.Draw(win)
     d.line([0, h / 2, w, h / 2], fill=(10, 10, 12), width=4 * S)                       # split line
     d.rectangle([0, h / 2 - 2 * S, 5 * S, h / 2 + 2 * S], fill=(120, 120, 120)); d.rectangle([w - 5 * S, h / 2 - 2 * S, w, h / 2 + 2 * S], fill=(120, 120, 120))
     # a flap caught mid-flip: lighter skewed panel over the top half
     fl = Image.new("RGBA", (w, h), (0, 0, 0, 0)); fd = ImageDraw.Draw(fl)
-    fd.polygon([(6 * S, h * 0.12), (w - 6 * S, h * 0.12), (w - 2 * S, h / 2 - 2 * S), (2 * S, h / 2 - 2 * S)], fill=(70, 72, 80, 150))
+    fd.polygon([(6 * S, h * 0.12), (w - 6 * S, h * 0.12), (w - 2 * S, h / 2 - 2 * S), (2 * S, h / 2 - 2 * S)], fill=flapc)
     win.alpha_composite(fl)
     m = Image.new("L", (w, h), 0); ImageDraw.Draw(m).rounded_rectangle([0, 0, w - 1, h - 1], 8 * S, fill=255); win.putalpha(m)
     return win
@@ -163,3 +163,44 @@ if __name__ == "__main__":
     g = Image.new("RGB", (1280 * 2, 720 * 2))
     for i, im in enumerate(ims): g.paste(im, ((i % 2) * 1280, (i // 2) * 720))
     g.resize((1280, 720), Image.LANCZOS).save(os.path.join(OUTDIR, "compare.jpg"), quality=88)
+
+# ---------- E: frameless floating flip tiles ----------
+def float_tile(w, h, digit, blur, tilt):
+    """A single split-flap card with cartoon outline, caught mid-flip (vertical smear + angled top flap)."""
+    pad = 10 * S
+    card = Image.new("RGBA", (w + 2 * pad, h + 2 * pad), (0, 0, 0, 0)); d = ImageDraw.Draw(card)
+    d.rounded_rectangle([0, 0, w + 2 * pad - 1, h + 2 * pad - 1], 18 * S, fill=(18, 18, 22))          # thick outline
+    inner = flap(w, h, digit, blur, bg=(246, 240, 226), fg=(22, 20, 24), flapc=(255, 255, 255, 90))
+    card.alpha_composite(inner, (pad, pad))
+    # top flap swinging down: lighter trapezoid above the card edge
+    fl = Image.new("RGBA", card.size, (0, 0, 0, 0)); fd = ImageDraw.Draw(fl)
+    cw = w + 2 * pad
+    fd.polygon([(pad + 10 * S, pad + h * 0.05), (cw - pad - 10 * S, pad + h * 0.05), (cw - pad, pad + h / 2 - 3 * S), (pad, pad + h / 2 - 3 * S)], fill=(255, 255, 255, 70))
+    card.alpha_composite(fl)
+    return card.rotate(tilt, resample=Image.BICUBIC, expand=True)
+
+def floating_flaps(label=False, W=860, H=260):
+    W, H = W * S, H * S
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    digits = [4, 6, 8, 5, 3, 9]; blurs = [45, 70, 95, 120, 145, 170]; tilts = [-6, 3, -2, 5, -4, 6]
+    top = (78 if label else 14) * S
+    tw, th = 92 * S, 150 * S; gap = 6 * S; comma = 30 * S
+    tiles = [float_tile(tw, th, digits[i], blurs[i] * S // 2, tilts[i]) for i in range(6)]
+    total = sum(t.size[0] for t in tiles) + 5 * gap + comma; x = (W - total) / 2
+    d = ImageDraw.Draw(im)
+    for i, t in enumerate(tiles):
+        yoff = [0, 8, -6, 8, -8, 4][i] * S
+        im.alpha_composite(t, (int(x), int(top + yoff - (t.size[1] - th) / 2)))
+        x += t.size[0] + gap
+        if i == 2:
+            d.text((x + comma / 2 - gap, top + th + 4 * S), ",", font=font("anton", 100 * S), fill=(255, 255, 255), anchor="ms",
+                   stroke_width=7 * S, stroke_fill=(18, 18, 22))
+            x += comma
+    if label:
+        d.text((W / 2, 40 * S), "POPULATION", font=font("anton", 66 * S), fill=(255, 255, 255), anchor="mm",
+               stroke_width=9 * S, stroke_fill=(18, 18, 22))
+    return im
+
+def compose_free(c, out_path):
+    """Like compose(), but no frame-specific shadow offset assumptions; small whoosh lines on the tiles."""
+    return compose(c, out_path, top_y=4, lines=False)
