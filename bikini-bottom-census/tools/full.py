@@ -438,7 +438,7 @@ def build_all():
 
     # ================= CHUNK 9: THE OTHER BIKINI =================
     c = "9"
-    vt9, ins, end9 = tl.place_vo(c, T, [("vo", 0.0, 44.75), ("ins", D05, 4376.0, 4378.1, 1.0, 0.15), ("vo", 47.75, WORDS[c]["dur"])], gap_after=0.0)
+    vt9, ins, end9 = tl.place_vo(c, T, [("vo", 0.0, 44.75), ("ins", D05, 4376.0, 4378.1, 1.0, 0.15), ("vo", 47.75, 68.15)], gap_after=0.0)
     iS = ins[0][0]
     tl.pill(vt9(0.4), "ONE MORE BIKINI", 3.0)
     form_b = [("POPULATION:", "5", "167"), ("REASON:", "ATOMIC TESTING", None), ("SINCE:", "1946", None)]
@@ -483,13 +483,13 @@ def build_all():
         (vt9(55.0), big("5")),
         (vt9(57.6), C(S5, 2985.9, zoom=(1.35, 1.4), cx=(0.62, 0.62), ymax=CAP, gray=(1, 1))),
         (vt9(62.2), Navy(bikini_form)),
-        (vt9(68.4), Navy(lambda im, t: paste_scaled(im, endcard_title, W / 2, 120, alpha=clamp(t / 0.5)))),
-    ], vt9(WORDS[c]["dur"]) + 12.0)
+        (vt9(68.15) + 1.6, Fn(lambda t_, tg: Image.new("RGB", (W, H), (0, 0, 0)))),
+    ], vt9(68.15) + 3.2)
     tl.tag(vt9(6.8), "NAVY", 3.0); tl.tag(vt9(22.9), "BAKER", 1.6); tl.tag(vt9(50.1), "BAKER", 1.8)
     tl.sfx("hit", vt9(0.0), 0.35); tl.sfx("boom", vt9(22.9), 0.55); tl.sfx("boom", vt9(50.1), 0.45)
     tl.sfx("whoosh_down", vt9(3.55), 0.25); tl.sfx("swish", vt9(33.3), 0.25); tl.sfx("swish", vt9(36.0), 0.25); tl.sfx("swish", vt9(62.2), 0.25)
     for k in range(3): tl.sfx("typekey", vt9(62.3) + k * 0.25, 0.3)
-    total = vt9(WORDS[c]["dur"]) + 12.0
+    total = vt9(68.15) + 3.2
     return tl, total
 
 if __name__ == "__main__":

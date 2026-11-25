@@ -1,8 +1,8 @@
 # Upload kit: "How Many People Actually Live in Bikini Bottom?"
 
 ## Video file
-`bikini_bottom_census_final.mp4`: 1920×1080, 30 fps, H.264, AAC 256k, loudness −14 LUFS (YouTube's target), 8:23.
-The last ~12 seconds are a clean navy end card, so you can drop **End screen** elements on it in YouTube Studio (link the element to *"What Does Bikini Bottom Have to Do with Nuclear Bombs?"*, which the voiceover points to).
+`bikini_bottom_census_final.mp4`: 1920×1080, 30 fps, H.264, AAC 256k, loudness −14 LUFS (YouTube's target), 8:09.
+No outro or call to action. It ends on the last line, holds briefly, then cuts to black. If you add YouTube end-screen elements, they will sit over the final Bikini Atoll shot.
 
 ## Thumbnail
 `thumbnail_B.jpg` (recommended) or `thumbnail_A.jpg`. Both are 1280×720 and under 2 MB.

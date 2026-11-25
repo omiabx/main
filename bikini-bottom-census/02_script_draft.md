@@ -113,8 +113,8 @@ Today, the population of Bikini Atoll is about five. Caretakers.
 
 SpongeBob crossed out one number on a sign, and the whole town noticed. The real Bikini lost a hundred and sixty-two, and most people have never even heard of it.
 
-If you want to know what's actually sitting at the bottom of the real Bikini, I made a whole video about it. It's right here.
 ```
+(The closing "I made a whole video about it" line was cut in the edit.)
 
 ---
 
