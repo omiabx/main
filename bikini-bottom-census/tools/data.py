@@ -29,4 +29,5 @@ _heads718 = [
 HEADS = [(x * 640 / 718, y) for x, y in _heads718]   # display-corrected 640x480 coords
 # repeated designs (display coords) for the "same guy" beat
 REPEATS = {"smallblue": [(142 * 640 / 718, 45), (262 * 640 / 718, 25)],
-           "lavender": [(95 * 640 / 718, 160), (652 * 640 / 718, 157)]}
+           "lavender": [(95 * 640 / 718, 160), (652 * 640 / 718, 157)],
+           "yellow": [(30 * 640 / 718, 160), (665 * 640 / 718, 38)]}  # genuine copy-paste of the same design

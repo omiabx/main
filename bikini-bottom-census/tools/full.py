@@ -319,15 +319,15 @@ def build_all():
 
     # ================= CHUNK 6: SAME GUY =================
     c = "6"
-    vt6, ins, end6 = tl.place_vo(c, T, [("vo", 0.0, WORDS[c]["dur"]), ("ins", S2, 6604.8, 6608.1, 1.0, 0.25)])
+    vt6, ins, end6 = tl.place_vo(c, T, [("vo", 0.0, 13.42), ("vo", 15.55, WORDS[c]["dur"]), ("ins", S2, 6604.8, 6608.1, 1.0, 0.25)])
     tl.pill(vt6(0.0), "EXHIBIT E · SAME GUY")
     iL = ins[0][0]
-    A, B = REPEATS["smallblue"]; L, R = REPEATS["lavender"]
+    A, B = REPEATS["smallblue"]; L, R = REPEATS["yellow"]
     def zoom_on(pt, z):
         x, y = pt
         return St(S2, CROWD_T, zoom=(z, z * 1.08), cx=(x / 640, x / 640), cy=(y / 480, y / 480))
-    pa = polaroid(grab(S2, CROWD_T).crop((int(L[0] - 60), int(L[1] - 60), int(L[0] + 60), int(L[1] + 40))).resize((480, 400)), "THIS ONE", 620)
-    pb = polaroid(grab(S2, CROWD_T).crop((int(R[0] - 60), int(R[1] - 60), int(R[0] + 60), int(R[1] + 40))).resize((480, 400)), "ALSO THIS ONE", 620)
+    pa = polaroid(grab(S2, CROWD_T).crop((0, 118, 84, 188)).resize((480, 400)), "THIS ONE", 620)
+    pb = polaroid(grab(S2, CROWD_T).crop((552, 0, 636, 70)).resize((480, 400)), "ALSO THIS ONE", 620)
     fishcards = [polaroid(head_crop(i, 90).resize((360, 360)), f"FISH #{k + 1}", 420) for k, i in enumerate([4, 11, 33, 47, 60])]
     def modelsheet(im, t):
         for k, fc in enumerate(fishcards):
@@ -349,7 +349,7 @@ def build_all():
         (vt6(7.85), zoom_on(B, 3.2)),
         (vt6(10.3), zoom_on(L, 2.8)),
         (vt6(11.9), zoom_on(R, 2.8)),
-        (vt6(13.55), Navy(lambda im, t: (paste_scaled(im, pa, 560, 540, rot=-3, scale=pop_in(t, 0.2)), paste_scaled(im, pb, 1360, 540, rot=3, scale=pop_in(t - 0.25, 0.2))))),
+        (vt6(12.95), Navy(lambda im, t: (paste_scaled(im, pa, 560, 540, rot=-3, scale=pop_in(t, 0.2)), paste_scaled(im, pb, 1360, 540, rot=3, scale=pop_in(t - 0.25, 0.2))))),
         (vt6(15.6), Navy(modelsheet)),
         (vt6(25.9), Navy(lambda im, t: paste_scaled(im, marker_text("theory #2:", 120), W / 2, 420, rot=-3, scale=pop_in(t, 0.2)) or
                          paste_scaled(im, label_box("BIKINI BOTTOM IS TINY", 100), W / 2, 640, scale=pop_in(t - (vt6(27.99) - vt6(25.9)), 0.2)))),
@@ -366,7 +366,7 @@ def build_all():
         (iL + 1.5, C(S2, 6606.3, zoom=(1.45, 1.5), cx=(0.35, 0.35), cy=(0.5, 0.5))),
     ], end6)
     for k in [vt6(3.8), vt6(7.85), vt6(10.3), vt6(11.9)]: tl.sfx("whoosh_short", k - 0.05, 0.3)
-    for k in [vt6(13.55), vt6(15.6), vt6(25.9), vt6(30.9), vt6(34.85)]: tl.sfx("swish", k - 0.04, 0.25)
+    for k in [vt6(12.95), vt6(15.6), vt6(25.9), vt6(30.9), vt6(34.85)]: tl.sfx("swish", k - 0.04, 0.25)
     for k in range(5): tl.sfx("pop", vt6(15.6) + 0.15 + k * 0.35, 0.25)
     for k in range(0, 40, 3): tl.sfx("pop_hi", vt6(30.9) + 0.05 + k * 0.03, 0.12)
     T = end6
