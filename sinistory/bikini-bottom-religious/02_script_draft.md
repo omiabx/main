@@ -127,7 +127,7 @@ Squidward gets his own glimpse of the afterlife in Just One Bite, from season th
 [LABEL: JUST ONE BITE · 2001]
 [CLIP: Just One Bite · Squidward] "Oh, puh-lease! I have no soul!" (V34)
 
-And the background behind Squidward turns into a pit of live-action fire with demonic laughter. He notices it, too. He stops and looks at it. (V34)
+And the background behind Squidward turns into a cave full of live-action fire. When it vanishes, he looks honestly startled, and then he walks away. (V34)
 
 ---
 
@@ -170,9 +170,13 @@ There is exactly one episode where people sit down and worship something, and it
 
 [CLIP: Club SpongeBob · SpongeBob] "Squidward! We must never question the wisdom of the Magic Conch!" (V48)
 
-They ask the shell how to get out of the forest, and it says "Nothing." So they sit down and do nothing. Squidward storms off to save himself, gets lost, ends up back where he started, and has to cook a bug for dinner. (V49)
+They ask the shell how to get out of the forest, and it says "Nothing." So they sit down and do nothing. Squidward storms off to save himself, gets hopelessly lost, and ends up building a camp right next to them, where he cooks a bug for dinner and gloats. (V49)
 
-While he's doing that, a plane flying overhead dumps its cargo right on top of the two believers. We get to see the plane. (V50)
+[CLIP: Club SpongeBob · Squidward] "As if the answers to all your problems will fall right out of the sky!" (V49)
+
+At that exact moment, a plane from Picnic Supply Incorporated, which happens to be crashing, dumps its entire cargo on the two believers. (V50)
+
+[CLIP: Club SpongeBob · pilot] "Dude, we're falling right out of the sky! We gotta drop the load!" (V50)
 
 [CLIP: Club SpongeBob · SpongeBob & Patrick] "Praise the Magic Conch!" (V51)
 
@@ -188,7 +192,7 @@ Then a park ranger shows up to rescue them, and he's holding a Magic Conch of hi
 
 [CLIP: Club SpongeBob · Ranger] "My conch told me to come save you guys!" (V55)
 
-So now it's a congregation. The ranger asks his conch what they should do now. It says nothing. All three of them sit down on the ground, and Squidward, the one who walked into the woods to prove them wrong, looks at them for a while, and then he sits down too. (V56)
+So now it's a congregation. The ranger asks his conch what they should do now. It says nothing. All three of them sit down on the ground, and Squidward, the one who walked into the woods to prove them wrong, kneels down next to them. (V56)
 
 [CLIP: Club SpongeBob · Squidward] "All hail the Magic Conch!" (V56)
 
