@@ -72,7 +72,6 @@ Bikini Bottom talks about Neptune the way we talk about God, with the name swapp
 [CLIP montage]
 [CLIP: Mermaid Man and Barnacle Boy II · Mermaid Man] "Oh, my Neptune!" (V15)
 [CLIP: Doing Time · Mrs. Puff] "Oh, thank Neptune." (V16)
-[CLIP: Mermaid Man and Barnacle Boy V · Man Ray] "Oh, Neptune, shut up." (V17)
 
 Mostly it's the same empty reflex as ours. But when things get bad enough, they pray for real. Here's Mrs. Puff in twenty twenty-four, spinning across a sheet of ice with SpongeBob at the wheel. (V18)
 
@@ -100,7 +99,7 @@ If you have a god, you need an answer for what happens when you die, and Bikini 
 
 [LABEL: BORN AGAIN KRABS · 2003]
 
-Krabs eats a Krabby Patty so old that it has to be kept in a cage, because it growls. He ends up in hospital. His doctor reads his chart, says "don't touch me," and runs out of the room screaming. Then the room goes green. (V22)
+Krabs eats a Krabby Patty so old that it has to be kept in a cage, because it growls. He ends up in hospital. His doctor reads his chart, says "don't touch me," and runs out of the room screaming. Then the room goes green, and in floats the Flying Dutchman, carrying a sack with the word "SOULS" written on it. (V22, V23)
 
 [CLIP: Born Again Krabs · Flying Dutchman] "Eugene Krabs, your time has come." (V23)
 
@@ -112,7 +111,7 @@ Krabs says he isn't a bad crab, so the Dutchman reads him the charge.
 
 [CLIP: Born Again Krabs · Flying Dutchman] "Ah, but you were cheap, and being cheap is a terrible thing." (V26)
 
-So this place has judgment, and the sin it cares about is being cheap. Davy Jones' locker turns out to be an actual gym locker stuffed with Davy Jones' socks, which is a great joke and a horrible way to spend eternity. (V27) Krabs drops to his knees, cries for his mommy, and gets a second chance on one condition. Always be generous. (V28)
+So this place has judgment, and the sin it cares about is being cheap. Davy Jones' locker turns out to be an actual gym locker stuffed with Davy Jones' socks, which is a great joke and a horrible way to spend eternity. (V27) Krabs curls up on the floor, sobs, begs for another chance, and gets one, on one condition. Always be generous, never cheap. (V28)
 
 He comes back a changed crab. Free toys and free refills for everybody. Then the credit card bill arrives, for ten thousand dollars, and the register is empty, and the old Krabs comes right back. Before long he's threatening to pull a customer's arm off over a penny. (V29)
 
@@ -162,7 +161,7 @@ The biggest organized ritual we ever see in this town is everybody leaving home 
 
 ### PART 5: THE ONLY CHURCH IN BIKINI BOTTOM
 
-I said there's no church. Search the transcripts for the word and it comes up three times. Twice it's the sound of a church bell played over a gag, once outside the Bikini Bottom Cemetery. The third time, Patrick is getting Perch Perkins' name wrong and calls him Church Curtains. (V45) "Amen" doesn't come up once in the show. (V46)
+I said there's no church. Search the transcripts for the word and it comes up three times. Twice it's a note that a church bell sound effect plays under a joke. The third time, Patrick is getting Perch Perkins' name wrong and calls him Church Curtains. (V45) "Amen" doesn't come up once in the show. (V46)
 
 [LABEL: CLUB SPONGEBOB · SEASON 3]
 
