@@ -38,12 +38,25 @@ def notebook(n):
     return im
 
 # ---------- source footage ----------
+_PROBE = {}
+def probe(src):
+    if src not in _PROBE:
+        o = subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width,height,sample_aspect_ratio', '-of', 'csv=p=0', src], capture_output=True, text=True).stdout.strip().split(',')
+        w, h = int(o[0]), int(o[1]); sar = 1.0
+        if len(o) > 2 and ':' in o[2] and o[2] != 'N/A':
+            a, b = o[2].split(':'); sar = (int(a) / int(b)) if int(b) else 1.0
+        _PROBE[src] = (w, h, sar)
+    return _PROBE[src]
+
 def _sar_crop(src, yoff):
-    w = int(subprocess.run(['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=width', '-of', 'csv=p=0', src], capture_output=True, text=True).stdout.strip())
-    if w >= 1200:  # movie BD rip (square pixels): 6% punch-in hides the corner watermark
+    w, h, sar = probe(src)
+    if w >= 1200:  # movie BD rip: 6% punch-in hides the corner watermark
         return 'crop=iw*0.94:ih*0.94:(iw-iw*0.94)/2:(ih-ih*0.94)*%f' % yoff
-    cw = w - 16; ch = cw // 2  # DVD 8:9 SAR: (cw*8/9) / (cw/2) = 16:9
-    return f'crop={cw}:{ch}:8:(ih-{ch})*{yoff}'
+    if w * sar / h >= 1.7:  # already widescreen
+        return 'null'
+    trim = 8 if (w >= 700 and abs(sar - 1) > 0.01) else 0
+    cw = w - 2 * trim; ch = int(round(cw * sar * 9 / 16)); ch -= ch % 2
+    return f'crop={cw}:{ch}:{trim}:(ih-{ch})*{yoff}'
 
 def clip_frames(name, ss, dur, yoff=0.5):
     src = SRC + name
@@ -54,7 +67,8 @@ def clip_frames(name, ss, dur, yoff=0.5):
 
 def still43(name, t, w=960):
     src = SRC + name
-    r = subprocess.run(['ffmpeg', '-nostdin', '-loglevel', 'error', '-ss', f'{t:.3f}', '-i', src, '-frames:v', '1', '-vf', f'crop=iw-16:ih:8:0,scale={w}:{w * 3 // 4}:flags=lanczos', '-f', 'image2pipe', '-vcodec', 'png', '-'], capture_output=True)
+    sw, sh, sar = probe(src); trim = 8 if (sw >= 700 and abs(sar - 1) > 0.01) else 0
+    r = subprocess.run(['ffmpeg', '-nostdin', '-loglevel', 'error', '-ss', f'{t:.3f}', '-i', src, '-frames:v', '1', '-vf', f'crop=iw-{2 * trim}:ih:{trim}:0,scale={w}:{w * 3 // 4}:flags=lanczos', '-f', 'image2pipe', '-vcodec', 'png', '-'], capture_output=True)
     return Image.open(BytesIO(r.stdout)).convert('RGB')
 
 def zoom(im, z, cx=.5, cy=.5):
