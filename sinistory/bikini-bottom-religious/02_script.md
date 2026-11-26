@@ -69,14 +69,14 @@ Then he locks his own son in a magic cage, hoists it up a tree on an island, and
 
 [CARD: PART 2 · THE FAITHFUL]
 
-Bikini Bottom talks about Neptune the way we talk about God, with the name swapped out. Across the transcripts, spin-offs and games included, "thank Neptune" turns up forty-seven times. (V14)
+In Bikini Bottom, every "thank God" becomes "thank Neptune." Across the transcripts, spin-offs and games included, "thank Neptune" turns up forty-seven times. (V14)
 
 [LABEL: MERMAID MAN AND BARNACLE BOY II · 2000]
 [CLIP: Mermaid Man and Barnacle Boy II · Mermaid Man] "Oh, my Neptune! He's been horribly disfigured!" (V15)
 [LABEL: DOING TIME · 2002]
 [CLIP: Doing Time · Mrs. Puff] "Alive! I'm alive! Oh, thank Neptune." (V16)
 
-Mostly it's the same reflex as ours, and it means about as much. Twenty-two years later, Mrs. Puff is still calling on him, this time while she spins across a sheet of ice with SpongeBob at the wheel. (V18)
+Mostly it's just a reflex, the way "oh my god" is for a lot of people. Twenty-two years later, Mrs. Puff is still calling on him, this time while she spins across a sheet of ice with SpongeBob at the wheel. (V18)
 
 [LABEL: STUDENT DRIVER SURVIVOR · 2024]
 [CLIP: Student Driver Survivor · Mrs. Puff] "Turn into the slide! Put off the gas! ___ Neptune!" (V18: NEEDS YOUR EAR, see report)

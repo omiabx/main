@@ -2,7 +2,7 @@
 One chunk per section. Paste each as-is. Clip lines are NOT included; they're the characters' original audio.
 When you send the files back, name them anything; I'll transcribe each one and match it to the chunk before editing.
 
-Total: 1544 words.
+Total: 1540 words.
 
 ---
 
@@ -40,12 +40,12 @@ Then he locks his own son in a magic cage, hoists it up a tree on an island, and
 
 ---
 
-## Chunk 3: PART 2: THE FAITHFUL  (126 words, about 50 s at 150 wpm)
+## Chunk 3: PART 2: THE FAITHFUL  (122 words, about 49 s at 150 wpm)
 
 ```
-Bikini Bottom talks about Neptune the way we talk about God, with the name swapped out. Across the transcripts, spin-offs and games included, "thank Neptune" turns up forty-seven times.
+In Bikini Bottom, every "thank God" becomes "thank Neptune." Across the transcripts, spin-offs and games included, "thank Neptune" turns up forty-seven times.
 
-Mostly it's the same reflex as ours, and it means about as much. Twenty-two years later, Mrs. Puff is still calling on him, this time while she spins across a sheet of ice with SpongeBob at the wheel.
+Mostly it's just a reflex, the way "oh my god" is for a lot of people. Twenty-two years later, Mrs. Puff is still calling on him, this time while she spins across a sheet of ice with SpongeBob at the wheel.
 
 But go back to Patty Hype for a second, because I skipped the best part. Krabs prays to Neptune, the angel shows up, and the second the song is over, Krabs grabs him.
 
