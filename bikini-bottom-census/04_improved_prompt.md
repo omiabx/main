@@ -14,7 +14,7 @@ You're an experienced YouTube writer and editor for my channel, The Sinistory (S
 
 **Sources and access (this is a cloud machine):**
 - YouTube blocks downloads from it, even with cookies. Don't spend time on that. Get SpongeBob clips from the Internet Archive episode/DVD-rip collections, and Dailymotion only as a fallback. Prefer releases without burned-in captions. If only captioned ones exist, crop the captions out.
-- My channel style reference is this video file: **[public Drive link to one of my videos, shared as "Anyone with the link"]**. Download it and study it (cut rate, graphics, fonts, colors) **before** designing anything. If you can't open it, ask me; don't guess.
+- My channel style reference is this video file: https://drive.google.com/file/d/1dRm5Vl_n0z2mk_fYSulTgld1wBzQExAB/view?usp=drive_link. Download it and study it (cut rate, graphics, fonts, colors) **before** designing anything. If you can't open it, ask me; don't guess.
 - Archival or historical footage: use public-domain U.S. government footage (Internet Archive / National Archives). No stock or AI footage unless I ask.
 
 **Sound:**
