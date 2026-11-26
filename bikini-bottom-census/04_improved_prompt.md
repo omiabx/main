@@ -17,15 +17,6 @@ You're an experienced YouTube writer and editor for my channel, The Sinistory (S
 - My channel style reference is this video file: **[public Drive link to one of my videos, shared as "Anyone with the link"]**. Download it and study it (cut rate, graphics, fonts, colors) **before** designing anything. If you can't open it, ask me; don't guess.
 - Archival or historical footage: use public-domain U.S. government footage (Internet Archive / National Archives). No stock or AI footage unless I ask.
 
-**My channel's edit style (match it, don't invent one):**
-- Fast: about 1 cut per second, with punch-ins on the same shot.
-- Graphics on a dark navy background (#141826), with cream paper cards, typewriter text (Special Elite), bold condensed labels (Anton) and red marker handwriting for notes and arrows.
-- Episodes introduced as a pinned polaroid with a handwritten caption ("EPISODE NAME (YEAR)").
-- A small typewriter episode tag bottom-left the first time an episode's footage appears ("PATTY HYPE · 2001").
-- Red Anton section pills top-left.
-- No subtitles, no big meme text, no heavy-outlined cartoon fonts, **no red circle annotations**.
-- Black-and-white freeze frames for emphasis.
-
 **Sound:**
 - No music. No ambience, wind or noise beds.
 - Only short SFX on cuts and graphics: whoosh, pop, stamp, typewriter, ding, hit, record scratch, shutter.
@@ -44,15 +35,9 @@ You're an experienced YouTube writer and editor for my channel, The Sinistory (S
 
 **Voiceover (ElevenLabs, voice: Jeremy, Friendly Guy Next Door):**
 - Give me as few copy-paste chunks as possible, one per section.
-- Show each chunk's character count and the total, because I have limited credits.
-- Ask me to name the files chunk1.mp3, chunk2.mp3, and so on.
-- Transcribe every file I send and check it matches before editing. I may upload wrong files by accident.
+- Transcribe every file I send to work out which chunk it is, and check it matches the script before editing. I may upload wrong files by accident.
 
-**Thumbnail (target 5%+ CTR):** I generate the base image in Google Flow, and you finish it.
-- Write me a Flow prompt that puts **composition first**: camera angle, which characters, how big they are, and where they stand. Then the crowd or background, then the style.
-- Tell Flow: no text, no numbers, and leave empty space where your overlay goes. AI image tools can't do readable text or convincing motion blur.
-- When I send the Flow image, add the text and graphic elements yourself (for example a counter) in a few different looks: framed, frameless, and so on. Show them side by side and recommend one.
-- Formula: shocked SpongeBob characters big in the foreground, a bold Bikini Bottom setting, one clear mystery element, and 1 word of text at most.
+**Thumbnail:** I'm targeting 5%+ CTR.
 
 **Deliverables:** final MP4 (1080p, H.264, −14 LUFS), thumbnail JPGs (1280×720, under 2 MB), and title, description with chapters and tags pasted in chat. Save them in the repo folder and send them to me directly.
 
@@ -63,12 +48,11 @@ You're an experienced YouTube writer and editor for my channel, The Sinistory (S
 | What happened | Fix in the prompt |
 |---|---|
 | About an hour lost trying to download from YouTube (blocked even with cookies) | "YouTube blocks downloads… use Internet Archive" |
-| The first style test didn't look like the channel (yellow cartoon text, heavy outlines, slow cuts) because I couldn't see your videos | Share a style reference video up front and list the house style explicitly |
-| Red circle annotations and a wind/noise bed had to be removed | "No red circle annotations", "no ambience/noise beds" |
+| The first style test didn't look like the channel (yellow cartoon text, heavy outlines, slow cuts) because I couldn't see your videos | Share a style reference video up front, and study it before designing anything |
+| A wind/noise bed had to be removed | "No ambience, wind or noise beds" |
 | Voiceover was recorded before fact-checking, so chunk 4 had to be re-recorded (Mrs. Puff's line had the wrong context) and chunk 1 needed an edit (chalk, not marker) | "Don't hand me voiceover chunks until verified" |
-| 46 small chunks were too many, and credits ran low | "As few chunks as possible", with a character count shown |
-| Five uploaded files were from a different project | "Transcribe every file I send and check it" |
+| 46 small chunks were too many | "As few chunks as possible" |
+| Five uploaded files were from a different project | "Transcribe every file I send… check it matches" |
 | The "same fish in a different outfit" pair turned out to be two different designs (you caught it), so it was swapped for a real copy-paste pair | "Visual claims need a side-by-side close-up check" |
 | Runtime came out at 8:10, not ~10:00 | State the target as finished-video minutes and ask for an expected runtime with the script |
 | An outro plugging another video had to be cut after the render | "No outro and no call to action" |
-| The first thumbnails used DVD frames; the final one took several rounds of Flow prompts (grass instead of Bikini Bottom, sparse crowd, tiny characters, crowd in a single line, a fake-looking counter) | The thumbnail section: composition-first Flow prompts, no text or numbers from the AI, and the counter added afterwards in several styles |
