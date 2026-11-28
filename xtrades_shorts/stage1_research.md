@@ -13,3 +13,11 @@ Key facts: S&P -8.6% week ending Nov 20, -3.7% Nov 20 to 6,910.39, -4.4% Nov 5 (
 1 Circuit breakers (7/13/20%) | 2 Correction vs bear market (S&P -11.6% from Oct high) | 3 Why good news can sink a stock ("priced in") | 4 Why gold falls when rates rise | 5 Debt insurance (CDS) spiking for AI builders
 Backups: Fear & Greed meter (9 on Nov 25) | what happens when a stock is kicked out of an index
 Format: no $TICKER; top-right = topic tag under logo; no bias line; titles = plain questions
+
+## Round 4 (2026-11-28): evergreen beginner explainers, NO news, NO ticker
+1 Why short selling has no loss limit (GME Jan 2021: shorts lost $19.75B that month, S3 via Fortune)
+2 How a 3x ETF can lose while the market rises (SEC/FINRA 2009 alert: 3x financials ETF -53% while index +8%, Dec08-Apr09)
+3 Why your option lost money when you were right (IV crush)
+4 How "free" trading apps make money (payment for order flow; SEC Rule 606 reports)
+5 What a margin call is (Reg T 50% initial, FINRA 25% maintenance; broker can sell without asking)
+Backups: theta decay | Rule of 72 | stock splits don't make you richer
