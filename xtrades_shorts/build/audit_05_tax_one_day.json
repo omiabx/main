@@ -1,0 +1,144 @@
+[
+ {
+  "scene": 1,
+  "narration": "If you sell a winning stock within a year, the IRS taxes that profit like your paycheck, at rates up to 37%.",
+  "onscreen": [
+   "MARCH",
+   "3",
+   "37%",
+   "TOP FEDERAL RATE · 2026",
+   "[hdr] MAR 3",
+   "[hdr] STEP 1",
+   "[hdr] SHORT-TERM"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 2,
+  "narration": "Hold it for more than a year, and the federal rate drops to 0%, 15% or 20%.",
+  "onscreen": [
+   "< 1 YR",
+   "37%",
+   "> 1 YR",
+   "0%",
+   "15%",
+   "20%",
+   "[hdr] MAR 4",
+   "[hdr] STEP 2",
+   "[hdr] LONG-TERM"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 3,
+  "narration": "In 2026, a single person pays 0% on those long-term gains with taxable income up to $49,450.",
+  "onscreen": [
+   "$49,450",
+   "REV. PROC. 2025-32",
+   "0%",
+   "[hdr] MAR 4",
+   "[hdr] STEP 2",
+   "[hdr] LONG-TERM"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 4,
+  "narration": "Say you are in the 22% tax bracket and you make a $10,000 profit.",
+  "onscreen": [
+   "22%",
+   "$10,000",
+   "[hdr] MAR 4",
+   "[hdr] STEP 3",
+   "[hdr] EXAMPLE"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 5,
+  "narration": "If you sell too early, you owe about $2,200 in federal tax.",
+  "onscreen": [
+   "< 1 YR",
+   "$2,200",
+   "[hdr] MAR 4",
+   "[hdr] STEP 3",
+   "[hdr] EXAMPLE"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 6,
+  "narration": "If you hold past one year, you owe about $1,500, so you keep about $700 more.",
+  "onscreen": [
+   "< 1 YR",
+   "$2,200",
+   "> 1 YR",
+   "$1,500",
+   "+$700",
+   "[hdr] MAR 4",
+   "[hdr] STEP 3",
+   "[hdr] EXAMPLE"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 7,
+  "narration": "The trap is how the days are counted, because the clock starts the day after you buy.",
+  "onscreen": [
+   "MAR 3",
+   "MAR 4",
+   "+1 YR",
+   "[hdr] MAR 3",
+   "[hdr] STEP 4",
+   "[hdr] THE TRAP"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 8,
+  "narration": "If you bought on March 3, selling on March 3 next year is still short-term,",
+  "onscreen": [
+   "+1 YR",
+   "MAR",
+   "3",
+   "[hdr] MAR 3",
+   "[hdr] STEP 4",
+   "[hdr] THE TRAP"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 9,
+  "narration": "so you would need to wait until March 4.",
+  "onscreen": [
+   "+1 YR",
+   "MAR",
+   "3",
+   "4",
+   "[hdr] MAR 4",
+   "[hdr] STEP 4",
+   "[hdr] THE FIX"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 10,
+  "narration": "Your state may also charge its own tax on top.",
+  "onscreen": [
+   "FEDERAL",
+   "STATE",
+   "[hdr] MAR 4",
+   "[hdr] STEP 4",
+   "[hdr] ALSO"
+  ],
+  "flags": [
+   "object label also spoken: \"STATE\""
+  ]
+ },
+ {
+  "scene": 11,
+  "narration": "More breakdowns like this live in the free Xtrades server. Link's in the caption.",
+  "onscreen": [],
+  "flags": []
+ }
+]

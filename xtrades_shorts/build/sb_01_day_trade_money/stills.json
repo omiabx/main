@@ -1,0 +1,82 @@
+[
+ {
+  "file": "build/sb_01_day_trade_money/scene_01.png",
+  "t": 9.375,
+  "scene": {
+   "t": 0,
+   "end": 9.625
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_02.png",
+  "t": 13.852,
+  "scene": {
+   "t": 9.625,
+   "end": 14.102
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_03.png",
+  "t": 24.709,
+  "scene": {
+   "t": 14.102,
+   "end": 24.959
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_04.png",
+  "t": 30.724,
+  "scene": {
+   "t": 24.959,
+   "end": 30.974
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_05.png",
+  "t": 36.525999999999996,
+  "scene": {
+   "t": 30.974,
+   "end": 36.775999999999996
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_06.png",
+  "t": 44.059999999999995,
+  "scene": {
+   "t": 36.775999999999996,
+   "end": 44.309999999999995
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_07.png",
+  "t": 48.861,
+  "scene": {
+   "t": 44.309999999999995,
+   "end": 49.111
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_08.png",
+  "t": 56.448,
+  "scene": {
+   "t": 49.111,
+   "end": 56.698
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_09.png",
+  "t": 65.723,
+  "scene": {
+   "t": 56.698,
+   "end": 65.973
+  }
+ },
+ {
+  "file": "build/sb_01_day_trade_money/scene_10.png",
+  "t": 72.556,
+  "scene": {
+   "t": 65.973,
+   "end": 72.806
+  }
+ }
+]

@@ -1,0 +1,150 @@
+[
+ {
+  "scene": 1,
+  "narration": "The SEC says more than 90% of regular investors' orders that fill right away do not go to a stock exchange.",
+  "onscreen": [
+   "BUY",
+   "90%+",
+   "SEC · 2022",
+   "NYSE · NASDAQ",
+   "[hdr] 9:30",
+   "[hdr] STEP 1",
+   "[hdr] THE ROUTE"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 2,
+  "narration": "They go to a small group of trading firms called wholesalers.",
+  "onscreen": [
+   "BUY",
+   "MARKET MAKERS",
+   "[hdr] 9:30",
+   "[hdr] STEP 1",
+   "[hdr] THE ROUTE"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 3,
+  "narration": "Every stock has a bid, which is the most someone will pay, and an ask, which is the least someone will sell for.",
+  "onscreen": [
+   "ASK",
+   "BID",
+   "[hdr] 9:30",
+   "[hdr] STEP 2",
+   "[hdr] THE SPREAD"
+  ],
+  "flags": [
+   "object label also spoken: \"ASK\"",
+   "object label also spoken: \"BID\""
+  ]
+ },
+ {
+  "scene": 4,
+  "narration": "Say a stock has a bid of $10.00 and an ask of $10.02.",
+  "onscreen": [
+   "$10.02",
+   "ASK",
+   "$10.00",
+   "BID",
+   "[hdr] 9:30",
+   "[hdr] STEP 2",
+   "[hdr] EXAMPLE"
+  ],
+  "flags": [
+   "object label also spoken: \"ASK\"",
+   "object label also spoken: \"BID\""
+  ]
+ },
+ {
+  "scene": 5,
+  "narration": "The wholesaler can sell to you near $10.02, buy from someone else near $10.00, and keep the gap.",
+  "onscreen": [
+   "YOU",
+   "TRADER",
+   "$10.02",
+   "$10.00",
+   "$0.02",
+   "THE SPREAD",
+   "[hdr] 9:30",
+   "[hdr] STEP 2",
+   "[hdr] EXAMPLE"
+  ],
+  "flags": [
+   "object label also spoken: \"YOU\""
+  ]
+ },
+ {
+  "scene": 6,
+  "narration": "Then it pays your broker a small fee for sending your order, which is called payment for order flow.",
+  "onscreen": [
+   "BROKER",
+   "PFOF",
+   "[hdr] 9:30",
+   "[hdr] STEP 3",
+   "[hdr] THE FEE"
+  ],
+  "flags": [
+   "object label also spoken: \"BROKER\""
+  ]
+ },
+ {
+  "scene": 7,
+  "narration": "That fee is one way an app can charge you zero commission.",
+  "onscreen": [
+   "$0",
+   "PER TRADE",
+   "[hdr] 9:30",
+   "[hdr] STEP 3",
+   "[hdr] THE FEE"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 8,
+  "narration": "By law, you have to get the best public price or better.",
+  "onscreen": [
+   "NBBO",
+   "REG NMS",
+   "$10.02",
+   "ASK",
+   "$10.00",
+   "BID",
+   "[hdr] 9:30",
+   "[hdr] STEP 3",
+   "[hdr] THE RULE"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 9,
+  "narration": "The trap is using a market order on a stock that barely trades, because the gap can be huge, and you pay all of it.",
+  "onscreen": [
+   "ASK",
+   "BID",
+   "[hdr] 9:30",
+   "[hdr] STEP 4",
+   "[hdr] THE TRAP"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 10,
+  "narration": "A limit order lets you set the most you will pay.",
+  "onscreen": [
+   "ASK",
+   "BID",
+   "[hdr] 9:30",
+   "[hdr] STEP 4",
+   "[hdr] THE FIX"
+  ],
+  "flags": []
+ },
+ {
+  "scene": 11,
+  "narration": "More breakdowns like this live in the free Xtrades server. Link's in the caption.",
+  "onscreen": [],
+  "flags": []
+ }
+]
