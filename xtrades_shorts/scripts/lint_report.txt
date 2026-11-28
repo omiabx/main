@@ -1,0 +1,10 @@
+== scripts/01_day_trade_money.txt: 178 written / 189 spoken words, est 66-74s
+   ok: no rule hits
+== scripts/02_day_trade_living.txt: 171 written / 183 spoken words, est 64-72s
+   ok: no rule hits
+== scripts/03_other_side.txt: 179 written / 191 spoken words, est 67-75s
+   ok: no rule hits
+== scripts/04_candlestick.txt: 162 written / 185 spoken words, est 65-73s
+   ! check list-of-three: 'Every candle on a stock chart holds four prices, which are the open, the high, the low, and the close.'
+== scripts/05_tax_one_day.txt: 163 written / 189 spoken words, est 66-74s
+   ok: no rule hits

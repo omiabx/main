@@ -1,0 +1,11 @@
+The SEC says more than 90% of regular investors' orders that fill right away do not go to a stock exchange.
+They go to a small group of trading firms called wholesalers.
+Every stock has a bid, which is the most someone will pay, and an ask, which is the least someone will sell for.
+Say a stock has a bid of $10.00 and an ask of $10.02.
+The wholesaler can sell to you near $10.02, buy from someone else near $10.00, and keep the gap.
+Then it pays your broker a small fee for sending your order, which is called payment for order flow.
+That fee is one way an app can charge you zero commission.
+By law, you have to get the best public price or better.
+The trap is using a market order on a stock that barely trades, because the gap can be huge, and you pay all of it.
+A limit order lets you set the most you will pay.
+More breakdowns like this live in the free Xtrades server. Link's in the caption.

@@ -1,0 +1,10 @@
+Every candle on a stock chart holds four prices, which are the open, the high, the low, and the close.
+The thick part is the body, and it runs from the open to the close.
+If the close is above the open, the candle is usually green, and buyers won.
+If the close is below the open, it is usually red, and sellers won.
+The thin lines are called wicks, and they mark the highest and lowest prices that traded.
+Say a stock opens at $100, climbs to $106, drops to $97, and closes at $104.
+You get a green body from $100 to $104, with wicks reaching up to $106 and down to $97.
+A long top wick means buyers pushed the price up but could not hold it.
+The trap is that some apps flip the colors or use hollow candles, so check the legend first.
+More breakdowns like this live in the free Xtrades server. Link's in the caption.
