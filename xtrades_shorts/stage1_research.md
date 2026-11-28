@@ -21,3 +21,11 @@ Format: no $TICKER; top-right = topic tag under logo; no bias line; titles = pla
 4 How "free" trading apps make money (payment for order flow; SEC Rule 606 reports)
 5 What a margin call is (Reg T 50% initial, FINRA 25% maintenance; broker can sell without asking)
 Backups: theta decay | Rule of 72 | stock splits don't make you richer
+
+## Round 5 (2026-11-28): "what beginners are thirsty to know"
+1 How much money do you need to start trading? ($25K PDT rule removed from FINRA 4210, SEC approved Apr 14 2026, effective Jun 4 2026; firms can phase in to Oct 20 2027; $2,000 margin minimum remains)
+2 Can you really day trade for a living? (Chague/De-Losso/Giovannetti: 97% of Brazil day traders who persisted 300+ days lost money; only 1.1% earned more than min wage)
+3 Who is on the other side of your trade? (SEC 2022: >90% of marketable retail orders routed to a few wholesalers)
+4 How to read a candlestick in 60 seconds (avoid disputed Homma origin claim)
+5 How taxes on trading profits work (IRS Topic 409: <=1yr = ordinary income 10-37%; >1yr = 0/15/20%)
+Backups: broker goes bust (SIPC $500K incl $250K cash) | why stocks jump overnight | stop-loss & when it fails
